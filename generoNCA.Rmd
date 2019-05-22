@@ -1,0 +1,84 @@
+---
+title: "NCA"
+author: "Rampo"
+date: "21 de mayo de 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(kableExtra)  # install.packages("kableExtra")
+```
+
+# 1er intento. NCA desde perspectiva de género
+
+El 12/07/2018 se publicó en el Boletín Oficial la Resolución N° 629/MEFGC/18 que aprueba, a partir del 1 de julio de 2018, el reencasillamiento de los trabajadores/as del GCBA en el Agrupamiento, Tramo, Grado y Categoría (ATGC) correspondiente a la NCA.
+Los datos no incluyen "sexo", lo inferimos desde el DNI y desde el NOMBRE.
+
+```{r datos, message=FALSE, warning=FALSE, echo=FALSE}
+salarios <- read.csv("./encasillamientoNCA.csv", stringsAsFactor = FALSE, encoding = "UTF-8", header = TRUE)
+```
+
+__Frecuencia de SEXO en la lista__
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+kable(table(salarios$SEXO), align = "r", dnn = NA) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover"), full_width = F, position = "left")
+```
+
+```{r include=FALSE}
+salarios$CATEGORIA <- sapply(salarios$ATGC, function(x){gsub("(^.+)(.{1}$)","\\2",x)})
+salarios$AGRUPAMIENTO <- sapply(salarios$ATGC, function(x){gsub("(^.+)-(.+)-([0-9]+)/(.+$)","\\1",x)})
+salarios$TRAMO <- sapply(salarios$ATGC, function(x){gsub("(^.+)-(.+)-([0-9]+)/(.+$)","\\2",x)})
+salarios$GRADO <- sapply(salarios$ATGC, function(x){gsub("(^.+)-(.+)-([0-9]+)/(.+$)","\\3",x)})
+```
+
+#### AGRUPAMIENTO
+__AAS__: Actividades de Apoyo a la Salud y Asistencia Social, __ACI__: Atención al Ciudadano, __EME__: Emergencias,  __GGU__: Gestión Gubernamental, __IVE__: Inspección y Verificación, __SGM__: Servicios Generales y Mantenimiento, __TIC__: Tecnologías de la Información y la comunicación, _AAE_: Actividades Artísticas y de Escenotécnicas.
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+# AGRUPAMIENTO 
+# GGU: Gestión Gubernamental, ACI: Atención al Ciudadano,  
+# SGM: Servicios Generales y Mantenimiento, IVE: Inspección y Verificación, 
+# AAS: Actividades de Apoyo a la Salud y Asistencia Social, A: Actividades Artísticas y de Escenotécnicas, 
+# EME: Emergencias, TIC: Tecnologías de la Información y la comunicación
+kable(t(table(salarios$AGRUPAMIENTO)), align = "r", dnn = NA) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover"), full_width = F, position = "left")
+```
+
+#### AGRUPAMIENTO por SEXO
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+kable(t(table(salarios$AGRUPAMIENTO,salarios$SEXO)), align = "r", dnn = NA) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover"), full_width = F, position = "left")
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+tt <- t(table(salarios$AGRUPAMIENTO,salarios$SEXO))
+tt <- as.data.frame(tt)
+g <- ggplot(tt, aes(x=Var2, y=Freq, fill=Var1)) +
+  geom_bar(stat="identity")
+g
+```
+
+__TIC__
+``` {r echo=FALSE, message=FALSE, warning=FALSE}
+gp <- ggplot(tt[which(tt$Var2=="TIC"),], aes(x="", y=Freq, fill=Var1)) +
+  geom_bar(stat="identity") +
+  coord_polar(theta="y") + theme_void()
+gp
+```
+
+#### TRAMO
+INICIAL, MEDIO, AVANZADO
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+salarios$TRAMO <- factor(salarios$TRAMO, levels = c("INI","MED","AVA"))
+tramos <- t(table(salarios$TRAMO))
+kable(tramos, align = "r", dnn = NA) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover"), full_width = F, position = "left")
+```
+#### TRAMO por SEXO
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+tramos_ <- t(table(salarios$TRAMO, salarios$SEXO))
+kable(tramos_, align = "r", dnn = NA) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover"), full_width = F, position = "left")
+```
