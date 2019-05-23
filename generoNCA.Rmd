@@ -1,7 +1,12 @@
 ---
 title: "NCA"
 author: "Rampo"
-date: "21 de mayo de 2019"
+date: "21 de mayo de 2019-"
+knit: (function(inputFile, encoding) {
+      out_dir <- 'docs';
+      rmarkdown::render(inputFile,
+                        encoding="UTF-8",
+                        output_file=file.path(dirname(inputFile), out_dir, 'index.html')) })
 output: html_document
 ---
 
