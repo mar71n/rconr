@@ -12,8 +12,10 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-library(tidyverse)
+#library(tidyverse)
+library(dplyr)
 library(kableExtra)  # install.packages("kableExtra")
+library(ggplot2)
 ```
 
 # 1er intento. NCA desde perspectiva de género
@@ -51,8 +53,11 @@ kable(t(table(salarios$AGRUPAMIENTO)), align = "r", dnn = NA) %>%
   kable_styling(bootstrap_options = c("striped", "hover"), full_width = F, position = "left")
 ```
 
+```{r klippy, echo=FALSE, include=TRUE}
+klippy::klippy('')
+```
 #### AGRUPAMIENTO por SEXO
-```{r echo=FALSE, message=FALSE, warning=FALSE}
+```{r echo=TRUE, message=FALSE, warning=FALSE, class.source='klippy'}
 kable(t(table(salarios$AGRUPAMIENTO,salarios$SEXO)), align = "r", dnn = NA) %>% 
   kable_styling(bootstrap_options = c("striped", "hover"), full_width = F, position = "left")
 ```
