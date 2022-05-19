@@ -1,0 +1,12 @@
+---
+title: "R"
+author: "Rampo"
+date: "19 de mayo de 2022"
+knit: (function(inputFile, encoding) {
+  out_dir <- 'docs';
+  rmarkdown::render(inputFile,
+                    encoding="UTF-8",
+                    output_file=file.path(dirname(inputFile), out_dir, 'apuntes.html')) })
+output: html_document
+---
+## Apuntes

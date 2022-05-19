@@ -1,0 +1,15 @@
+---
+title: "Main"
+author: "Rampo"
+date: '2022-05-19'
+knit: (function(inputFile, encoding) {
+      out_dir <- 'docs';
+      rmarkdown::render(inputFile,
+                        encoding="UTF-8",
+                        output_file=file.path(dirname(inputFile), out_dir, 'index.html')) })
+output: html_document
+---
+
+[Apuntes](apuntes.html)
+
+[Genero NCA](genero.html)
