@@ -1,0 +1,19 @@
+---
+title: "Clase 04"
+output: html_document
+#date: '2022-05-30'
+knit: (function(inputFile, encoding) {
+  out_dir <- 'docs';
+  rmarkdown::render(inputFile,
+                    encoding="UTF-8",
+                    output_file=file.path(dirname(inputFile), out_dir, 'clase04.html')) })
+---
+
+```
+Más gráficos , tabulados , fechas
+fill, position, geom_boxplot, coord_flip, geom_abline
+tabulados:
+gt, kableExtra, dt, plotly
+fechas:
+lubridate
+```

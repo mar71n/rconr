@@ -1,0 +1,16 @@
+---
+title: "Clase 02"
+output: html_document
+#date: '2022-05-30'
+knit: (function(inputFile, encoding) {
+  out_dir <- 'docs';
+  rmarkdown::render(inputFile,
+                    encoding="UTF-8",
+                    output_file=file.path(dirname(inputFile), out_dir, 'clase02.html')) })
+---
+
+```
+Tibles, filtrar y agrupar:
+dplyr, filter, arrange, select, mutate,
+summarise, group_by, ungroup,
+```

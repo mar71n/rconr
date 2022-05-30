@@ -1,0 +1,64 @@
+---
+title: "Clase 01"
+output: html_document
+#date: '2022-05-30'
+knit: (function(inputFile, encoding) {
+  out_dir <- 'docs';
+  rmarkdown::render(inputFile,
+                    encoding="UTF-8",
+                    output_file=file.path(dirname(inputFile), out_dir, 'clase01.html')) })
+---
+
+```
+Instalación, ayuda, búsquedas:
+R, CRAN, R-seek, RStudio, install.packages, library
+Variables y tipos, importar datos:
+vectores, matrices, factores, list, asignación
+dataframe, tibles
+```
+
+
+### Instalar:
+
+#### Página principal de R:
+[https://www.r-project.org/](https://www.r-project.org/)
+
+Descargas o CRAN lleva a : [https://cran.r-project.org/mirrors.html](https://cran.r-project.org/mirrors.html)
+
+Donde vemos una lista de "mirrors".
+
+De Argentina : El de la [Facultad de Ciencias Astronómicas y Geofísicas - UNLP](https://www.fcaglp.unlp.edu.ar/)
+
+http://mirror.fcaglp.unlp.edu.ar/CRAN/
+
+O uno general https://cloud.r-project.org/ que de alguna manera elije entre los disponibles.
+
+Descargamos el instalador para el SO y arquitectura correspondiente.
+
+
+### Rtools:
+Para algunas instalaciones de paquetes en Windows
+
+para R4.2:
+[https://cran.r-project.org/bin/windows/Rtools/rtools42/rtools.html](https://cran.r-project.org/bin/windows/Rtools/rtools42/rtools.html)
+
+para R3.6 o menos:
+[https://cran.r-project.org/bin/windows/Rtools/history.html](https://cran.r-project.org/bin/windows/Rtools/history.html)
+
+
+### Tidyverse:
+https://www.tidyverse.org/
+
+### Rstudio - Rmarckdown:
+https://rmarkdown.rstudio.com/
+
+### Búsquedas y ayuda:
+
+[https://rseek.org/](https://rseek.org/)
+
+[https://www.rdocumentation.org/](https://www.rdocumentation.org/)
+
+[https://community.rstudio.com/](https://community.rstudio.com/)
+
+### Variables y tipos, importar algunos datos:
+

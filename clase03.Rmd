@@ -1,0 +1,16 @@
+---
+title: "Clase 03"
+output: html_document
+#date: '2022-05-30'
+knit: (function(inputFile, encoding) {
+  out_dir <- 'docs';
+  rmarkdown::render(inputFile,
+                    encoding="UTF-8",
+                    output_file=file.path(dirname(inputFile), out_dir, 'clase03.html')) })
+---
+
+```
+Tibles join, gráficos :
+inner_join, left_join, right_join, full_join, semi_join, anti_join
+ggplot, geom_point, facet_grid, geom_bar, stat_count, stat_summary
+```
