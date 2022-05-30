@@ -10,3 +10,28 @@ knit: (function(inputFile, encoding) {
 output: html_document
 ---
 ## Apuntes
+
+### Instalar:
+
+#### Página principal de R:
+[https://www.r-project.org/](https://www.r-project.org/)
+
+Descargas o CRAN lleva a : [https://cran.r-project.org/mirrors.html](https://cran.r-project.org/mirrors.html)
+
+Donde vemos una lista de "mirrors".
+
+De Argentina : El de la [Facultad de Ciencias Astronómicas y Geofísicas - UNLP](https://www.fcaglp.unlp.edu.ar/)
+
+http://mirror.fcaglp.unlp.edu.ar/CRAN/
+
+O uno general https://cloud.r-project.org/ que de alguna manera elije entre los disponibles.
+
+Descargamos el instalador para el SO y arquitectura correspondiente.
+
+
+
+### Búsquedas:
+
+[https://rseek.org/](https://rseek.org/)
+
+[https://www.rdocumentation.org/](https://www.rdocumentation.org/)
