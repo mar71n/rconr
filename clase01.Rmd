@@ -62,3 +62,24 @@ https://rmarkdown.rstudio.com/
 
 ### Variables y tipos, importar algunos datos:
 
+
+### Algunos datasets
+
+barrios <- read.csv("https://cdn.buenosaires.gob.ar/datosabiertos/datasets/barrios/barrios.csv")
+barrios <- read.csv("barrios.csv")
+
+comunas <- read.csv("https://cdn.buenosaires.gob.ar/datosabiertos/datasets/comunas/comunas.csv")
+comunas <- read.csv("comunas.csv")
+
+
+
+readWKT(barrior$WKT[1])
+library(ggplot2)
+library(sf)
+library(dplyr)
+
+barrios2 <- st_read("barrios.csv")
+
+ggplot(barrios2) + 
+geom_sf()
+
