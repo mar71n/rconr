@@ -60,6 +60,8 @@ https://rmarkdown.rstudio.com/
 
 [https://community.rstudio.com/](https://community.rstudio.com/)
 
+[versión en español de Stack Overflow](https://es.stackoverflow.com/)
+
 ### Variables y tipos, importar algunos datos:
 
 
