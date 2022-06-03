@@ -23,6 +23,10 @@ download.file("https://www.estadisticaciudad.gob.ar/eyc/wp-content/uploads/2022/
 
 ipcba_a <- read_excel("Incidencia_div_niv_gral.xlsx", sheet = "Incidencia_div_niv_gral", col_names=TRUE, skip=2)
 
+str(ipcba_a)
+
+as.Date(41091, origin = "1899-12-30")
+
 head(ipcba_a)
 
 ipcba_a[1,3:23]
