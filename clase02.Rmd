@@ -24,7 +24,6 @@ download.file("https://www.estadisticaciudad.gob.ar/eyc/wp-content/uploads/2022/
 
 ipcba_a <- read_excel("Incidencia_div_niv_gral.xlsx", sheet = "Incidencia_div_niv_gral", col_names=TRUE, skip=2)
 
-<<<<<<< HEAD
 ipcba_a <- read_excel("Incidencia_div_niv_gral.xlsx",  col_names=TRUE, 
                       range="Incidencia_div_niv_gral!C3:DN4")
 
