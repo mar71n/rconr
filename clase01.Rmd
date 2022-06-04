@@ -60,6 +60,8 @@ https://rmarkdown.rstudio.com/
 
 [https://community.rstudio.com/](https://community.rstudio.com/)
 
+[versión en español de Stack Overflow](https://es.stackoverflow.com/)
+
 ### Variables y tipos, importar algunos datos:
 
 typeof(1.2)
@@ -111,12 +113,26 @@ aumento(precios_enero, precios_marzo)
 ### Algunos datasets
 
 barrios <- read.csv("https://cdn.buenosaires.gob.ar/datosabiertos/datasets/barrios/barrios.csv")
+
 barrios <- read.csv("barrios.csv")
 
 comunas <- read.csv("https://cdn.buenosaires.gob.ar/datosabiertos/datasets/comunas/comunas.csv")
+
 comunas <- read.csv("comunas.csv")
 
+names(barrios)
 
+str(barrios)
+
+barrios %>% select(!WKT)
+
+barrios %>% select(barrio, comuna)
+
+names(comunas)
+
+str(comunas)
+
+comunas %>% select(COMUNAS, BARRIOS)
 
 readWKT(barrior$WKT[1])
 library(ggplot2)
@@ -124,7 +140,10 @@ library(sf)
 library(dplyr)
 
 barrios2 <- st_read("barrios.csv")
+barrios2 <- st_ st_read(barrios)
 
-ggplot(barrios2) + 
+
+
+ggplot(barrios %>% mutate(geometry = WKT)) + 
 geom_sf()
 
