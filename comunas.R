@@ -3,6 +3,8 @@ barrios <- read.csv("https://cdn.buenosaires.gob.ar/datosabiertos/datasets/barri
 
 barrios <- read.csv("barrios.csv")
 
+poblacion <- read.csv("https://cdn.buenosaires.gob.ar/datosabiertos/datasets/barrios/caba_pob_barrios_2010.csv", encoding = "UTF-8")
+
 comunas <- read.csv("https://cdn.buenosaires.gob.ar/datosabiertos/datasets/comunas/comunas.csv", encoding = "UTF-8")
 
 comunas <- read.csv("comunas.csv")
@@ -11,6 +13,9 @@ names(barrios)
 
 str(barrios)
 
+summary(barrios)
+
+library(dplyr)
 barrios %>% select(!WKT)
 
 barrios %>% select(barrio, comuna)
@@ -19,12 +24,15 @@ names(comunas)
 
 str(comunas)
 
+names(poblacion)
+
+str(poblacion)
+
 comunas %>% select(COMUNAS, BARRIOS)
 
 readWKT(barrior$WKT[1])
 library(ggplot2)
 library(sf)
-library(dplyr)
 
 write.csv(barrios, "barrios.csv", row.names = FALSE)
 
