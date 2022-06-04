@@ -14,3 +14,31 @@ Tibles, filtrar y agrupar:
 dplyr, filter, arrange, select, mutate,
 summarise, group_by, ungroup,
 ```
+library(readxl)
+#install.packages("readxl")
+library(dplyr)
+library(lubridate)
+
+# jul 2012 - feb 2022
+download.file("https://www.estadisticaciudad.gob.ar/eyc/wp-content/uploads/2022/02/Incidencia_div_niv_gral.xlsx", "Incidencia_div_niv_gral.xlsx")
+
+ipcba_a <- read_excel("Incidencia_div_niv_gral.xlsx", sheet = "Incidencia_div_niv_gral", col_names=TRUE, skip=2)
+
+ipcba_a <- read_excel("Incidencia_div_niv_gral.xlsx",  col_names=TRUE, 
+                      range="Incidencia_div_niv_gral!C3:DN4")
+
+ipcba_a <- read_excel("Incidencia_div_niv_gral.xlsx", sheet = "Incidencia_div_niv_gral", col_names=FALSE, skip=2, n_max=2)
+
+
+View(ipcba_a %>% select(1:116))
+
+dim(ipcba_a)
+
+names(ipcba_a)
+
+View(t(ipcba_a))
+
+str(ipcba_a)
+
+as.Date(c(41091,44593), origin="1899-12-30")
+

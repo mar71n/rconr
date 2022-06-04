@@ -62,6 +62,51 @@ https://rmarkdown.rstudio.com/
 
 ### Variables y tipos, importar algunos datos:
 
+typeof(1.2)
+
+typeof(1L)
+
+typeof("abc")
+
+typeof(TRUE)
+
+typeof(2+1i)
+
+typeof(sqrt(2))
+
+typeof(sqrt(-1+0i))
+
+typeof(1i * 1i)
+
+Con estos tipos, R es una "calculadora"
+
+precio_anterior = 85.23
+precio_actual = 99.0
+diferencia = precio_actual - precio_anterior
+Que % aumento ? (del precio inicial)
+diferencia / precio_anterior * 100
+((precio_actual / precio_anterior) - 1) * 100
+83.23 * 1.16
+
+aumento <- function(x, y){
+  (y - x) / x * 100
+}
+
+aumento(precio_anterior, precio_actual)
+
+## Vectores
+
+precios_enero <- c(100, 600, 20000, 45)
+precios_marzo <- c(110, 650, 21000, 45)
+
+total_enero <- sum(precios_enero)
+total_marzo <- sum(precios_marzo)
+
+aumento(total_enero, total_marzo)
+
+precios_marzo - precios_enero
+
+aumento(precios_enero, precios_marzo)
 
 ### Algunos datasets
 
