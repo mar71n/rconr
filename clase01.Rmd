@@ -70,6 +70,9 @@ para R3.6 o menos :
 
 - [versión en español de Stack Overflow](https://es.stackoverflow.com/)
 
+***
+***
+
 ## Variables y tipos, importar algunos datos:
 
 ```{r, echo=TRUE,  class.source='klippy'}
@@ -113,6 +116,7 @@ typeof(2+1i)
 29 %% 6
 ```
 
+#### Puedo usar variables :
 
 ```{r, echo=TRUE,  class.source='klippy'}
 precio_anterior = 85.23
@@ -122,7 +126,8 @@ diferencia = precio_actual - precio_anterior
 diferencia / precio_anterior * 100
 ((precio_actual / precio_anterior) - 1) * 100
 ```
-#### Lo puedo poner en una funcion
+#### Lo puedo poner en una funcion : 
+
 ```{r, echo=TRUE,  class.source='klippy'}
 aumento <- function(x, y){
   (y - x) / x * 100
@@ -130,8 +135,22 @@ aumento <- function(x, y){
 
 aumento(precio_anterior, precio_actual)
 ```
+
+***
+***
+
 ## Vectores
 
+```{r, echo=TRUE,  class.source='klippy'}
+c(1, 4, 7, 3)
+
+c("a", "23", "abc")
+
+c(TRUE, FALSE, FALSE, TRUE)
+```
+
+
+```{r, echo=TRUE,  class.source='klippy'}
 precios_enero <- c(100, 600, 20000, 45)
 precios_marzo <- c(110, 650, 21000, 45)
 
@@ -143,20 +162,28 @@ aumento(total_enero, total_marzo)
 precios_marzo - precios_enero
 
 aumento(precios_enero, precios_marzo)
+```
+
+***
+***
 
 ### Algunos datasets
+#### data.frame
 
-barrios <- read.csv("https://cdn.buenosaires.gob.ar/datosabiertos/datasets/barrios/barrios.csv")
+```{r, echo=TRUE,  class.source='klippy'}
+barrios <- read.csv("https://cdn.buenosaires.gob.ar/datosabiertos/datasets/barrios/barrios.csv", encoding = "UTF-8")
 
-barrios <- read.csv("barrios.csv")
+poblacion <- read.csv("https://cdn.buenosaires.gob.ar/datosabiertos/datasets/barrios/caba_pob_barrios_2010.csv", encoding = "UTF-8")
 
-comunas <- read.csv("https://cdn.buenosaires.gob.ar/datosabiertos/datasets/comunas/comunas.csv")
-
-comunas <- read.csv("comunas.csv")
+comunas <- read.csv("https://cdn.buenosaires.gob.ar/datosabiertos/datasets/comunas/comunas.csv", encoding = "UTF-8")
 
 names(barrios)
 
 str(barrios)
+
+summary(barrios)
+
+library(dplyr)
 
 barrios %>% select(!WKT)
 
@@ -166,18 +193,19 @@ names(comunas)
 
 str(comunas)
 
+names(poblacion)
+
+str(poblacion)
+
 comunas %>% select(COMUNAS, BARRIOS)
 
-readWKT(barrior$WKT[1])
 library(ggplot2)
 library(sf)
-library(dplyr)
 
-barrios2 <- st_read("barrios.csv")
-barrios2 <- st_ st_read(barrios)
+write.csv(barrios, "datos/barrios.csv", row.names = FALSE)
 
+barrios2 <- st_read("datos/barrios.csv")
 
-
-ggplot(barrios %>% mutate(geometry = WKT)) + 
-geom_sf()
-
+ggplot(barrios2) + 
+  geom_sf(aes(fill=comuna))
+```

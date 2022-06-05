@@ -30,14 +30,13 @@ str(poblacion)
 
 comunas %>% select(COMUNAS, BARRIOS)
 
-readWKT(barrior$WKT[1])
 library(ggplot2)
 library(sf)
 
-write.csv(barrios, "barrios.csv", row.names = FALSE)
+write.csv(barrios, "datos/barrios.csv", row.names = FALSE)
 
 
-barrios2 <- st_read("barrios.csv")
+barrios2 <- st_read("datos/barrios.csv")
 
 ggplot(barrios2) + 
   geom_sf(aes(fill=comuna))
