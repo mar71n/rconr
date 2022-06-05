@@ -9,6 +9,10 @@ knit: (function(inputFile, encoding) {
                     output_file=file.path(dirname(inputFile), out_dir, 'clase01.html')) })
 ---
 
+```{r klippy, echo=FALSE, include=TRUE}
+klippy::klippy('')
+```
+
 ```
 Instalación, ayuda, búsquedas:
 R, CRAN, R-seek, RStudio, install.packages, library
@@ -17,10 +21,11 @@ vectores, matrices, factores, list, asignación
 dataframe, tibles
 ```
 
+---
 
-### Instalar:
+## Instalar:
 
-#### Página principal de R:
+### Página principal de R:
 [https://www.r-project.org/](https://www.r-project.org/)
 
 Descargas o CRAN lleva a : [https://cran.r-project.org/mirrors.html](https://cran.r-project.org/mirrors.html)
@@ -36,34 +41,38 @@ O uno general https://cloud.r-project.org/ que de alguna manera elije entre los 
 Descargamos el instalador para el SO y arquitectura correspondiente.
 
 
-### Rtools:
+### Rtools :
 Para algunas instalaciones de paquetes en Windows
 
 para R4.2:
 [https://cran.r-project.org/bin/windows/Rtools/rtools42/rtools.html](https://cran.r-project.org/bin/windows/Rtools/rtools42/rtools.html)
 
-para R3.6 o menos:
+para R3.6 o menos :
 [https://cran.r-project.org/bin/windows/Rtools/history.html](https://cran.r-project.org/bin/windows/Rtools/history.html)
 
 
-### Tidyverse:
-https://www.tidyverse.org/
+### Tidyverse :
+[www.tidyverse.org](https://www.tidyverse.org/packages/)
 
-### Rstudio - Rmarckdown:
-https://rmarkdown.rstudio.com/
+### Rstudio :
+[www.rstudio.com](https://www.rstudio.com/)
+[www.rstudio.com/products/rstudio/download/](https://www.rstudio.com/products/rstudio/download/)
 
-### Búsquedas y ayuda:
+***
 
-[https://rseek.org/](https://rseek.org/)
+### Búsquedas y ayuda :
 
-[https://www.rdocumentation.org/](https://www.rdocumentation.org/)
+- [https://rseek.org/](https://rseek.org/)
 
-[https://community.rstudio.com/](https://community.rstudio.com/)
+- [https://www.rdocumentation.org/](https://www.rdocumentation.org/)
 
-[versión en español de Stack Overflow](https://es.stackoverflow.com/)
+- [https://community.rstudio.com/](https://community.rstudio.com/)
 
-### Variables y tipos, importar algunos datos:
+- [versión en español de Stack Overflow](https://es.stackoverflow.com/)
 
+## Variables y tipos, importar algunos datos:
+
+```{r, echo=TRUE,  class.source='klippy'}
 typeof(1.2)
 
 typeof(1L)
@@ -74,28 +83,53 @@ typeof(TRUE)
 
 typeof(2+1i)
 
-typeof(sqrt(2))
+```
 
-typeof(sqrt(-1+0i))
+#### Con los tipos numéricos, R es una "calculadora"
 
-typeof(1i * 1i)
+```{r, echo=TRUE,  class.source='klippy'}
+# Suma
+15 + 35 
 
-Con estos tipos, R es una "calculadora"
+# Resta
+50 - 35 
 
+# Multiplicación
+3 * 5
+
+# Division
+(15 + 35) / 2 
+
+# Potencia
+2^8
+
+# Division
+29 / 6
+
+# Division entera
+29 %/% 6
+
+# Modulo o resto
+29 %% 6
+```
+
+
+```{r, echo=TRUE,  class.source='klippy'}
 precio_anterior = 85.23
 precio_actual = 99.0
 diferencia = precio_actual - precio_anterior
-Que % aumento ? (del precio inicial)
+# Que % aumento ? (del precio inicial)
 diferencia / precio_anterior * 100
 ((precio_actual / precio_anterior) - 1) * 100
-83.23 * 1.16
-
+```
+#### Lo puedo poner en una funcion
+```{r, echo=TRUE,  class.source='klippy'}
 aumento <- function(x, y){
   (y - x) / x * 100
 }
 
 aumento(precio_anterior, precio_actual)
-
+```
 ## Vectores
 
 precios_enero <- c(100, 600, 20000, 45)

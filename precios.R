@@ -20,8 +20,6 @@ ipcba_a[[3]]
 ipcba_a[[3]][[1]]
 ipcba_a[[3]][[2]]
 
-
-
 ipcba_a[,1:5]
 
 ipcba_a[1,1:5]
@@ -41,7 +39,8 @@ dimnames(ipcba_b)
 ipcba_b[3:118,1]
 ipcba_b[3:118,2]
 
-ipcba_df <- data.frame(fecha = as.Date(as.numeric(ipcba_b[3:118,1]), origin="1899-12-30") , mensual = as.numeric(ipcba_b[3:118,2]))
+ipcba_df <- data.frame(fecha = as.Date(as.numeric(ipcba_b[3:118,1]), origin="1899-12-30") , 
+                       mensual = as.numeric(ipcba_b[3:118,2]))
 
 str(ipcba_df)
 
