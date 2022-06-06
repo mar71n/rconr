@@ -1,3 +1,4 @@
+library(dplyr)
 
 barrios <- read.csv("https://cdn.buenosaires.gob.ar/datosabiertos/datasets/barrios/barrios.csv", encoding = "UTF-8")
 
@@ -15,7 +16,7 @@ str(barrios)
 
 summary(barrios)
 
-library(dplyr)
+# library(dplyr)
 barrios %>% select(!WKT)
 
 barrios %>% select(barrio, comuna)
@@ -33,10 +34,18 @@ comunas %>% select(COMUNAS, BARRIOS)
 library(ggplot2)
 library(sf)
 
-write.csv(barrios, "datos/barrios.csv", row.names = FALSE)
+ggplot(barrios) +
+  geom_bar(aes(x = barrio, weight = area)) +
+             coord_flip()
 
+ggplot(barrios %>% select(barrio, area)) +
+  geom_bar(aes(x = reorder(barrio, area), weight = area)) +
+  coord_flip()
+
+write.csv(barrios, "datos/barrios.csv", row.names = FALSE)
 
 barrios2 <- st_read("datos/barrios.csv")
 
 ggplot(barrios2) + 
   geom_sf(aes(fill=comuna))
+

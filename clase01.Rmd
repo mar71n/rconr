@@ -21,6 +21,8 @@ vectores, matrices, factores, list, asignación
 dataframe, tibles
 ```
 
+Una versión actualizada de este material en : [clase01](https://mar71n.github.io/rconr/clase01.html)
+
 ---
 
 ## Instalar:
@@ -185,9 +187,9 @@ summary(barrios)
 
 library(dplyr)
 
-barrios %>% select(!WKT)
-
 barrios %>% select(barrio, comuna)
+
+barrios %>% select(!WKT)
 
 names(comunas)
 
@@ -201,6 +203,15 @@ comunas %>% select(COMUNAS, BARRIOS)
 
 library(ggplot2)
 library(sf)
+
+ggplot(barrios) +
+  geom_bar(aes(x = barrio, weight = area)) +
+             coord_flip()
+
+ggplot(barrios %>% select(barrio, area)) +
+  geom_bar(aes(x = reorder(barrio, area), weight = area)) +
+  coord_flip()
+
 
 write.csv(barrios, "datos/barrios.csv", row.names = FALSE)
 
