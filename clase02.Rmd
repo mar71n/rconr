@@ -9,45 +9,71 @@ knit: (function(inputFile, encoding) {
                     output_file=file.path(dirname(inputFile), out_dir, 'clase02.html')) })
 ---
 
+```{r klippy, echo=FALSE, include=TRUE}
+klippy::klippy('')
+```
+
 ```
 Tibles, filtrar y agrupar:
 dplyr, filter, arrange, select, mutate,
 summarise, group_by, ungroup,
 ```
-library(readxl)
-#install.packages("readxl")
+
+```{r, echo=TRUE,  class.source='klippy'}
 library(dplyr)
+library(readr)
+#install.packages("readr")
 library(lubridate)
+```
 
-# jul 2012 - feb 2022
-download.file("https://www.estadisticaciudad.gob.ar/eyc/wp-content/uploads/2022/02/Incidencia_div_niv_gral.xlsx", "Incidencia_div_niv_gral.xlsx")
+***
 
-ipcba_a <- read_excel("Incidencia_div_niv_gral.xlsx", sheet = "Incidencia_div_niv_gral", col_names=TRUE, skip=2)
+### Datase
+#### Tomamos de data.buenosaires el registro de vacunaciones:
+```{r, echo=TRUE,  class.source='klippy'}
+# https://data.buenosaires.gob.ar/dataset/plan-de-vacunacion-covid-19
+#vacunas <- read_csv("https://cdn.buenosaires.gob.ar/datosabiertos/datasets/salud/plan-de-vacunacion-covid-19/dataset_total_vacunas.csv")
+vacunas <- read_csv("datos/dataset_total_vacunas.csv")
+```
 
-ipcba_a <- read_excel("Incidencia_div_niv_gral.xlsx",  col_names=TRUE, 
-                      range="Incidencia_div_niv_gral!C3:DN4")
+#### Una primera mirada, segun lo que esperemos, por lo general alguno de estos:
+```{r, echo=TRUE,  class.source='klippy'}
+head(vacunas)
 
-ipcba_a <- read_excel("Incidencia_div_niv_gral.xlsx", sheet = "Incidencia_div_niv_gral", col_names=FALSE, skip=2, n_max=2)
+summary(vacunas)
 
+str(vacunas)
 
-View(ipcba_a %>% select(1:116))
+table(vacunas$GENERO)
 
-dim(ipcba_a)
+table(vacunas$GRUPO_ETARIO)
 
-names(ipcba_a)
+table(vacunas$VACUNA)
+```
 
-View(t(ipcba_a))
+***
 
-str(ipcba_a)
+#### Que pasa con las fechas ?
+##### Para esto cargamos la libreria *lubridate*
+```{r, echo=TRUE,  class.source='klippy'}
+dmy_hms(head(vacunas$FECHA_ADMINISTRACION))
 
-as.Date(c(41091,44593), origin="1899-12-30")
+max(dmy_hms(vacunas$FECHA_ADMINISTRACION))
+```
 
-str(ipcba_a)
+***
 
-as.Date(41091, origin = "1899-12-30")
+#### Agregar algun cálculo y seleccionar las columnas de interes
+##### mutate() y select()
+```{r, echo=TRUE,  class.source='klippy'}
+vacunas %>% mutate(total = (DOSIS_1 + DOSIS_2 + DOSIS_3)) %>% select(FECHA_ADMINISTRACION, GENERO, GRUPO_ETARIO, total) %>%
+  filter(GENERO == "F")
+```
 
-head(ipcba_a)
-
-ipcba_a[1,3:23]
-
-ipcba_a[1,3:23]
+#### Filtrar y ordenar
+##### filter() y range()
+```{r, echo=TRUE,  class.source='klippy'}
+vacunas %>% mutate(total = (DOSIS_1 + DOSIS_2 + DOSIS_3)) %>% select(FECHA_ADMINISTRACION, GENERO, GRUPO_ETARIO, total) %>%
+  filter(GRUPO_ETARIO == "51 a 60") %>%
+  arrange(desc(total))
+```

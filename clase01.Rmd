@@ -28,17 +28,17 @@ Una versión actualizada de este material en : [clase01](https://mar71n.github.i
 ## Instalar:
 
 ### Página principal de R:
-[https://www.r-project.org/](https://www.r-project.org/)
+- [https://www.r-project.org/](https://www.r-project.org/)
 
-Descargas o CRAN lleva a : [https://cran.r-project.org/mirrors.html](https://cran.r-project.org/mirrors.html)
+- Descargas o CRAN lleva a : [https://cran.r-project.org/mirrors.html](https://cran.r-project.org/mirrors.html)
 
-Donde vemos una lista de "mirrors".
+- Donde vemos una lista de "mirrors".
 
-De Argentina : El de la [Facultad de Ciencias Astronómicas y Geofísicas - UNLP](https://www.fcaglp.unlp.edu.ar/)
+- De Argentina : El de la [Facultad de Ciencias Astronómicas y Geofísicas - UNLP](https://www.fcaglp.unlp.edu.ar/)
 
 http://mirror.fcaglp.unlp.edu.ar/CRAN/
 
-O uno general https://cloud.r-project.org/ que de alguna manera elije entre los disponibles.
+- O uno general https://cloud.r-project.org/ que de alguna manera elije entre los disponibles.
 
 Descargamos el instalador para el SO y arquitectura correspondiente.
 
@@ -46,19 +46,19 @@ Descargamos el instalador para el SO y arquitectura correspondiente.
 ### Rtools :
 Para algunas instalaciones de paquetes en Windows
 
-para R4.2:
+- para R4.2:
 [https://cran.r-project.org/bin/windows/Rtools/rtools42/rtools.html](https://cran.r-project.org/bin/windows/Rtools/rtools42/rtools.html)
 
-para R3.6 o menos :
+- para R3.6 o menos :
 [https://cran.r-project.org/bin/windows/Rtools/history.html](https://cran.r-project.org/bin/windows/Rtools/history.html)
 
 
 ### Tidyverse :
-[www.tidyverse.org](https://www.tidyverse.org/packages/)
+- [www.tidyverse.org](https://www.tidyverse.org/packages/)
 
 ### Rstudio :
-[www.rstudio.com](https://www.rstudio.com/)
-[www.rstudio.com/products/rstudio/download/](https://www.rstudio.com/products/rstudio/download/)
+- [www.rstudio.com](https://www.rstudio.com/)
+- [www.rstudio.com/products/rstudio/download/](https://www.rstudio.com/products/rstudio/download/)
 
 ***
 
