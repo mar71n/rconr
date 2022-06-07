@@ -28,7 +28,7 @@ library(lubridate)
 
 ***
 
-### Datase
+### Datasets
 #### Tomamos de data.buenosaires el registro de vacunaciones:
 ```{r, echo=TRUE,  class.source='klippy'}
 # https://data.buenosaires.gob.ar/dataset/plan-de-vacunacion-covid-19

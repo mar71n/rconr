@@ -44,3 +44,7 @@ ipcba_df <- data.frame(fecha = as.Date(as.numeric(ipcba_b[3:118,1]), origin="189
 
 str(ipcba_df)
 
+# www.datos.gob.ar ipcba 2012 feb 2022
+# https://www.datos.gob.ar/dataset/sspm-indice-precios-al-consumidor-ciudad-buenos-aires-nivel-general-principales-aperturas
+
+
