@@ -23,7 +23,7 @@ dataframe, tibles
 
 Una versión actualizada de este material en : [clase01](https://mar71n.github.io/rconr/clase01.html)
 
----
+***
 
 ## Instalar:
 

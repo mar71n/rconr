@@ -18,6 +18,9 @@ Tibles, filtrar y agrupar:
 dplyr, filter, arrange, select, mutate,
 summarise, group_by, ungroup,
 ```
+Una versión actualizada de este material en : [clase02](https://mar71n.github.io/rconr/clase02.html)
+
+***
 
 ```{r, echo=TRUE,  class.source='klippy'}
 library(dplyr)
