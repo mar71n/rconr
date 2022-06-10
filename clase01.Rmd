@@ -42,6 +42,7 @@ http://mirror.fcaglp.unlp.edu.ar/CRAN/
 
 Descargamos el instalador para el SO y arquitectura correspondiente.
 
+En caso de tener una versión anterior instalada, lo mejor es desinstalarla. Ver: [Upgrade en CRAN](upgrade.html)
 
 ### Rtools :
 Para algunas instalaciones de paquetes en Windows
@@ -51,10 +52,6 @@ Para algunas instalaciones de paquetes en Windows
 
 - para R3.6 o menos :
 [https://cran.r-project.org/bin/windows/Rtools/history.html](https://cran.r-project.org/bin/windows/Rtools/history.html)
-
-
-### Tidyverse :
-- [www.tidyverse.org](https://www.tidyverse.org/packages/)
 
 ### Rstudio :
 - [www.rstudio.com](https://www.rstudio.com/)
@@ -73,6 +70,17 @@ Para algunas instalaciones de paquetes en Windows
 - [versión en español de Stack Overflow](https://es.stackoverflow.com/)
 
 ***
+
+### Paquetes:
+
+#### Tidyverse :
+- [www.tidyverse.org](https://www.tidyverse.org/packages/)
+  - [**dplyr**](https://dplyr.tidyverse.org/)
+  - [**ggplot2**](https://ggplot2.tidyverse.org/)
+
+#### sf :
+- [r-spatial.github.io/sf/](https://r-spatial.github.io/sf/)
+
 ***
 
 ## Variables y tipos, importar algunos datos:
