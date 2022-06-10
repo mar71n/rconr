@@ -1,14 +1,21 @@
 library(dplyr)
+library(readr)
 
 barrios <- read.csv("https://cdn.buenosaires.gob.ar/datosabiertos/datasets/barrios/barrios.csv", encoding = "UTF-8")
+barrios <- read_csv("https://cdn.buenosaires.gob.ar/datosabiertos/datasets/barrios/barrios.csv")
 
-barrios <- read.csv("barrios.csv")
+class(barrios)
+str(barrios)
+
+barrios <- read.csv("datos/barrios.csv")
 
 poblacion <- read.csv("https://cdn.buenosaires.gob.ar/datosabiertos/datasets/barrios/caba_pob_barrios_2010.csv", encoding = "UTF-8")
 
+poblacion <- read.csv("datos/caba_pob_barrios_2010.csv", encoding = "UTF-8")
+
 comunas <- read.csv("https://cdn.buenosaires.gob.ar/datosabiertos/datasets/comunas/comunas.csv", encoding = "UTF-8")
 
-comunas <- read.csv("comunas.csv")
+comunas <- read.csv("datos/comunas.csv")
 
 names(barrios)
 
@@ -42,7 +49,7 @@ ggplot(barrios %>% select(barrio, area)) +
   geom_bar(aes(x = reorder(barrio, area), weight = area)) +
   coord_flip()
 
-write.csv(barrios, "datos/barrios.csv", row.names = FALSE)
+# write.csv(barrios, "datos/barrios.csv", row.names = FALSE)
 
 barrios2 <- st_read("datos/barrios.csv")
 
