@@ -56,3 +56,27 @@ barrios2 <- st_read("datos/barrios.csv")
 ggplot(barrios2) + 
   geom_sf(aes(fill=comuna))
 
+barrios2$comuna <- as.numeric(barrios2$comuna)
+
+ggplot(barrios2) + 
+  geom_sf(aes(fill=comuna))
+
+barrios2$comuna <- as.factor(barrios2$comuna)
+
+ggplot(barrios2) + 
+  geom_sf(aes(fill=comuna))
+
+barrios2$comuna
+table(barrios2$comuna)
+
+barrios2 <- st_read("datos/barrios.csv")
+
+unique(barrios2$comuna)
+as.character(sort(as.numeric(unique(barrios2$comuna))))
+as.numeric(unique(barrios2$comuna))
+
+
+barrios2$comuna <- factor(barrios2$comuna, levels = c("1", "2", "3", "4", "5", "6", "7", "8","9","10","11","12","13","14","15"))
+
+ggplot(barrios2) + 
+  geom_sf(aes(fill=comuna))

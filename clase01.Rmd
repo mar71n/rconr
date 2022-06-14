@@ -77,6 +77,8 @@ Para algunas instalaciones de paquetes en Windows
 - [www.tidyverse.org](https://www.tidyverse.org/packages/)
   - [**dplyr**](https://dplyr.tidyverse.org/)
   - [**ggplot2**](https://ggplot2.tidyverse.org/)
+  - [**readr**](https://readr.tidyverse.org/)
+  - [**lubridate**](https://lubridate.tidyverse.org/)
 
 #### sf :
 - [r-spatial.github.io/sf/](https://r-spatial.github.io/sf/)
@@ -84,6 +86,9 @@ Para algunas instalaciones de paquetes en Windows
 ***
 
 ## Variables y tipos, importar algunos datos:
+
+#### Con la función *typeof(x)* vemos el *type* al que pertenece x
+##### Ejemplos de los principales tipos en R:
 
 ```{r, echo=TRUE,  class.source='klippy'}
 typeof(1.2)
@@ -126,6 +131,54 @@ typeof(2+1i)
 29 %% 6
 ```
 
+#### Con _**?**item_ nos muestra ayuda sobre el _item_
+##### Los ejemplos siguientes nos muestran en el panel de *Help* las funciones matemáticas disponibles.
+```{r}
+?Arithmetic # Operadores aritméticos
+
+# x + y
+# x - y
+# x * y
+# x / y
+# x ^ y
+# x %% y
+# x %/% y
+
+?log  # logaritmo y exponenciacón
+
+# log(x, base = exp(1))
+# logb(x, base = exp(1))
+# log10(x)
+# log2(x)
+# exp(x)
+
+?sin  # trigonometricas
+
+# cos(x)
+# sin(x)
+# tan(x)
+
+# acos(x)
+# asin(x)
+# atan(x)
+
+?Special  # factorial
+
+# factorial(x)
+# lfactorial(x)
+
+?sqrt  # raiz cuadrada
+
+# abs(x)
+# sqrt(x)
+```
+
+#### Podemos graficar una función
+
+```{r, echo=TRUE,  class.source='klippy'}
+plot(x <- seq(0, 2*pi, 0.2), sin(x), type = "l")
+```
+
 #### Puedo usar variables :
 
 ```{r, echo=TRUE,  class.source='klippy'}
@@ -140,7 +193,7 @@ diferencia / precio_anterior * 100
 
 ```{r, echo=TRUE,  class.source='klippy'}
 aumento <- function(x, y){
-  (y - x) / x * 100
+  ((y / x) - 1) * 100
 }
 
 aumento(precio_anterior, precio_actual)
@@ -158,6 +211,25 @@ c("a", "23", "abc")
 
 c(TRUE, FALSE, FALSE, TRUE)
 ```
+
+```{r, echo=TRUE,  class.source='klippy'}
+vnumeros <- c(1, 4, 7, 3, 4, 3, 5)
+
+vnumeros > 3
+
+vnumeros[vnumeros > 3] 
+
+which(vnumeros > 3)
+
+vnumeros[which(vnumeros > 3)] 
+
+order(vnumeros)
+
+vnumeros[order(vnumeros)]
+
+sort(vnumeros)
+```
+
 
 
 ```{r, echo=TRUE,  class.source='klippy'}
@@ -177,9 +249,85 @@ aumento(precios_enero, precios_marzo)
 ***
 ***
 
+### Matrices
+
+```{r, echo=TRUE,  class.source='klippy'}
+matriz <- matrix(c(18, 8.10, 20, 9, 21,	9.45, 22,	9.90, 23,	10.35), ncol = 2, byrow = TRUE )
+
+matriz
+
+matriz[,1]
+
+matriz[3,]
+
+matriz[3,1]
+
+matriz[2:4,]
+
+# https://www.argentina.gob.ar/redsube/tarifas-de-transporte-publico-amba-2021
+
+matriz_colectivo <- matrix(
+  filas <- c(18, 8.10, 20, 9, 21,	9.45, 22,	9.90, 23,	10.35),
+  nrow = 5, byrow = TRUE,
+  dimnames = list(c("0 a 3 km", "3 a 6 km", "6 a 12 km", "12 a 27 km", "más de 27 km"),
+                  c("Tarifa"	,"Con tarifa social"))
+)
+
+matriz_colectivo
+
+matriz_colectivo * 1.4
+
+matriz_colectivo[,"Tarifa"] * 1.4
+
+aumentos <- matrix(c(rep(1.4,5), rep(1,5)), nrow = 5, byrow = FALSE)
+
+aumentos
+
+matriz_colectivo * aumentos
+
+decreciente <- order(matriz_colectivo[,1], decreasing = TRUE)
+matriz_colectivo[decreciente, ]
+```
+
+***
+***
+
+### Listas
+
+```{r, echo=TRUE,  class.source='klippy'}
+l1 <- list(1,2,3,c(4,5,6), "A", c("B","C"), list(c(1,2,3), c("a","b", "c")))
+l1
+length(l1)
+l1[[8]] <- c("c", "b", "a")
+
+l1[1]
+
+l1[[1]]
+
+l1[4]
+
+l1[[4]]
+
+l1[[4]][2]
+
+l1[[7]][[2]]
+
+l1[[7]][[2]][1]
+
+lt <- list(t = matriz_colectivo[,1], ts = matriz_colectivo[,2])
+
+sapply(lt, mean)
+```
+
+***
+***
+
 ### Algunos datasets
+
 [Buenos Aires Data - Barrios](https://data.buenosaires.gob.ar/dataset/barrios)
+
 [Buenos Aires Data - Comunas](https://data.buenosaires.gob.ar/dataset/comunas)
+
 #### data.frame
 
 ```{r, echo=TRUE,  class.source='klippy'}
@@ -203,7 +351,25 @@ library(dplyr)
 barrios %>% select(barrio, comuna)
 
 barrios %>% select(!WKT)
+```
 
+#### Usando **[**
+
+```{r, echo=TRUE,  class.source='klippy'}
+head(
+  barrios[c("barrio", "comuna")]
+)
+
+head(
+  barrios[c(2,3)]
+)
+
+head(
+  barrios[c(-1,-4,-5)]
+)
+```
+
+```{r, echo=TRUE,  class.source='klippy'}
 names(comunas)
 
 str(comunas)
@@ -226,9 +392,20 @@ ggplot(barrios %>% select(barrio, area)) +
   coord_flip()
 
 
-write.csv(barrios, "datos/barrios.csv", row.names = FALSE)
+#write.csv(barrios, "datos/barrios.csv", row.names = FALSE)
 
 barrios2 <- st_read("datos/barrios.csv")
+
+ggplot(barrios2) + 
+  geom_sf(aes(fill=comuna))
+
+barrios2$comuna <- as.numeric(barrios2$comuna)
+
+ggplot(barrios2) + 
+  geom_sf(aes(fill=comuna))
+
+
+barrios2$comuna <- factor(barrios2$comuna, levels = c("1", "2", "3", "4", "5", "6", "7", "8","9","10","11","12","13","14","15"))
 
 ggplot(barrios2) + 
   geom_sf(aes(fill=comuna))
