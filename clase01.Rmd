@@ -192,10 +192,12 @@ diferencia / precio_anterior * 100
 #### Lo puedo poner en una funcion : 
 
 ```{r, echo=TRUE,  class.source='klippy'}
+# esta es la definición de la función
 aumento <- function(x, y){
   ((y / x) - 1) * 100
 }
 
+# acá llamo a la función y obtengo el resultado
 aumento(precio_anterior, precio_actual)
 ```
 
@@ -203,6 +205,7 @@ aumento(precio_anterior, precio_actual)
 ***
 
 ## Vectores
+#### Los vectores solo pueden contener valores de un mismo tipo. Todos numericos, o todos caracteres, etc.
 
 ```{r, echo=TRUE,  class.source='klippy'}
 c(1, 4, 7, 3)
@@ -213,29 +216,49 @@ c(TRUE, FALSE, FALSE, TRUE)
 ```
 
 ```{r, echo=TRUE,  class.source='klippy'}
-vnumeros <- c(1, 4, 7, 3, 4, 3, 5)
+vnumeros <- c(1500, 4750, 7300, 3250, 4701, 3302, 5200)
+```
 
-vnumeros > 3
+#### Podemos extraer el valor almacenado indicando la posición o índice:
+```{r, echo=TRUE,  class.source='klippy'}
+# el segundo elemento:
+vnumeros[2]
 
-vnumeros[vnumeros > 3] 
+# el segundo y el quinto elementos:
+vnumeros[c(2,5)]
 
-which(vnumeros > 3)
+# del quinto al septimo elementos:
+vnumeros[5:7]
+```
+#### Tambien pordemos extraer los valores que cumplan alguna condición:
+```{r, echo=TRUE,  class.source='klippy'}
+vnumeros > 4000
 
-vnumeros[which(vnumeros > 3)] 
+# valores que cumplen la condición
+vnumeros[vnumeros > 4000] 
 
+# índices de los valores que cumplen la condición
+which(vnumeros > 4000)
+
+vnumeros[which(vnumeros > 4000)] 
+
+# índice del menor valor seguido del índice del segundo valor, y así..
 order(vnumeros)
 
+# valores ordenados
 vnumeros[order(vnumeros)]
 
+# valores ordenados
 sort(vnumeros)
 ```
 
 
-
+#### Puedo hacer operaciones con los vectores, o pasarlos como argumento de funciones que así lo admitan:
 ```{r, echo=TRUE,  class.source='klippy'}
 precios_enero <- c(100, 600, 20000, 45)
 precios_marzo <- c(110, 650, 21000, 45)
 
+# la función *sum(x)* devuelve la suma de los valores almacenados en x
 total_enero <- sum(precios_enero)
 total_marzo <- sum(precios_marzo)
 
@@ -250,7 +273,7 @@ aumento(precios_enero, precios_marzo)
 ***
 
 ### Matrices
-
+#### Las matrices, igual que los vectores,  solo pueden contener valores de un mismo tipo. Todos numericos, o todos caracteres, etc.
 ```{r, echo=TRUE,  class.source='klippy'}
 matriz <- matrix(c(18, 8.10, 20, 9, 21,	9.45, 22,	9.90, 23,	10.35), ncol = 2, byrow = TRUE )
 
@@ -263,7 +286,10 @@ matriz[3,]
 matriz[3,1]
 
 matriz[2:4,]
+```
 
+#### Puedo ponerle nombre a las dimensiones de una matriz:
+```{r, echo=TRUE,  class.source='klippy'}
 # https://www.argentina.gob.ar/redsube/tarifas-de-transporte-publico-amba-2021
 
 matriz_colectivo <- matrix(
@@ -293,11 +319,12 @@ matriz_colectivo[decreciente, ]
 ***
 
 ### Listas
-
+#### Las listas sí pueden almacenar objetos de distintos tipos.
 ```{r, echo=TRUE,  class.source='klippy'}
 l1 <- list(1,2,3,c(4,5,6), "A", c("B","C"), list(c(1,2,3), c("a","b", "c")))
 l1
 length(l1)
+# Así le agrego un elemento a la lista:
 l1[[8]] <- c("c", "b", "a")
 
 l1[1]
@@ -347,6 +374,9 @@ str(barrios)
 summary(barrios)
 ```
 
+#### Usamos *%>%* y  *select()* del paquete *dplyr*
+###### **Estaremos usando paquetes que integran *tidyverse* y que se instalan al instalar este último.**
+###### **Pero recomiendo ir instalando a medida que los usemos.**
 ```{r, echo=TRUE,  class.source='klippy'}
 library(dplyr)
 # install.packages("dplyr")
@@ -356,13 +386,14 @@ barrios %>% select(barrio, comuna)
 barrios %>% select(!WKT)
 ```
 
-#### Usando **[**
+#### Sín usar *dplyr*, podemos usar **[** para seleccionar columnas
 
 ```{r, echo=TRUE,  class.source='klippy'}
 head(
   barrios[c("barrio", "comuna")]
 )
 
+# *head()* nos muestra los primeros elementos de un objeto
 head(
   barrios[c(2,3)]
 )
@@ -373,6 +404,7 @@ head(
 ```
 
 ```{r, echo=TRUE,  class.source='klippy'}
+# *names()* nos muestra los nombres de columnas (u otros nombres definidos si los hubiera)
 names(comunas)
 
 str(comunas)
@@ -382,11 +414,13 @@ names(poblacion)
 str(poblacion)
 
 comunas %>% select(COMUNAS, BARRIOS)
+```
 
+##### Para crear gráficos con *ggplot* hay que instalar el paquete con *install.package()*, por única vez.
+##### Luego hay que cargarlo con *library()* la primera vez que lo queremos usar en una sesión.
+```{r, echo=TRUE,  class.source='klippy'}
 library(ggplot2)
 # install.packages("ggplot2")
-library(sf)
-# install.packages("sf")
 
 ggplot(barrios) +
   geom_bar(aes(x = barrio, weight = area)) +
@@ -395,21 +429,33 @@ ggplot(barrios) +
 ggplot(barrios %>% select(barrio, area)) +
   geom_bar(aes(x = reorder(barrio, area), weight = area)) +
   coord_flip()
+```
 
-
-#write.csv(barrios, "datos/barrios.csv", row.names = FALSE)
+#### Instalar y usar *sf* puede requerir más trabajo que los otros paquetes que vimos.
+```{r, echo=TRUE,  class.source='klippy'}
+library(sf)
+# install.packages("sf")
 
 barrios2 <- st_read("datos/barrios.csv")
+```
 
+### Como *comuna* es del tipo *caracter* lo ordena alfabeticamente... 
+```{r, echo=TRUE,  class.source='klippy'}
 ggplot(barrios2) + 
   geom_sf(aes(fill=comuna))
+```
 
+### Si lo ponemos *numérico* lo ordena mejor, pero lo mustra como una variable continua, no *categórica* que es lo que corresponde.
+```{r, echo=TRUE,  class.source='klippy'}
 barrios2$comuna <- as.numeric(barrios2$comuna)
 
 ggplot(barrios2) + 
   geom_sf(aes(fill=comuna))
+```
 
-
+### Para estos casos, variables categóricas, lo correcto es usar un tipo de R especial.
+### Los *factores*
+```{r, echo=TRUE,  class.source='klippy'}
 barrios2$comuna <- factor(barrios2$comuna, levels = c("1", "2", "3", "4", "5", "6", "7", "8","9","10","11","12","13","14","15"))
 
 ggplot(barrios2) + 
