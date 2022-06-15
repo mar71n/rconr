@@ -345,8 +345,11 @@ names(barrios)
 str(barrios)
 
 summary(barrios)
+```
 
+```{r, echo=TRUE,  class.source='klippy'}
 library(dplyr)
+# install.packages("dplyr")
 
 barrios %>% select(barrio, comuna)
 
@@ -381,7 +384,9 @@ str(poblacion)
 comunas %>% select(COMUNAS, BARRIOS)
 
 library(ggplot2)
+# install.packages("ggplot2")
 library(sf)
+# install.packages("sf")
 
 ggplot(barrios) +
   geom_bar(aes(x = barrio, weight = area)) +

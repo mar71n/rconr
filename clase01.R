@@ -245,3 +245,41 @@ lt
 ll <- list(matriz_colectivo)
 
 sapply(ll, mean)
+
+
+### https://www.uv.es/vcoll/data-wrangling.html
+
+### https://stat545.com/factors-boss.html#reorder-factors
+
+
+# lineas de pobreza:
+### https://www.estadisticaciudad.gob.ar/eyc/wp-content/uploads/2022/06/ir_2022_1664.pdf
+
+
+niveles <- c("En situación de indigencia", "En situación de pobreza no indigente", "No pobres vulnerables", "Sector medio frágil", 
+             "Sector medio -'clase media'", "Sectores acomodados")
+
+valores <- c(0.00, 54380.23, 54380.24, 99653.24, 99653.25, 123052.91, 123052.92, 153816.14, 153816.15, 492211.67, 492211.68, Inf)
+
+matriz_estratos <- matrix(valores, ncol = 2, byrow = TRUE,
+                          dimnames = list(niveles, c("Min", "Max")))
+matriz_estratos
+
+library(tibble)
+tibble_estratos <- tribble(
+~Estrato, ~Min, ~Max,
+#----------------------------|------|--------
+"En situación de indigencia", 0.00, 54380.23,
+"En situación de pobreza no indigente", 54380.24, 99653.24,
+"No pobres vulnerables", 99653.25, 123052.91,
+"Sector medio frágil", 123052.92, 153816.14,
+"Sector medio-'clase media'", 153816.15, 492211.67,
+"Sectores acomodados", 492211.68, Inf
+)
+tibble_estratos
+
+tibble_estratos[2,]
+tibble_estratos[2,2]
+tibble_estratos$Min[2]
+tibble_estratos$Max[2]
+
