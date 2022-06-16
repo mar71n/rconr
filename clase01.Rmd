@@ -300,17 +300,30 @@ matriz_colectivo <- matrix(
 )
 
 matriz_colectivo
+```
 
+#### Puedo hacer operaciones, por ejemplo multiplicar por un escalar:
+##### En este ejemplo estaría calculando un incremento de 40% sobre toda la matriz
+```{r, echo=TRUE,  class.source='klippy'}
 matriz_colectivo * 1.4
+```
 
+#### Puedo invocar una dimensión, en este caso una columna, por su nombre:
+```{r, echo=TRUE,  class.source='klippy'}
 matriz_colectivo[,"Tarifa"] * 1.4
+```
 
+### También podemos multiplicarla por otra matriz, elemento a elemento
+```{r, echo=TRUE,  class.source='klippy'}
 aumentos <- matrix(c(rep(1.4,5), rep(1,5)), nrow = 5, byrow = FALSE)
 
 aumentos
 
 matriz_colectivo * aumentos
+```
 
+#### Ordenar la matriz según alguna de sus dimensiones
+```{r, echo=TRUE,  class.source='klippy'}
 decreciente <- order(matriz_colectivo[,1], decreasing = TRUE)
 matriz_colectivo[decreciente, ]
 ```
@@ -393,7 +406,7 @@ head(
   barrios[c("barrio", "comuna")]
 )
 
-# *head()* nos muestra los primeros elementos de un objeto
+# head() nos muestra los primeros elementos de un objeto
 head(
   barrios[c(2,3)]
 )
@@ -404,7 +417,7 @@ head(
 ```
 
 ```{r, echo=TRUE,  class.source='klippy'}
-# *names()* nos muestra los nombres de columnas (u otros nombres definidos si los hubiera)
+# names() nos muestra los nombres de columnas (u otros nombres definidos si los hubiera)
 names(comunas)
 
 str(comunas)
@@ -461,3 +474,11 @@ barrios2$comuna <- factor(barrios2$comuna, levels = c("1", "2", "3", "4", "5", "
 ggplot(barrios2) + 
   geom_sf(aes(fill=comuna))
 ```
+
+***
+***
+
+### [Ejercicios](clase01_ejercicios.html)
+
+***
+***

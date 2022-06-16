@@ -259,13 +259,16 @@ sapply(ll, mean)
 niveles <- c("En situación de indigencia", "En situación de pobreza no indigente", "No pobres vulnerables", "Sector medio frágil", 
              "Sector medio -'clase media'", "Sectores acomodados")
 
+columnas <- c("Min", "Max")
+
 valores <- c(0.00, 54380.23, 54380.24, 99653.24, 99653.25, 123052.91, 123052.92, 153816.14, 153816.15, 492211.67, 492211.68, Inf)
 
 matriz_estratos <- matrix(valores, ncol = 2, byrow = TRUE,
-                          dimnames = list(niveles, c("Min", "Max")))
+                          dimnames = list(niveles, columnas))
 matriz_estratos
 
 library(tibble)
+
 tibble_estratos <- tribble(
 ~Estrato, ~Min, ~Max,
 #----------------------------|------|--------
@@ -277,9 +280,16 @@ tibble_estratos <- tribble(
 "Sectores acomodados", 492211.68, Inf
 )
 tibble_estratos
+names(tibble_estratos)
 
 tibble_estratos[2,]
 tibble_estratos[2,2]
 tibble_estratos$Min[2]
 tibble_estratos$Max[2]
 
+tibble_estratos
+
+m1 <- matrix(c(tibble_estratos[["Min"]], tibble_estratos[["Max"]]), byrow = FALSE, ncol = 2)
+m1
+dimnames(m1) <- list(tibble_estratos[["Estrato"]], c("Min","Max"))
+m1
