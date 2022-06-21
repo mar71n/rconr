@@ -47,14 +47,24 @@ spec(vacunas)
 head(vacunas)
 
 summary(vacunas)
-# veo que en DOSIS_3 hay NAs
+```
+##### veo que en DOSIS_3 hay NAs
 
-vacunas[which(is.na(vacunas$DOSIS_3)),]
+#### filtro los que tienen NAs
+#### con *[]*
+```{r, echo=TRUE,  class.source='klippy'}
+vacunas[which(is.na(vacunas$DOSIS_3)),c(-1,-8)]
+```
+#### o con *filter*
+```{r, echo=TRUE,  class.source='klippy'}
+vacunas %>% filter(is.na(vacunas$DOSIS_3)) %>% select(-FECHA_ADMINISTRACION, -ID_CARGA)
+```
 
-# pongo cero en esos NAs 
+#### pongo cero en esos NAs 
+```{r, echo=TRUE,  class.source='klippy'}
 vacunas[which(is.na(vacunas$DOSIS_3)), "DOSIS_3"] <- 0
 
-str(vacunas)
+summary(vacunas)
 
 table(vacunas$GENERO)
 
@@ -70,6 +80,10 @@ table(vacunas$VACUNA)
 #### Que pasa con las fechas ?
 ##### Para esto cargamos la libreria *lubridate*
 ```{r, echo=TRUE,  class.source='klippy'}
+head(vacunas$FECHA_ADMINISTRACION)
+
+max(vacunas$FECHA_ADMINISTRACION)
+
 dmy_hms(head(vacunas$FECHA_ADMINISTRACION))
 
 max(dmy_hms(vacunas$FECHA_ADMINISTRACION))
@@ -78,36 +92,138 @@ max(dmy_hms(vacunas$FECHA_ADMINISTRACION))
 ***
 
 #### Agregar algun cálculo y seleccionar las columnas de interes
-##### mutate() y select()
+##### *mutate()* y *select()*
 ```{r, echo=TRUE,  class.source='klippy'}
-vacunas %>% mutate(total = (DOSIS_1 + DOSIS_2 + DOSIS_3)) %>% select(FECHA_ADMINISTRACION, GENERO, GRUPO_ETARIO, total) %>%
-  filter(GENERO == "F")
+vacunas %>% mutate(total = (DOSIS_1 + DOSIS_2 + DOSIS_3)) %>% 
+            select(FECHA_ADMINISTRACION, GENERO, GRUPO_ETARIO, total) %>%
+            filter(GENERO == "F")
 ```
 
 #### Filtrar y ordenar
-##### filter() y range()
+##### *filter()* y *arange()*
 ```{r, echo=TRUE,  class.source='klippy'}
 vacunas %>% mutate(total = (DOSIS_1 + DOSIS_2 + DOSIS_3)) %>% select(FECHA_ADMINISTRACION, GENERO, GRUPO_ETARIO, total) %>%
   filter(GRUPO_ETARIO == "51 a 60") %>%
   arrange(desc(total))
 ```
 
+#### Calculamos totales agrupando por GENERO
+##### *goup_by()* y *summarise()*
 ```{r, echo=TRUE,  class.source='klippy'}
 library(ggplot2)
 
-data1 <- vacunas %>% mutate(total = (DOSIS_1 + DOSIS_2 + DOSIS_3)) %>% select(FECHA_ADMINISTRACION, GENERO, GRUPO_ETARIO, total) %>%
-group_by(GENERO) %>% summarise(t = sum(total, na.rm=TRUE))
+data1 <- vacunas %>% 
+         mutate(total = (DOSIS_1 + DOSIS_2 + DOSIS_3)) %>% 
+         select(FECHA_ADMINISTRACION, GENERO, GRUPO_ETARIO, total) %>%
+         group_by(GENERO) %>% 
+         summarise(t = sum(total, na.rm=TRUE))
+
+data1
 
 ggplot(data1, aes(GENERO,t, fill = GENERO)) + 
   geom_bar(stat="identity", colour = "grey") +
   geom_text(aes(label= t), vjust= -0.5, color="black", size=4)
+```
 
-data2 <- vacunas %>% mutate(total = (DOSIS_1 + DOSIS_2 + DOSIS_3)) %>% select(FECHA_ADMINISTRACION, GENERO, GRUPO_ETARIO, total) %>%
-  group_by(GRUPO_ETARIO, GENERO) %>% summarise(t = sum(total, na.rm=TRUE))
+#### Calculamos totales por GENERO y GRUPO_ETARIO
+```{r, echo=TRUE,  class.source='klippy'}
+data2 <- vacunas %>% 
+         mutate(total = (DOSIS_1 + DOSIS_2 + DOSIS_3)) %>% 
+         select(FECHA_ADMINISTRACION, GENERO, GRUPO_ETARIO, total) %>%
+         group_by(GRUPO_ETARIO, GENERO) %>% 
+         summarise(t = sum(total, na.rm=TRUE))
+
+data2
 
 ggplot(data2, aes(GENERO,t, fill=GRUPO_ETARIO)) + 
-  geom_bar(stat="identity") 
+  geom_bar(stat="identity", colour = "grey") 
 
 ggplot(data2, aes(GRUPO_ETARIO, t, fill=GENERO)) + 
   geom_bar(stat="identity") 
 ```
+
+#### Ahora agrupo primero por GENERO y luego por GRUPO_ETARIO
+##### Ver que *data2* y *data3* son iguales salvo el orden de las columnas y las filas
+```{r, echo=TRUE,  class.source='klippy'}
+data3 <- vacunas %>% mutate(total = (DOSIS_1 + DOSIS_2 + DOSIS_3)) %>% select(FECHA_ADMINISTRACION, GENERO, GRUPO_ETARIO, total) %>%
+  group_by(GENERO, GRUPO_ETARIO) %>% summarise(t = sum(total, na.rm=TRUE))
+
+data1 %>% tally()
+data2 %>% tally()
+data3 %>% tally()
+```
+#### Los gráficos con data3 ¿Son iguales a los de data2?
+
+***
+
+#### Otro paso para 'acomodar' los datos:
+#### DOSIS_1, DOSIS_2, DOSIS_3, no son tres variables, son tres valore de la variable DOSIS...
+#### *tidyr*, *pivot_longer()*
+```{r, echo=TRUE,  class.source='klippy'}
+# install.packages("tidyr")
+library(tidyr)
+
+vacunas %>% select(GRUPO_ETARIO, GENERO, DOSIS_1, DOSIS_2, DOSIS_3)
+
+vacunas %>% 
+  pivot_longer(cols = c(DOSIS_1, DOSIS_2, DOSIS_3), names_to = "DOSIS", values_to = "aplicadas") %>%
+  select(FECHA_ADMINISTRACION, GENERO, GRUPO_ETARIO, DOSIS, aplicadas)
+
+vacunas %>% pivot_longer(cols = c(DOSIS_1, DOSIS_2, DOSIS_3), names_to = "DOSIS", values_to = "aplicadas") %>%
+  select(FECHA_ADMINISTRACION, GENERO, GRUPO_ETARIO, DOSIS, aplicadas) %>%
+  group_by(GRUPO_ETARIO, GENERO, DOSIS) %>% summarise(t = sum(aplicadas)) %>%
+  ggplot(aes(x = GENERO, y = t, fill = GRUPO_ETARIO)) +
+    geom_bar(stat="identity") +
+    facet_wrap(~ DOSIS)
+```
+
+***
+***
+
+#### Un poco más de *ggplot*
+##### *ggplot*, *aes*, *stat*, *position*, *facet*
+##### *geom_bar* por defecto solo requiere *aes(x)* y hace un count
+```{r, echo=TRUE,  class.source='klippy'}
+dfa <- data.frame(a = c(1,2,3,1), b=c(2,5,2,1))
+ggplot(dfa, aes(a)) + 
+  geom_bar() 
+
+# El mismo gráfico con los valores por defecto explicitados:
+ggplot(dfa, aes(a)) + 
+  geom_bar(stat="count") 
+```
+
+#### *geom_bar* con *stat = identity* agrupa por *x* ademas suma todos los casos
+#### requiere *aes(x, y)*
+```{r, echo=TRUE,  class.source='klippy'}
+dfa <- data.frame(a = c(1,2,3), b=c(3,5,2))
+ggplot(dfa, aes(a, b)) + 
+   geom_bar(stat="identity") 
+
+dfa <- data.frame(a = c(1,2,3,1), b=c(2,5,2,1))
+ggplot(dfa, aes(a, b)) + 
+  geom_bar(stat="identity") 
+```
+
+#### por defecto *position* es *"stack"*
+```{r, echo=TRUE,  class.source='klippy'}
+ggplot(data2, aes(GRUPO_ETARIO, t, fill=GENERO)) + 
+  geom_bar(stat="identity", position = "stack") 
+```
+
+#### Con *position* = *"dodge"*
+```{r, echo=TRUE,  class.source='klippy'}
+ggplot(data2, aes(GRUPO_ETARIO, t, fill=GENERO)) + 
+  geom_bar(stat="identity", position = "dodge", colour = "grey") 
+# el el grafico de arriba, algunos tienen tres columnas otros dos (donde no hay casos GENERO = N)
+```
+
+#### preserve (anchos de columna)
+```{r, echo=TRUE,  class.source='klippy'}
+ggplot(data2, aes(GRUPO_ETARIO, t, fill=GENERO)) + 
+  geom_bar(stat="identity", position = position_dodge2(preserve = "single"), colour = "grey") 
+
+ggplot(data2, aes(GRUPO_ETARIO, t, fill=GENERO)) + 
+  geom_bar(stat="identity", position = position_dodge2(preserve = "total"), colour = "grey") 
+```
+

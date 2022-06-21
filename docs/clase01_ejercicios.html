@@ -587,6 +587,111 @@ los límites de los  estratos en las lineas de pobreza mayo 2022 y abril
 cendas matrices y calcular la variación porcentual celda a celda</h4>
 <hr />
 <hr />
+<!--
+
+```{.r .klippy}
+library(dplyr)
+```
+
+```
+## 
+## Attaching package: 'dplyr'
+```
+
+```
+## The following objects are masked from 'package:stats':
+## 
+##     filter, lag
+```
+
+```
+## The following objects are masked from 'package:base':
+## 
+##     intersect, setdiff, setequal, union
+```
+
+```{.r .klippy}
+library(tibble)
+
+## Mayo
+niveles <- c("En situación de indigencia", "En situación de pobreza no indigente", "No pobres vulnerables", "Sector medio frágil", 
+            "Sector medio -'clase media'", "Sectores acomodados")
+
+columnas <- c("Min", "Max")
+
+valores <- c(0.00, 54380.23, 54380.24, 99653.24, 99653.25, 123052.91, 123052.92, 153816.14, 153816.15, 492211.67, 492211.68, Inf)
+
+matriz_estratos05 <- matrix(valores, ncol = 2, byrow = TRUE,
+                         dimnames = list(niveles, columnas))
+matriz_estratos05
+```
+
+```
+##                                            Min       Max
+## En situación de indigencia                0.00  54380.23
+## En situación de pobreza no indigente  54380.24  99653.24
+## No pobres vulnerables                 99653.25 123052.91
+## Sector medio frágil                  123052.92 153816.14
+## Sector medio -'clase media'          153816.15 492211.67
+## Sectores acomodados                  492211.68       Inf
+```
+
+```{.r .klippy}
+## Abril
+tibble_estratos04 <- tribble(
+ ~Estrato, ~Min, ~Max,
+ #----------------------------|------|--------
+ "En situación de indigencia", 0.00, 52169.47,
+ "En situación de pobreza no indigente", 52169.48, 95268.15,
+ "No pobres vulnerables", 95268.16, 117708.64,
+ "Sector medio frágil", 117708.65, 147135.80,
+ "Sector medio-'clase media'", 147135.81, 470834.59,
+ "Sectores acomodados", 470834.60, Inf
+)
+
+matriz_estratos04 <- matrix(c(tibble_estratos04[["Min"]], tibble_estratos04[["Max"]]), byrow = FALSE, ncol = 2)
+matriz_estratos04
+```
+
+```
+##           [,1]      [,2]
+## [1,]      0.00  52169.47
+## [2,]  52169.48  95268.15
+## [3,]  95268.16 117708.64
+## [4,] 117708.65 147135.80
+## [5,] 147135.81 470834.59
+## [6,] 470834.60       Inf
+```
+
+```{.r .klippy}
+dimnames(matriz_estratos04) <- list(tibble_estratos04[["Estrato"]], c("Min","Max"))
+matriz_estratos04
+```
+
+```
+##                                            Min       Max
+## En situación de indigencia                0.00  52169.47
+## En situación de pobreza no indigente  52169.48  95268.15
+## No pobres vulnerables                 95268.16 117708.64
+## Sector medio frágil                  117708.65 147135.80
+## Sector medio-'clase media'           147135.81 470834.59
+## Sectores acomodados                  470834.60       Inf
+```
+
+```{.r .klippy}
+aumento(matriz_estratos04, matriz_estratos05)
+```
+
+```
+##                                           Min      Max
+## En situación de indigencia                NaN 4.237651
+## En situación de pobreza no indigente 4.237650 4.602892
+## No pobres vulnerables                4.602891 4.540253
+## Sector medio frágil                  4.540253 4.540255
+## Sector medio -'clase media'          4.540254 4.540253
+## Sectores acomodados                  4.540253      NaN
+```
+-->
 </div>
 </div>
 
