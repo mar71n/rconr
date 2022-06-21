@@ -40,7 +40,7 @@ library(lubridate)
 vacunas <- read_csv("datos/dataset_total_vacunas.csv")
 ```
 
-#### Una primera mirada, segun lo que esperemos, por lo general alguno de estos:
+#### Una primera mirada, según lo que esperemos, por lo general alguno de estos:
 ```{r, echo=TRUE,  class.source='klippy'}
 spec(vacunas)
 
@@ -153,11 +153,12 @@ data2 %>% tally()
 data3 %>% tally()
 ```
 #### Los gráficos con data3 ¿Son iguales a los de data2?
+#####¡ probar !
 
 ***
 
 #### Otro paso para 'acomodar' los datos:
-#### DOSIS_1, DOSIS_2, DOSIS_3, no son tres variables, son tres valore de la variable DOSIS...
+#### DOSIS_1, DOSIS_2, DOSIS_3, no son tres variables, son tres valores de la variable DOSIS...
 #### *tidyr*, *pivot_longer()*
 ```{r, echo=TRUE,  class.source='klippy'}
 # install.packages("tidyr")
