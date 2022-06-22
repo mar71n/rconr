@@ -149,6 +149,31 @@ ggplot(data1, aes(GENERO,t, fill = GENERO)) +
   geom_text(aes(label= t), vjust= -0.5, color="black", size=4)
 ```
 
+***
+
+##### *options(...)* nos permite ver y configurar opciones globales de R.
+##### Entre ellas, ***scipen***, con la que podemos controlar cuando usar notación cientifica.
+##### _*scipen*_: Los valores positivos sesgan hacia la notación fija y los negativos hacia la notación científica: se preferirá la notación fija a menos que sea más que dígitos scipen más anchos.
+##### Por defecto es cero.
+```{r, echo=TRUE,  class.source='klippy'}
+# guardo el valor actual
+actual <- options("scipen")
+# indico que use notación fija a menos que sean mas de 10 digitos:
+options(scipen=10)
+```
+#### Sín notación cientifica:
+```{r, echo=TRUE,  class.source='klippy'}
+ggplot(data1, aes(GENERO,t, fill = GENERO)) + 
+  geom_bar(stat="identity", colour = "grey") +
+  geom_text(aes(label= t), vjust= -0.5, color="black", size=4)
+
+# vuelvo a poner el valor anterior.
+options(scipen=actual[[1]])
+
+```
+
+***
+
 #### Calculamos totales por GENERO y GRUPO_ETARIO
 ```{r, echo=TRUE,  class.source='klippy'}
 data2 <- vacunas %>% 
@@ -259,3 +284,9 @@ ggplot(data2, aes(GRUPO_ETARIO, t, fill=GENERO)) +
 ggplot(data2, aes(GRUPO_ETARIO, t, fill=GENERO)) + 
   geom_bar(stat="identity", position = "fill", colour = "grey")
 ```
+
+***
+***
+### Bibliografia:
+#### [R para Ciencia de Datos - Cap 5](https://es.r4ds.hadley.nz/transform.html#transform)
+

@@ -188,9 +188,11 @@ ls()
 vacunas %>% filter(DOSIS_1 > 10, DOSIS_2 > 20)
 
 
-
-
-
+actual <- options("scipen")
+actual[[1]]
+options(scipen=0)
+#### scipen: Los valores positivos sesgan hacia la notación fija y los negativos hacia la notación científica: se preferirá la notación fija a menos que sea más que dígitos scipen más anchos.
+#### Por defecto es cero.
 
 
 
