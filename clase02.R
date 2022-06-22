@@ -165,3 +165,33 @@ vacunas %>% pivot_longer(cols = c(DOSIS_1, DOSIS_2, DOSIS_3), names_to = "DOSIS"
     geom_bar(stat="identity") +
     facet_wrap(~ DOSIS)
 
+
+
+
+
+
+
+
+
+
+## clase2
+
+vacunas %>% filter(is.na(vacunas$DOSIS_3)) %>% select(-FECHA_ADMINISTRACION, -ID_CARGA)
+
+filter(vacunas, is.na(vacunas$DOSIS_3))
+
+select(filter(vacunas, is.na(vacunas$DOSIS_3)), -FECHA_ADMINISTRACION, -ID_CARGA)
+
+
+ls()
+
+vacunas %>% filter(DOSIS_1 > 10, DOSIS_2 > 20)
+
+
+
+
+
+
+
+
+
