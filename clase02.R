@@ -21,8 +21,15 @@ summary(vacunas)
 
 vacunas[which(is.na(vacunas$DOSIS_3)),]
 
+vacunas %>% filter(is.na(vacunas$DOSIS_3)) %>% select(-FECHA_ADMINISTRACION, -ID_CARGA) %>% mutate(DOSIS_3 = 0)
+
 # pongo cero en esos NAs 
 vacunas[which(is.na(vacunas$DOSIS_3)), "DOSIS_3"] <- 0
+
+vacunas %>% count(GENERO)
+
+vacunas %>% count(GENERO, wt = DOSIS_1)
+
 
 
 str(vacunas)
@@ -37,12 +44,28 @@ table(vacunas$GRUPO_ETARIO)
 
 table(vacunas$VACUNA)
 
+vacunas %>% select(GENERO, GRUPO_ETARIO)
+
+vacunas %>% select(GENERO, GRUPO_ETARIO, DOSIS_1, DOSIS_2, DOSIS_3)
+
+vacunas %>% select(GENERO, GRUPO_ETARIO, starts_with("DOSIS"))
+
 vacunas %>% mutate(total = (DOSIS_1 + DOSIS_2 + DOSIS_3)) %>% select(FECHA_ADMINISTRACION, GENERO, GRUPO_ETARIO, total) %>%
   filter(GENERO == "F")
 
 vacunas %>% mutate(total = (DOSIS_1 + DOSIS_2 + DOSIS_3)) %>% select(FECHA_ADMINISTRACION, GENERO, GRUPO_ETARIO, total) %>%
   filter(GRUPO_ETARIO == "51 a 60") %>%
   arrange(desc(total))
+
+vacunas %>% mutate(total = (DOSIS_1 + DOSIS_2 + DOSIS_3)) %>% select(FECHA_ADMINISTRACION, GENERO, GRUPO_ETARIO, total) %>%
+  filter(total > 1000) %>%
+  arrange(GENERO, desc(GRUPO_ETARIO))
+
+vacunas$FECHA_ADMINISTRACION <- dmy_hms(vacunas$FECHA_ADMINISTRACION)
+
+vac_tot <- vacunas %>% mutate(total = (DOSIS_1 + DOSIS_2 + DOSIS_3))%>%  group_by(FECHA_ADMINISTRACION) %>% summarise(Tot = cumsum(total))
+
+tail(vac_tot)
 
 library(ggplot2)
 

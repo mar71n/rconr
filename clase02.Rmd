@@ -65,14 +65,24 @@ vacunas %>% filter(is.na(vacunas$DOSIS_3)) %>% select(-FECHA_ADMINISTRACION, -ID
 vacunas[which(is.na(vacunas$DOSIS_3)), "DOSIS_3"] <- 0
 
 summary(vacunas)
+```
 
+#### Frecuencias
+```{r, echo=TRUE,  class.source='klippy'}
 table(vacunas$GENERO)
 
 table(vacunas$GRUPO_ETARIO)
+```
+
+#### Al modo dplyr:
+```{r, echo=TRUE,  class.source='klippy'}
+vacunas %>% count(GENERO)
+
+vacunas %>% count(GENERO, wt = DOSIS_1)
 
 vacunas %>% group_by(GENERO) %>% summarise(total = n())
 
-table(vacunas$VACUNA)
+vacunas %>% count(VACUNA, wt = DOSIS_1)
 ```
 
 ***
@@ -91,20 +101,34 @@ max(dmy_hms(vacunas$FECHA_ADMINISTRACION))
 
 ***
 
-#### Agregar algun cálculo y seleccionar las columnas de interes
-##### *mutate()* y *select()*
+#### Seleccionar columnas de interes, agregar columnas
+##### *select()* y *mutate()*
 ```{r, echo=TRUE,  class.source='klippy'}
+vacunas %>% select(GENERO, GRUPO_ETARIO)
+
+vacunas %>% select(GENERO, GRUPO_ETARIO, DOSIS_1, DOSIS_2, DOSIS_3)
+
+vacunas %>% select(GENERO, GRUPO_ETARIO, starts_with("DOSIS"))
+
 vacunas %>% mutate(total = (DOSIS_1 + DOSIS_2 + DOSIS_3)) %>% 
-            select(FECHA_ADMINISTRACION, GENERO, GRUPO_ETARIO, total) %>%
-            filter(GENERO == "F")
+            select(FECHA_ADMINISTRACION, GENERO, GRUPO_ETARIO, total)
 ```
 
 #### Filtrar y ordenar
 ##### *filter()* y *arange()*
 ```{r, echo=TRUE,  class.source='klippy'}
+vacunas %>% mutate(total = (DOSIS_1 + DOSIS_2 + DOSIS_3)) %>% 
+            select(FECHA_ADMINISTRACION, GENERO, GRUPO_ETARIO, total) %>%
+            filter(GENERO == "F")
+
 vacunas %>% mutate(total = (DOSIS_1 + DOSIS_2 + DOSIS_3)) %>% select(FECHA_ADMINISTRACION, GENERO, GRUPO_ETARIO, total) %>%
   filter(GRUPO_ETARIO == "51 a 60") %>%
   arrange(desc(total))
+
+vacunas %>% mutate(total = (DOSIS_1 + DOSIS_2 + DOSIS_3)) %>% select(FECHA_ADMINISTRACION, GENERO, GRUPO_ETARIO, total) %>%
+  filter(total > 1000) %>%
+  arrange(GENERO, desc(GRUPO_ETARIO))
+
 ```
 
 #### Calculamos totales agrupando por GENERO
@@ -145,15 +169,17 @@ ggplot(data2, aes(GRUPO_ETARIO, t, fill=GENERO)) +
 #### Ahora agrupo primero por GENERO y luego por GRUPO_ETARIO
 ##### Ver que *data2* y *data3* son iguales salvo el orden de las columnas y las filas
 ```{r, echo=TRUE,  class.source='klippy'}
-data3 <- vacunas %>% mutate(total = (DOSIS_1 + DOSIS_2 + DOSIS_3)) %>% select(FECHA_ADMINISTRACION, GENERO, GRUPO_ETARIO, total) %>%
-  group_by(GENERO, GRUPO_ETARIO) %>% summarise(t = sum(total, na.rm=TRUE))
+data3 <- vacunas %>% 
+         mutate(total = (DOSIS_1 + DOSIS_2 + DOSIS_3)) %>% 
+         select(FECHA_ADMINISTRACION, GENERO, GRUPO_ETARIO, total) %>%
+         group_by(GENERO, GRUPO_ETARIO) %>% summarise(t = sum(total, na.rm=TRUE))
 
 data1 %>% tally()
 data2 %>% tally()
 data3 %>% tally()
 ```
 #### Los gráficos con data3 ¿Son iguales a los de data2?
-#####¡ probar !
+##### ¡ probar !
 
 ***
 
@@ -185,7 +211,7 @@ vacunas %>% pivot_longer(cols = c(DOSIS_1, DOSIS_2, DOSIS_3), names_to = "DOSIS"
 ##### *ggplot*, *aes*, *stat*, *position*, *facet*
 ##### *geom_bar* por defecto solo requiere *aes(x)* y hace un count
 ```{r, echo=TRUE,  class.source='klippy'}
-dfa <- data.frame(a = c(1,2,3,1), b=c(2,5,2,1))
+dfa <- data.frame(a = c("a","b","c","a"), b=c(2,5,2,1))
 ggplot(dfa, aes(a)) + 
   geom_bar() 
 
@@ -197,11 +223,11 @@ ggplot(dfa, aes(a)) +
 #### *geom_bar* con *stat = identity* agrupa por *x* ademas suma todos los casos
 #### requiere *aes(x, y)*
 ```{r, echo=TRUE,  class.source='klippy'}
-dfa <- data.frame(a = c(1,2,3), b=c(3,5,2))
+dfa <- data.frame(a = c("a","b","c"), b=c(3,5,2))
 ggplot(dfa, aes(a, b)) + 
    geom_bar(stat="identity") 
 
-dfa <- data.frame(a = c(1,2,3,1), b=c(2,5,2,1))
+dfa <- data.frame(a = c("a","b","c","a"), b=c(2,5,2,1))
 ggplot(dfa, aes(a, b)) + 
   geom_bar(stat="identity") 
 ```
@@ -228,3 +254,8 @@ ggplot(data2, aes(GRUPO_ETARIO, t, fill=GENERO)) +
   geom_bar(stat="identity", position = position_dodge2(preserve = "total"), colour = "grey") 
 ```
 
+#### Con *position* = *"fill"*
+```{r, echo=TRUE,  class.source='klippy'}
+ggplot(data2, aes(GRUPO_ETARIO, t, fill=GENERO)) + 
+  geom_bar(stat="identity", position = "fill", colour = "grey")
+```
