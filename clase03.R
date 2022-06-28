@@ -34,9 +34,9 @@ n_distinct(poblacion$BARRIO)
 c(poblacion %>% distinct(BARRIO))
 
 
-setdiff(establecimientos$BARRIO, poblacion$BARRIO)
+dplyr::setdiff(establecimientos$BARRIO, poblacion$BARRIO)
 
-setdiff(poblacion$BARRIO, establecimientos$BARRIO)
+dplyr::setdiff(poblacion$BARRIO, establecimientos$BARRIO)
 
 which(establecimientos[, "BARRIO"] == "MONTSERRAT")
 which(poblacion[, "BARRIO"] == "MONSERRAT")
@@ -51,6 +51,12 @@ establecimientos %>% full_join(poblacion, by = "BARRIO") %>%
 
 full_join(band_members, band_instruments)
   
+establecimientos %>% anti_join(poblacion, by = "BARRIO") %>% select(NOMBRE_ABR, BARRIO)
+
+poblacion %>% anti_join(establecimientos, by = "BARRIO")
+
+
+
   
 which(establecimientos[, "BARRIO"] == "SAN NIICOLAS")
 which(poblacion[, "BARRIO"] == "SAN NICOLAS")
@@ -109,3 +115,5 @@ establecimientos %>% distinct( NIVEL)
 vacunas <- read_csv("datos/dataset_total_vacunas.csv")
 
 names(vacunas)
+
+

@@ -288,5 +288,5 @@ ggplot(data2, aes(GRUPO_ETARIO, t, fill=GENERO)) +
 ***
 ***
 ### Bibliografia:
-#### [R para Ciencia de Datos - Cap 5](https://es.r4ds.hadley.nz/transform.html#transform)
+#### [R para Ciencia de Datos - Cap 5 Transformación de datos](https://es.r4ds.hadley.nz/transform.html#transform)
 

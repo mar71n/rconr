@@ -68,11 +68,15 @@ c(poblacion %>% distinct(BARRIO))
 ```
 
 #### dplyr::setdiff()
+##### [Operaciones de conjuntos](https://dplyr.tidyverse.org/articles/two-table.html#set-operations)
 ```{r, echo=TRUE,  class.source='klippy'}
 setdiff(establecimientos$BARRIO, poblacion$BARRIO)
 
 setdiff(poblacion$BARRIO, establecimientos$BARRIO)
+```
 
+#### base::which()
+```{r, echo=TRUE,  class.source='klippy'}
 which(establecimientos[, "BARRIO"] == "MONTSERRAT")
 which(poblacion[, "BARRIO"] == "MONSERRAT")
 
@@ -80,7 +84,8 @@ which(establecimientos[, "BARRIO"] == "SAN NIICOLAS")
 which(poblacion[, "BARRIO"] == "SAN NICOLAS")
 ```
 
-#### Con *full_join()*
+#### full_join()
+##### [Uniones de transformación](https://dplyr.tidyverse.org/reference/mutate-joins.html)
 ```{r, echo=TRUE,  class.source='klippy'}
 establecimientos %>% full_join(poblacion, by = "BARRIO") %>% 
   select(NOMBRE_ABR, BARRIO, POBLACION) %>% 
@@ -88,7 +93,16 @@ establecimientos %>% full_join(poblacion, by = "BARRIO") %>%
   arrange(POBLACION)
 ```
 
-#### Editamos los valores erroneos
+#### anti_join()
+#### [Uniones de filtro](https://dplyr.tidyverse.org/reference/filter-joins.html)
+```{r, echo=TRUE,  class.source='klippy'}
+establecimientos %>% anti_join(poblacion, by = "BARRIO") %>% select(NOMBRE_ABR, BARRIO)
+
+poblacion %>% anti_join(establecimientos, by = "BARRIO")
+
+```
+
+### Editamos los valores erroneos
 ```{r, echo=TRUE,  class.source='klippy'}
 establecimientos[which(establecimientos[, "BARRIO"] == "MONTSERRAT"),"BARRIO"] <- "MONSERRAT"
 establecimientos[which(establecimientos[, "BARRIO"] == "SAN NIICOLAS"),"BARRIO"] <- "SAN NICOLAS"
@@ -99,6 +113,7 @@ establecimientos[which(establecimientos[, "BARRIO"] == "SAN NIICOLAS"),"BARRIO"]
 
 ### Agrupando por barrio, con población
 #### *group_by()* , *left_join()*
+##### [Uniones de transformación](https://dplyr.tidyverse.org/reference/mutate-joins.html)
 ```{r, echo=TRUE,  class.source='klippy'}
 establecimientos %>% group_by(BARRIO) %>% 
   summarise(ESTABLECIMIENTOS = n()) %>% 
@@ -134,4 +149,10 @@ ggplot(barrios2 %>% left_join(barrios3, by = c("barrio" = "BARRIO") )) +
 
 
 
+
+***
+***
+### Bibliografia:
+#### [R para Ciencia de Datos - Cap 13 Datos relacionales](https://es.r4ds.hadley.nz/datos-relacionales.html#datos-relacionales)
+#### [R para Ciencia de Datos - Cap 28 Comunicar con gráficos](https://es.r4ds.hadley.nz/comunicar-con-gr%C3%A1ficos.html#comunicar-con-gr%C3%A1ficos)
 
