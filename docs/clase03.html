@@ -701,6 +701,9 @@ poblacion &lt;- read_csv(&quot;datos/caba_pob_barrios_2010.csv&quot;)</code></pr
 ## [40] &quot;VILLA LUGANO&quot;      &quot;VILLA LURO&quot;        &quot;VILLA ORTUZAR&quot;    
 ## [43] &quot;VILLA PUEYRREDON&quot;  &quot;VILLA REAL&quot;        &quot;VILLA RIACHUELO&quot;  
 ## [46] &quot;VILLA SANTA RITA&quot;  &quot;VILLA SOLDATI&quot;     &quot;VILLA URQUIZA&quot;</code></pre>
+</div>
+<div id="dplyrsetdiff" class="section level4">
+<h4>dplyr::setdiff()</h4>
 <pre class="r klippy"><code>setdiff(establecimientos$BARRIO, poblacion$BARRIO)</code></pre>
 <pre><code>## [1] &quot;MONTSERRAT&quot;   &quot;SAN NIICOLAS&quot;</code></pre>
 <pre class="r klippy"><code>setdiff(poblacion$BARRIO, establecimientos$BARRIO)</code></pre>
@@ -716,6 +719,30 @@ poblacion &lt;- read_csv(&quot;datos/caba_pob_barrios_2010.csv&quot;)</code></pr
 <pre><code>## [1] 2965</code></pre>
 <pre class="r klippy"><code>which(poblacion[, &quot;BARRIO&quot;] == &quot;SAN NICOLAS&quot;)</code></pre>
 <pre><code>## [1] 32</code></pre>
+</div>
+<div id="con-full_join" class="section level4">
+<h4>Con <em>full_join()</em></h4>
+<pre class="r klippy"><code>establecimientos %&gt;% full_join(poblacion, by = &quot;BARRIO&quot;) %&gt;% 
+  select(NOMBRE_ABR, BARRIO, POBLACION) %&gt;% 
+  filter(is.na(NOMBRE_ABR) | is.na(POBLACION) ) %&gt;% 
+  arrange(POBLACION)</code></pre>
+<pre><code>## # A tibble: 60 × 3
+##    NOMBRE_ABR    BARRIO     POBLACION
+##    &lt;chr&gt;         &lt;chr&gt;          &lt;dbl&gt;
+##  1 &lt;NA&gt;          MONSERRAT      39914
+##  2 PI 34         MONTSERRAT        NA
+##  3 EI 02/03      MONTSERRAT        NA
+##  4 CENS 12       MONTSERRAT        NA
+##  5 EPjc 03       MONTSERRAT        NA
+##  6 JIN D-02 (03) MONTSERRAT        NA
+##  7 CENS 43       MONTSERRAT        NA
+##  8 IFTS 09       MONTSERRAT        NA
+##  9 JIN D-00 (04) MONTSERRAT        NA
+## 10 EPjs 04       MONTSERRAT        NA
+## # … with 50 more rows</code></pre>
+</div>
+<div id="editamos-los-valores-erroneos" class="section level4">
+<h4>Editamos los valores erroneos</h4>
 <pre class="r klippy"><code>establecimientos[which(establecimientos[, &quot;BARRIO&quot;] == &quot;MONTSERRAT&quot;),&quot;BARRIO&quot;] &lt;- &quot;MONSERRAT&quot;
 establecimientos[which(establecimientos[, &quot;BARRIO&quot;] == &quot;SAN NIICOLAS&quot;),&quot;BARRIO&quot;] &lt;- &quot;SAN NICOLAS&quot;</code></pre>
 <hr />
@@ -743,23 +770,11 @@ establecimientos[which(establecimientos[, &quot;BARRIO&quot;] == &quot;SAN NIICO
 ##  9 CHACARITA               38     27761
 ## 10 COGHLAN                 10     18604
 ## # … with 38 more rows</code></pre>
-<pre class="r klippy"><code>establecimientos %&gt;% group_by(BARRIO) %&gt;% summarise(ESTABLECIMIENTOS = n()) %&gt;%
-  left_join(poblacion) </code></pre>
-<pre><code>## Joining, by = &quot;BARRIO&quot;</code></pre>
-<pre><code>## # A tibble: 48 × 3
-##    BARRIO    ESTABLECIMIENTOS POBLACION
-##    &lt;chr&gt;                &lt;int&gt;     &lt;dbl&gt;
-##  1 AGRONOMIA               22     13912
-##  2 ALMAGRO                147    131699
-##  3 BALVANERA              172    138926
-##  4 BARRACAS               110     89452
-##  5 BELGRANO               107    126267
-##  6 BOCA                    55     45113
-##  7 BOEDO                   39     47306
-##  8 CABALLITO              153    176076
-##  9 CHACARITA               38     27761
-## 10 COGHLAN                 10     18604
-## # … with 38 more rows</code></pre>
+</div>
+</div>
+<div id="le-agregamos-una-columna-de-establecimientos-cada-1000-habitantes" class="section level3">
+<h3>Le agregamos una columna de establecimientos cada 1000
+habitantes</h3>
 <pre class="r klippy"><code>establecimientos %&gt;% group_by(BARRIO) %&gt;% summarise(ESTABLECIMIENTOS = n()) %&gt;%
   left_join(poblacion) %&gt;%
   mutate(CADA_1000 = (ESTABLECIMIENTOS * 1000) / POBLACION)</code></pre>
@@ -780,7 +795,6 @@ establecimientos[which(establecimientos[, &quot;BARRIO&quot;] == &quot;SAN NIICO
 ## # … with 38 more rows</code></pre>
 <hr />
 <hr />
-</div>
 <div id="un-gráfico-que-ya-hicimos-solo-cambian-los-datos" class="section level4">
 <h4>Un gráfico que ya hicimos, solo cambian los datos</h4>
 <div id="notemos-que-la-sintaxis-del-gráfico-es-practicamente-idéntica-lo-que-sí-requirió-trabajo-es-armar-bien-los-datos." class="section level5">

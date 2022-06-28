@@ -65,7 +65,10 @@ poblacion %>% distinct(BARRIO)
 n_distinct(poblacion$BARRIO)
 
 c(poblacion %>% distinct(BARRIO))
+```
 
+#### dplyr::setdiff()
+```{r, echo=TRUE,  class.source='klippy'}
 setdiff(establecimientos$BARRIO, poblacion$BARRIO)
 
 setdiff(poblacion$BARRIO, establecimientos$BARRIO)
@@ -75,7 +78,18 @@ which(poblacion[, "BARRIO"] == "MONSERRAT")
 
 which(establecimientos[, "BARRIO"] == "SAN NIICOLAS")
 which(poblacion[, "BARRIO"] == "SAN NICOLAS")
+```
 
+#### Con *full_join()*
+```{r, echo=TRUE,  class.source='klippy'}
+establecimientos %>% full_join(poblacion, by = "BARRIO") %>% 
+  select(NOMBRE_ABR, BARRIO, POBLACION) %>% 
+  filter(is.na(NOMBRE_ABR) | is.na(POBLACION) ) %>% 
+  arrange(POBLACION)
+```
+
+#### Editamos los valores erroneos
+```{r, echo=TRUE,  class.source='klippy'}
 establecimientos[which(establecimientos[, "BARRIO"] == "MONTSERRAT"),"BARRIO"] <- "MONSERRAT"
 establecimientos[which(establecimientos[, "BARRIO"] == "SAN NIICOLAS"),"BARRIO"] <- "SAN NICOLAS"
 
@@ -91,11 +105,8 @@ establecimientos %>% group_by(BARRIO) %>%
   left_join(poblacion) 
 ```
 
-
+### Le agregamos una columna de establecimientos cada 1000 habitantes
 ```{r, echo=TRUE,  class.source='klippy'}
-establecimientos %>% group_by(BARRIO) %>% summarise(ESTABLECIMIENTOS = n()) %>%
-  left_join(poblacion) 
-
 establecimientos %>% group_by(BARRIO) %>% summarise(ESTABLECIMIENTOS = n()) %>%
   left_join(poblacion) %>%
   mutate(CADA_1000 = (ESTABLECIMIENTOS * 1000) / POBLACION)
@@ -118,5 +129,9 @@ barrios3 <- establecimientos %>% group_by(BARRIO) %>% summarise(ESTABLECIMIENTOS
 ggplot(barrios2 %>% left_join(barrios3, by = c("barrio" = "BARRIO") )) + 
   geom_sf(aes(fill=CADA_1000))
 ```
+
+
+
+
 
 
