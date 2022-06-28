@@ -39,60 +39,59 @@ library(sf)
 # establecimientos <- read_csv("https://cdn.buenosaires.gob.ar/datosabiertos/datasets/ministerio-de-educacion/establecimientos-educativos/establecimientos_educativos_WGS84.csv")
 establecimientos <- read_csv("datos/establecimientos_educativos_WGS84.csv")
 
-str(establecimientos)
+spec(establecimientos)
 
-table(establecimientos$comuna)
+head(establecimientos)
 
-table(establecimientos$barrio)
+names(establecimientos)
+
+names(establecimientos) <- toupper(names(establecimientos))
+
+establecimientos %>% distinct(BARRIO)
+
+c(establecimientos %>% distinct(BARRIO))
+
+n_distinct(establecimientos$BARRIO)
 ```
 
 ```{r, echo=TRUE,  class.source='klippy'}
 # poblacion <- read_csv("https://cdn.buenosaires.gob.ar/datosabiertos/datasets/barrios/caba_pob_barrios_2010.csv")
 poblacion <- read_csv("datos/caba_pob_barrios_2010.csv")
 
-sum(table(poblacion$BARRIO))
+poblacion %>% count(BARRIO) %>% filter(n != 1)
+
+poblacion %>% distinct(BARRIO)
+
+n_distinct(poblacion$BARRIO)
+
+c(poblacion %>% distinct(BARRIO))
+
+setdiff(establecimientos$BARRIO, poblacion$BARRIO)
+
+setdiff(poblacion$BARRIO, establecimientos$BARRIO)
+
+which(establecimientos[, "BARRIO"] == "MONTSERRAT")
+which(poblacion[, "BARRIO"] == "MONSERRAT")
+
+which(establecimientos[, "BARRIO"] == "SAN NIICOLAS")
+which(poblacion[, "BARRIO"] == "SAN NICOLAS")
+
+establecimientos[which(establecimientos[, "BARRIO"] == "MONTSERRAT"),"BARRIO"] <- "MONSERRAT"
+establecimientos[which(establecimientos[, "BARRIO"] == "SAN NIICOLAS"),"BARRIO"] <- "SAN NICOLAS"
+
 ```
 
 ***
 
-### Agrupando por barrio
-#### *group_by()*
+### Agrupando por barrio, con población
+#### *group_by()* , *left_join()*
 ```{r, echo=TRUE,  class.source='klippy'}
-establecimientos %>% group_by(barrio) %>% summarise(ESTABLECIMIENTOS = n()) %>% mutate(BARRIO = barrio) %>%
+establecimientos %>% group_by(BARRIO) %>% 
+  summarise(ESTABLECIMIENTOS = n()) %>% 
   left_join(poblacion) 
 ```
 
-#### Controlamos que todos pegaron...
-```{r, echo=TRUE,  class.source='klippy'}
-establecimientos %>% group_by(barrio) %>% summarise(ESTABLECIMIENTOS = n()) %>% mutate(BARRIO = barrio) %>%
-  anti_join(poblacion) 
-```
 
-#### Corregimos los datos
-```{r, echo=TRUE,  class.source='klippy'}
-which(establecimientos[, "barrio"] == "MONTSERRAT")
-which(poblacion[, "BARRIO"] == "MONSERRAT")
-
-which(establecimientos[, "barrio"] == "SAN NIICOLAS")
-which(poblacion[, "BARRIO"] == "SAN NICOLAS")
-
-establecimientos[which(establecimientos[, "barrio"] == "MONTSERRAT"),"barrio"] <- "MONSERRAT"
-establecimientos[which(establecimientos[, "barrio"] == "SAN NIICOLAS"),"barrio"] <- "SAN NICOLAS"
-```
-
-#### Hacemos un join, pero "molesta" que la variable por la que pegan tengan distinto nombre (aunque solo séa mayuscula - minuscula)
-```{r, echo=TRUE,  class.source='klippy'}
-establecimientos %>% group_by(barrio) %>% summarise(ESTABLECIMIENTOS = n()) %>%
-  left_join(poblacion, by = c("barrio" = "BARRIO") ) 
-
-names(establecimientos)
-names(establecimientos)[22]
-names(establecimientos)[names(establecimientos) == "barrio"]
-names(establecimientos)[names(establecimientos) == "barrio"] <- "BARRIO"
-```
-
-#### Con los nombre ajustados es más cómodo
-##### Si hacemos algo así, lo mejor es despues dejar todo como estaba antes...
 ```{r, echo=TRUE,  class.source='klippy'}
 establecimientos %>% group_by(BARRIO) %>% summarise(ESTABLECIMIENTOS = n()) %>%
   left_join(poblacion) 
@@ -102,10 +101,6 @@ establecimientos %>% group_by(BARRIO) %>% summarise(ESTABLECIMIENTOS = n()) %>%
   mutate(CADA_1000 = (ESTABLECIMIENTOS * 1000) / POBLACION)
 ```
 
-##### Ponemos los nombres como los encontramos.
-```{r, echo=TRUE,  class.source='klippy'}
-names(establecimientos)[names(establecimientos) == "BARRIO"] <- "barrio"
-```
 
 ***
 ***
@@ -114,12 +109,13 @@ names(establecimientos)[names(establecimientos) == "BARRIO"] <- "barrio"
 ##### Notemos que la sintaxis del gráfico es practicamente idéntica, lo que sí requirió trabajo es armar bien los datos.
 ```{r, echo=TRUE,  class.source='klippy'}
 barrios2 <- st_read("datos/barrios.csv")
-barrios3 <- establecimientos %>% group_by(barrio) %>% summarise(ESTABLECIMIENTOS = n()) %>%
-  left_join(poblacion, by = c("barrio" = "BARRIO")) %>%
+
+barrios3 <- establecimientos %>% group_by(BARRIO) %>% summarise(ESTABLECIMIENTOS = n()) %>%
+  left_join(poblacion) %>%
   mutate(CADA_1000 = (ESTABLECIMIENTOS * 1000) / POBLACION)
 
 
-ggplot(barrios2 %>% left_join(barrios3, by = c("barrio") )) + 
+ggplot(barrios2 %>% left_join(barrios3, by = c("barrio" = "BARRIO") )) + 
   geom_sf(aes(fill=CADA_1000))
 ```
 
