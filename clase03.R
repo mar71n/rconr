@@ -150,7 +150,7 @@ ggplot(mpg, aes(displ, hwy)) +
     title = "Mileage by engine size and cylinders",
     subtitle = "Source: http://fueleconomy.gov",
     caption = "Fuente: www.databuenosaires.gob.ar"
-  )
+  ) + geom_smooth()
 
 
 # https://data.buenosaires.gob.ar/dataset/plan-de-vacunacion-covid-19
@@ -206,9 +206,114 @@ ggplot(data2, aes(GRUPO_ETARIO, TGG, fill=GENERO)) +
 dput(data2)
 
 
+p1 <- ggplot(data2, aes(GRUPO_ETARIO, TGG, fill=GENERO)) + 
+  geom_bar(stat="identity", position = "fill", colour = "grey") +
+  geom_text(aes(label= round(PPGG, 2)), vjust= -0.5, color="black",  position = position_fill(vjust = 0.5)) +
+  labs(
+    x = "Grupo Etario", 
+    y = "% por Género", 
+    fill = "Género",
+    title = "Vacunados por Grupo Etario",
+    subtitle = "Porciento del Genero",
+    caption = "Fuente: www.databuenosaires.gob.ar"
+  ) +
+  theme_bw()
+
+# https://ggplot2.tidyverse.org/reference/ggsave.html
+
+ggsave("salidas/vacunas_x_grupo_etario.png", p1)
+
+
+
 p <- ggplot(mtcars, aes(mpg, wt, colour = cyl)) + geom_point()
 p + labs(colour = "Cylinders")
 p + labs(x = "New x label")
 
 p + labs(title = "title", tag = "A")
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+datos <- structure(list(GRUPO_ETARIO = c("30 o menos", "30 o menos", "30 o menos", 
+                                         "31 a 40", "31 a 40", "31 a 40", "41 a 50", "41 a 50", "41 a 50", 
+                                         "51 a 60", "51 a 60", "61 a 70", "61 a 70", "61 a 70", "71 a 80", 
+                                         "71 a 80", "81 a 90", "81 a 90", "91 o mas", "91 o mas"), GENERO = c("F", 
+                                                                                                              "M", "N", "F", "M", "N", "F", "M", "N", "F", "M", "F", "M", "N", 
+                                                                                                              "F", "M", "F", "M", "F", "M"), TGG = c(1210000, 1157366, 20, 
+                                                                                                                                                     683382, 630074, 9, 660293, 593204, 1, 524800, 450708, 449852, 
+                                                                                                                                                     347727, 1, 385841, 248420, 218723, 105779, 53467, 15660), TGRUPO = c(2367386, 
+                                                                                                                                                                                                                          2367386, 2367386, 1313465, 1313465, 1313465, 1253498, 1253498, 
+                                                                                                                                                                                                                          1253498, 975508, 975508, 797580, 797580, 797580, 634261, 634261, 
+                                                                                                                                                                                                                          324502, 324502, 69127, 69127), PPGG = c(51.11, 48.89, 0, 52.03, 
+                                                                                                                                                                                                                                                                  47.97, 0, 52.68, 47.32, 0, 53.8, 46.2, 56.4, 43.6, 0, 60.83, 
+                                                                                                                                                                                                                                                                  39.17, 67.4, 32.6, 77.35, 22.65)), class = c("grouped_df", "tbl_df", 
+                                                                                                                                                                                                                                                                                                               "tbl", "data.frame"), row.names = c(NA, -20L), groups = structure(list(
+                                                                                                                                                                                                                                                                                                                 GRUPO_ETARIO = c("30 o menos", "31 a 40", "41 a 50", "51 a 60", 
+                                                                                                                                                                                                                                                                                                                                  "61 a 70", "71 a 80", "81 a 90", "91 o mas"), .rows = structure(list(
+                                                                                                                                                                                                                                                                                                                                    1:3, 4:6, 7:9, 10:11, 12:14, 15:16, 17:18, 19:20), ptype = integer(0), class = c("vctrs_list_of", 
+                                                                                                                                                                                                                                                                                                                                                                                                                     "vctrs_vctr", "list"))), class = c("tbl_df", "tbl", "data.frame"
+                                                                                                                                                                                                                                                                                                                                                                                                                     ), row.names = c(NA, -8L), .drop = TRUE))
+
+
+datos
+
+
+p1 <- ggplot(datos, aes(GRUPO_ETARIO, TGG, fill=GENERO)) + 
+  geom_bar(stat="identity", position = "fill", colour = "grey") +
+  geom_text(aes(label= round(PPGG, 2)), vjust= -0.5, color="black",  position = position_fill(vjust = 0.5)) +
+  labs(
+    x = "Grupo Etario", 
+    y = "% por Género", 
+    fill = "Género",
+    title = "Vacunados por Grupo Etario",
+    subtitle = "Porciento del Genero",
+    caption = "Fuente: www.databuenosaires.gob.ar"
+  ) +
+  theme_bw()
+
+
+p1
+
+
+
+# http://www.sthda.com/english/wiki/ggplot2-essentials
+# http://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html
+
+
+
+
+
+entorno <- Sys.getenv()
+str(entorno)
+"SHELL" %in% names(entorno)
+"HTTP_PROXY" %in% names(entorno)
+Sys.getenv("http_proxy")
+Sys.getenv("HTTP_PROXY")
+Sys.setenv(HTTP_PROXY="http://proxy.xxxx:1234/")
+Sys.setenv(HTTPS_PROXY="http://proxy.xxxx:1234/")

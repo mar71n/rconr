@@ -153,24 +153,24 @@ ggplot(barrios2 %>% left_join(barrios3, by = c("barrio" = "BARRIO") )) +
 #### __Completando los gráficos__
 
 ##### [¿Qué es la gramática de los gráficos?](https://ggplot2-book.org/introduction.html#what-is-the-grammar-of-graphics)
-##### Un gráfico esta compuesto por los datos que vamos a graficar.
-##### Y por mapping: la definición de cómo las variables de esos datos son mostrados
+##### Un gráfico esta compuesto por los **datos** que vamos a graficar.
+##### Y por **mapping**: la definición de cómo las variables de esos datos son mostrados
 ##### __Hay 5 componentes de mapping__:
-##### - Layer : colección de elementos geométricos y estadísticas. 
-##### - geom : puntos, líneas, polígonos
-##### - stats : conteo, ajuste de un modelo lineal, etc 
-##### - Scales : Asigna los valores en el espacio de datos al espacio estético.
-#####            Incluye el color, relleno, tamaño. También leyendas y ejes
-##### - Coord : Sistema de coordenadas. Por lo general cartesianas, pero puede ser polares
-#####           proyecciones geográficas, etc
-##### - Facet : especifica cómo dividir y mostrar subconjuntos de datos
-##### - Theme : controla puntos más finos, tamaño de fuente, color de fondo  
+- ##### Layer : colección de elementos geométricos y estadísticas. 
+  + ##### geom : puntos, líneas, polígonos
+  + ##### stats : conteo, ajuste de un modelo lineal, etc 
+- ##### Scales : Asigna los valores en el espacio de datos al espacio estético.
+##### Incluye el color, relleno, tamaño. También leyendas y ejes
+- ##### Coord : Sistema de coordenadas. Por lo general cartesianas, pero puede ser polares
+##### proyecciones geográficas, etc
+- ##### Facet : especifica cómo dividir y mostrar subconjuntos de datos
+- ##### Theme : controla puntos más finos, tamaño de fuente, color de fondo  
 
 ##### [Uso básico](https://ggplot2-book.org/getting-started.html#basic-use)
 ##### __Tres componentes claves__:
-##### - data
-##### - aesthetic mappings
-##### - al menos un layer, creado con geom
+- ##### data
+- ##### aesthetic mappings
+- ##### al menos un layer, creado con geom
 
 ```{r, echo=TRUE,  class.source='klippy'}
 # https://data.buenosaires.gob.ar/dataset/plan-de-vacunacion-covid-19

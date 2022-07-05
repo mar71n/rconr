@@ -44,6 +44,8 @@ Descargamos el instalador para el SO y arquitectura correspondiente.
 
 En caso de tener una versión anterior instalada, lo mejor es desinstalarla. Ver: [Upgrade en CRAN](upgrade.html)
 
+En redes que usan un proxy para conectarse a internet: [configurar proxy](clase01_proxy.html)
+
 ### Rtools :
 Para algunas instalaciones de paquetes en Windows
 
