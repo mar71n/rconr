@@ -18,60 +18,18 @@ fechas:
 lubridate
 ```
 
-Una versión actualizada de este material en : [clase04](https://mar71n.github.io/rconr/clase04.html)
-
-***
-
-#### Para los graficos ya realizados.
-
-[ggplot2](https://ggplot2.tidyverse.org/)
-
-[aes()](https://ggplot2.tidyverse.org/reference/aes.html)
-
 ```{r, echo=TRUE,  class.source='klippy'}
 library(dplyr)
 library(readr)
-library(ggplot2)
 library(lubridate)
+library(ggplot2)
 library(kableExtra)
-
-# https://data.buenosaires.gob.ar/dataset/plan-de-vacunacion-covid-19
-#vacunas <- read_csv("https://cdn.buenosaires.gob.ar/datosabiertos/datasets/salud/plan-de-vacunacion-covid-19/dataset_total_vacunas.csv")
-vacunas <- read_csv("datos/dataset_total_vacunas.csv")
-
-data1 <- vacunas %>% mutate(total = (DOSIS_1 + DOSIS_2 + DOSIS_3)) %>% select(FECHA_ADMINISTRACION, GENERO, GRUPO_ETARIO, total) %>%
-group_by(GENERO) %>% summarise(t = sum(total, na.rm=TRUE))
-
-ggplot(data1, aes(GENERO,t)) + 
-  geom_bar(stat="identity") 
-
-
-data2 <- vacunas %>% mutate(total = (DOSIS_1 + DOSIS_2 + DOSIS_3)) %>% select(FECHA_ADMINISTRACION, GENERO, GRUPO_ETARIO, total) %>%
-  group_by(GRUPO_ETARIO, GENERO) %>% summarise(t = sum(total, na.rm=TRUE))
-
-ggplot(data2, aes(GENERO,t, fill=GRUPO_ETARIO)) + 
-  geom_bar(stat="identity") 
 ```
 
-***
-***
-
-### Para presentación de tablas:
-
-[GT](https://gt.rstudio.com/)
-
-[kableExtra](https://www.rdocumentation.org/packages/kableExtra/versions/1.3.4)
-
-```{r, echo=TRUE,  class.source='klippy'}
-kbl(data1, caption="Vacunas por Genero", center=TRUE)
-```
-
-***
-***
 
 ### Fechas en todos los formatos...
 
-[lubridate](https://lubridate.tidyverse.org/)
+#### [*lubridate*](https://lubridate.tidyverse.org/)
 
 ```{r, echo=TRUE,  class.source='klippy'}
 dmy("28FEB2021")
@@ -79,5 +37,210 @@ dmy("28/02/2021")
 dmy("29/02/2021")
 dmy("29/02/2020")
 
-dmy_hms("28FEB2021:15:15:00")
+dmy_hms("28FEB2021:15:15:20")
 ```
+
+#### *date-time* , *date* , *time*
+#### 
+```{r, echo=TRUE,  class.source='klippy'}
+now()
+
+today()
+
+as_date(dmy_hms("28FEB2021:15:15:20"))
+```
+
+***
+
+#### Dataset de vacunas:
+
+```{r, echo=TRUE,  class.source='klippy'}
+# https://data.buenosaires.gob.ar/dataset/plan-de-vacunacion-covid-19
+#vacunas <- read_csv("https://cdn.buenosaires.gob.ar/datosabiertos/datasets/salud/plan-de-vacunacion-covid-19/dataset_total_vacunas.csv")
+# download.file("https://cdn.buenosaires.gob.ar/datosabiertos/datasets/salud/plan-de-vacunacion-covid-19/dataset_total_vacunas.csv", "datos/dataset_total_vacunas.csv")
+vacunas <- read_csv("datos/dataset_total_vacunas.csv")
+```
+
+#### 0 en los valor NA de DOSIS_3
+```{r, echo=TRUE,  class.source='klippy'}
+vacunas[which(is.na(vacunas$DOSIS_3)), "DOSIS_3"] <- 0
+```
+
+#### Agrego la columna de *total* para cada registro
+```{r, echo=TRUE,  class.source='klippy'}
+vacunas <- vacunas %>% mutate(total = (DOSIS_1 + DOSIS_2 + DOSIS_3))
+```
+
+#### FECHA_ADMINISTRACION es un texto y tiene que ser una fecha.
+```{r, echo=TRUE,  class.source='klippy'}
+head(vacunas$FECHA_ADMINISTRACION)
+```
+
+#### FECHA_ADMINISTRACION con *lubridate*
+#### siempre uso el tipo más simple posible, en este caso **date** por sobre **date-time** ya que la hora no la preciso
+```{r, echo=TRUE,  class.source='klippy'}
+vacunas <- vacunas %>% mutate(FECHA_ADMINISTRACION = as_date(dmy_hms(FECHA_ADMINISTRACION)))
+```
+
+***
+
+### Por día, por mes ...
+
+#### *total* por día
+```{r, echo=TRUE,  class.source='klippy'}
+vacunas %>% count(FECHA_ADMINISTRACION, wt = total, name = "total")
+```
+
+#### *total* por *día*
+#### **geom_line**
+```{r, echo=TRUE,  class.source='klippy'}
+vacunas %>% count(FECHA_ADMINISTRACION, wt = total, name = "total") %>%
+  ggplot(aes(FECHA_ADMINISTRACION, total)) +
+  geom_line()
+```
+
+#### *total* por *día*
+#### **geom_line**
+#### **geom_smooth**
+```{r, echo=TRUE,  class.source='klippy'}
+vacunas %>% count(FECHA_ADMINISTRACION, wt = total, name = "total") %>%
+  ggplot(aes(FECHA_ADMINISTRACION, total)) +
+  geom_line() +
+  geom_smooth(method = "gam")
+```
+
+#### *total* por *día*
+#### **geom_line** 
+#### **colour**
+```{r, echo=TRUE,  class.source='klippy'}
+vacunas %>% mutate(annio = year(FECHA_ADMINISTRACION)) %>% 
+  count(FECHA_ADMINISTRACION, annio, wt = total, name = "total") %>%
+  ggplot(aes(FECHA_ADMINISTRACION, total, colour = factor(annio))) +
+  geom_line()
+```
+
+#### *total* por *semana*
+#### **count**
+```{r, echo=TRUE,  class.source='klippy'}
+vacunas %>% mutate(semana = floor_date(FECHA_ADMINISTRACION, "week")) %>%
+  count(semana, wt = total, name = "TOTAL") %>%
+  ggplot(aes(semana, TOTAL)) +
+    geom_line()
+```
+
+#### *total* por *semana*
+#### **group_by**
+```{r, echo=TRUE,  class.source='klippy'}
+vacunas %>% mutate(semana = floor_date(FECHA_ADMINISTRACION, "week")) %>%
+  group_by(semana) %>%
+  summarise(TOTAL = sum(total)) %>%
+  ggplot(aes(semana, TOTAL)) +
+  geom_line()
+```
+
+#### *total* por *mes*
+#### **geom_line**
+```{r, echo=TRUE,  class.source='klippy'}
+vacunas %>% mutate(mes = floor_date(FECHA_ADMINISTRACION, "month")) %>%
+  count(mes, wt = total, name = "TOTAL") %>%
+  ggplot(aes(mes, TOTAL)) +
+  geom_line()
+```
+
+#### *total* por *mes*
+#### **geom_bar**
+```{r, echo=TRUE,  class.source='klippy'}
+vacunas %>% mutate(mes = floor_date(FECHA_ADMINISTRACION, "month")) %>%
+  count(mes, wt = total, name = "TOTAL") %>%
+  ggplot(aes(mes, TOTAL)) +
+  geom_bar(stat = "identity")
+```
+
+***
+***
+### Guardar gráficos
+### [**ggsave**](https://ggplot2.tidyverse.org/reference/ggsave.html)
+
+### Rscript
+```
+>R.home() \bin\
+C:\Program Files\R\R-4.2.1\bin\Rscript.exe
+```
+
+### Un script que descarga los datos y graba los gráficos
+
+#### *crear_graficos.R* :
+```
+library(dplyr)
+library(lubridate)
+library(readr)
+library(ggplot2)
+
+vacunas <- read_csv("https://cdn.buenosaires.gob.ar/datosabiertos/datasets/salud/plan-de-vacunacion-covid-19/dataset_total_vacunas.csv")
+
+vacunas[which(is.na(vacunas$DOSIS_3)), "DOSIS_3"] <- 0
+
+# Agrego la columna de *total* para cada registro
+vacunas <- vacunas %>% mutate(total = (DOSIS_1 + DOSIS_2 + DOSIS_3))
+
+# FECHA_ADMINISTRACION con *lubridate*
+# siempre uso el tipo más simple posible, en este caso **date** por sobre **date-time** ya que la hora no la preciso
+vacunas <- vacunas %>% mutate(FECHA_ADMINISTRACION = as_date(dmy_hms(FECHA_ADMINISTRACION)))
+
+
+p1 <- vacunas %>% mutate(annio = year(FECHA_ADMINISTRACION)) %>% 
+  count(FECHA_ADMINISTRACION, annio, wt = total, name = "total") %>%
+  ggplot(aes(FECHA_ADMINISTRACION, total, colour = factor(annio))) +
+  geom_line()
+
+ggsave(filename = "vacunas300.png", plot = p1, device = "png", dpi = 300)
+
+ggsave(filename = "vacunas200.png", plot = p1, device = "png", dpi = 200)
+
+ggsave(filename = "vacunas100.png", plot = p1, device = "png", dpi = 100)
+```
+
+***
+***
+
+### Para presentación de tablas:
+
+#### [*GT*](https://gt.rstudio.com/)
+
+#### [*kableExtra*](https://haozhu233.github.io/kableExtra/)
+
+#### [RDocumentation *kableExtra*](https://www.rdocumentation.org/packages/kableExtra/versions/1.3.4)
+
+### *GT*
+```{r, echo=TRUE,  class.source='klippy'}
+
+library(gt)
+
+t1 <- vacunas %>% count(GENERO, wt = total, name = "APLICADAS") %>%
+  gt() %>% 
+  tab_header(
+    title = "Vacunas por género",
+  ) %>%
+  tab_source_note("Fuente : www.databuenosaires.gob.ar")
+
+t1
+```
+
+### *kableExtra*
+```{r, echo=TRUE,  class.source='klippy'}
+library(kableExtra)
+
+t2 <- vacunas %>% count(GENERO, wt = total, name = "APLICADAS") %>%
+  kbl(caption = "Vacunas por género", center = TRUE) %>%
+  kable_styling(bootstrap_options = "striped", full_width = F) %>%
+  footnote(general_title = "Notas", c("Fuente: www.databuenosaires.gob.ar")) 
+
+t2
+```
+
+***
+***
+
+### Bibliografia:
+#### [R para Ciencia de Datos - Cap 16 Fechas y horas](https://es.r4ds.hadley.nz/fechas-y-horas.html#fechas-y-horas)
+
