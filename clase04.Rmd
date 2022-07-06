@@ -241,6 +241,84 @@ t2
 ***
 ***
 
+### [**stringr**](https://stringr.tidyverse.org/)
+```{r, echo=TRUE,  class.source='klippy'}
+library(stringr)
+```
+
+#### la variable VACUNA
+```{r, echo=TRUE,  class.source='klippy'}
+vacunas %>% count(VACUNA) 
+
+vacunas %>% count(VACUNA) %>% .$VACUNA 
+
+strvacunas <- vacunas %>% count(VACUNA) %>% .$VACUNA 
+```
+
+#### Donde diga "Coronavirus"
+```{r, echo=TRUE,  class.source='klippy'}
+str_extract(strvacunas, "Coronavirus")
+```
+
+#### Un dígito seguido de dos caracteres de letras
+```{r, echo=TRUE,  class.source='klippy'}
+str_extract(strvacunas, "\\d\\w\\w")
+```
+
+#### Todas las ocurrencias
+```{r, echo=TRUE,  class.source='klippy'}
+str_extract_all(strvacunas, "\\d\\w\\w")
+```
+
+#### Uno o más letras entre paréntesis
+```{r, echo=TRUE,  class.source='klippy'}
+str_extract_all(strvacunas, "\\(\\w+\\)")
+```
+
+#### Uno o más, letras en mayúscula, entre paréntesis
+```{r, echo=TRUE,  class.source='klippy'}
+str_extract_all(strvacunas, "\\([:upper:]+\\)")
+```
+
+#### 4 o más, letras en mayúscula, entre paréntesis
+```{r, echo=TRUE,  class.source='klippy'}
+str_extract_all(strvacunas, "[:upper:]{4,}")
+```
+
+#### Uno o más caracteres entre A y Z, ó "AstraZeneca ó ...
+#### Luego le saco los paréntesis
+#### Y termino pasando todo a mayusculas.
+```{r, echo=TRUE,  class.source='klippy'}
+vacunas %>% count(VACUNA) %>% .$VACUNA  %>%
+str_extract(pattern =  "\\([A-Z]+\\)|AstraZeneca|Sinopharm|Moderna|Sputnik") %>%
+  str_replace_all("\\(|\\)", "") %>% 
+  str_to_upper()
+```
+
+#### Asignando en una nueva variable  
+```{r, echo=TRUE,  class.source='klippy'}
+vacunas$VAC <-  vacunas$VACUNA %>%
+  str_extract( pattern =  "\\([A-Z]+\\)|AstraZeneca|Sinopharm|Moderna|Sputnik") %>%
+  str_replace_all("\\(|\\)", "") %>% str_to_upper()
+```
+
+#### con **mutate**
+```{r, echo=TRUE,  class.source='klippy'}
+vacunas %>% mutate(VAC = VACUNA %>%
+                     str_extract( pattern =  "\\([A-Z]+\\)|AstraZeneca|Sinopharm|Moderna|Sputnik") %>%
+                     str_replace_all("\\(|\\)", "") %>% str_to_upper())
+```
+
+#### Ahora se muestra mejor la variabla
+```{r, echo=TRUE,  class.source='klippy'}
+vacunas %>% count(VAC, wt = total, name = "DOSIS")
+```
+
+***
+***
+
 ### Bibliografia:
 #### [R para Ciencia de Datos - Cap 16 Fechas y horas](https://es.r4ds.hadley.nz/fechas-y-horas.html#fechas-y-horas)
+####  [R para Ciencia de Datos - Cap 14 Cadenas de caracteres](https://es.r4ds.hadley.nz/cadenas-de-caracteres.html#cadenas-de-caracteres)
 
+***

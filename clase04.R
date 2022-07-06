@@ -149,3 +149,49 @@ data2 <- vacunas %>% mutate(total = (DOSIS_1 + DOSIS_2 + DOSIS_3)) %>% select(FE
   group_by(GRUPO_ETARIO, GENERO) %>% summarise(t = sum(total, na.rm=TRUE))
 
 data1
+
+
+# [**stringr**](https://stringr.tidyverse.org/)
+library(stringr)
+
+vacunas %>% count(VACUNA) 
+
+vacunas %>% count(VACUNA) %>% .$VACUNA 
+
+strvacunas <- vacunas %>% count(VACUNA) %>% .$VACUNA 
+
+str_extract(strvacunas, "Coronavirus")
+
+str_extract(strvacunas, "\\d\\w\\w")
+
+str_extract_all(strvacunas, "\\d\\w\\w")
+
+str_extract_all(strvacunas, "\\(\\w+\\)")
+
+str_extract_all(strvacunas, "\\([:upper:]*\\)")
+
+str_extract_all(strvacunas, "[:upper:]{4,}")
+
+vacunas %>% count(VACUNA) %>% .$VACUNA  %>%
+str_extract(pattern =  "\\([A-Z]+\\)|AstraZeneca|Sinopharm|Moderna|Sputnik") %>%
+  str_replace_all("\\(|\\)", "") %>% 
+  str_to_upper()
+
+  
+vacunas$VAC <-  vacunas$VACUNA %>%
+  str_extract( pattern =  "\\([A-Z]+\\)|AstraZeneca|Sinopharm|Moderna|Sputnik") %>%
+  str_replace_all("\\(|\\)", "") %>% str_to_upper()
+
+vacunas %>% mutate(VAC = VACUNA %>%
+                     str_extract( pattern =  "\\([A-Z]+\\)|AstraZeneca|Sinopharm|Moderna|Sputnik") %>%
+                     str_replace_all("\\(|\\)", "") %>% str_to_upper())
+
+
+vacunas %>% count(VAC, wt = total, name = "DOSIS")
+
+
+shopping_list <- c("apples x4", "bag of flour", "bag of sugar", "milk x2")
+str_extract(shopping_list, "\\d")
+str_extract(shopping_list, "[a-z]+")
+str_extract(shopping_list, "[a-z]{1,4}")
+str_extract(shopping_list, "\\b[a-z]{1,4}\\b")

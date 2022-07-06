@@ -1,0 +1,98 @@
+---
+title: "Ejercicios propuestos - Clase 01"
+output: html_document
+#date: '2022-05-30'
+knit: (function(inputFile, encoding) {
+  out_dir <- 'docs';
+  rmarkdown::render(inputFile,
+                    encoding="UTF-8",
+                    output_file=file.path(dirname(inputFile), out_dir, 'clase01_ejercicios.html')) })
+---
+
+```{r klippy, echo=FALSE, include=TRUE}
+klippy::klippy('')
+```
+
+***
+
+### 01)
+
+#### Recordemos el ejemplo de la matriz de tarifas
+```{r, echo=TRUE,  class.source='klippy'}
+# https://www.argentina.gob.ar/redsube/tarifas-de-transporte-publico-amba-2021
+
+matriz_colectivo <- matrix(
+  filas <- c(18, 8.10, 20, 9, 21,	9.45, 22,	9.90, 23,	10.35),
+  nrow = 5, byrow = TRUE,
+  dimnames = list(c("0 a 3 km", "3 a 6 km", "6 a 12 km", "12 a 27 km", "más de 27 km"),
+                  c("Tarifa"	,"Con tarifa social"))
+)
+
+matriz_colectivo
+
+matriz_colectivo_a <- matriz_colectivo * 1.4
+```
+
+#### y la función que calcula aumentos porcentuales
+```{r, echo=TRUE,  class.source='klippy'}
+aumento <- function(x, y){
+  ((y / x) - 1) * 100
+}
+```
+
+#### Veamos que pasa al aplicarla a las dos matrices, la actual y la aumentada x 1.4
+```{r, echo=TRUE,  class.source='klippy'}
+aumento(matriz_colectivo, matriz_colectivo_a)
+```
+#### Sigue funcionando.
+
+***
+
+#### con la misma metodología exploremos la diferencia porcentual entre los límites de los  estratos en las lineas de pobreza mayo 2022 y abril 2022:
+- [ir_2022_1664.pdf](https://www.estadisticaciudad.gob.ar/eyc/wp-content/uploads/2022/06/ir_2022_1664.pdf)
+- [ir_2022_1655.pdf](https://www.estadisticaciudad.gob.ar/eyc/wp-content/uploads/2022/05/ir_2022_1655.pdf)
+
+#### Hay que copiar los datos del cuadro 3 de cada publicación, armar cendas matrices y calcular la variación porcentual celda a celda
+
+***
+***
+
+
+```{r, echo=TRUE,  class.source='klippy'}
+library(dplyr)
+library(tibble)
+
+## Mayo
+niveles <- c("En situación de indigencia", "En situación de pobreza no indigente", 
+             "No pobres vulnerables", "Sector medio frágil", 
+             "Sector medio -'clase media'", "Sectores acomodados")
+
+columnas <- c("Min", "Max")
+
+valores <- c(0.00, 54380.23, 54380.24, 99653.24, 99653.25, 123052.91, 123052.92, 153816.14, 153816.15, 492211.67, 492211.68, Inf)
+
+matriz_estratos05 <- matrix(valores, ncol = 2, byrow = TRUE,
+                         dimnames = list(niveles, columnas))
+matriz_estratos05
+
+## Abril
+tibble_estratos04 <- tribble(
+ ~Estrato, ~Min, ~Max,
+ #----------------------------|------|--------
+ "En situación de indigencia", 0.00, 52169.47,
+ "En situación de pobreza no indigente", 52169.48, 95268.15,
+ "No pobres vulnerables", 95268.16, 117708.64,
+ "Sector medio frágil", 117708.65, 147135.80,
+ "Sector medio-'clase media'", 147135.81, 470834.59,
+ "Sectores acomodados", 470834.60, Inf
+)
+
+matriz_estratos04 <- matrix(c(tibble_estratos04[["Min"]], tibble_estratos04[["Max"]]), byrow = FALSE, ncol = 2)
+matriz_estratos04
+dimnames(matriz_estratos04) <- list(tibble_estratos04[["Estrato"]], c("Min","Max"))
+matriz_estratos04
+
+aumento(matriz_estratos04, matriz_estratos05)
+```
+
+
