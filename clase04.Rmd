@@ -332,7 +332,8 @@ vacunas$VAC <-  vacunas$VACUNA %>%
 ```{r, echo=TRUE,  class.source='klippy'}
 vacunas %>% mutate(VAC = VACUNA %>%
                      str_extract( pattern =  "\\([A-Z]+\\)|AstraZeneca|Sinopharm|Moderna|Sputnik") %>%
-                     str_replace_all("\\(|\\)", "") %>% str_to_upper())
+                     str_replace_all("\\(|\\)", "") %>% str_to_upper()) %>%
+                  select(FECHA_ADMINISTRACION, GRUPO_ETARIO, GENERO, VAC, total)
 ```
 
 #### Ahora se muestra mejor la variabla
