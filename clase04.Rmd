@@ -257,34 +257,60 @@ strvacunas <- vacunas %>% count(VACUNA) %>% .$VACUNA
 
 #### Donde diga "Coronavirus"
 ```{r, echo=TRUE,  class.source='klippy'}
+# Ver las coincidencias con el patron de búsqueda , útil para afinar la búsqueda.
+str_view_all(strvacunas, "Coronavirus")
+
+# Filtrar por un patron de búsqueda
+strvacunas[str_which(strvacunas, "Coronavirus")]
+
+# Extraer las coincidencias con el patron de búsqueda
 str_extract(strvacunas, "Coronavirus")
+
 ```
 
+#### Ahora usemos patrones de búsqueda más generales
 #### Un dígito seguido de dos caracteres de letras
 ```{r, echo=TRUE,  class.source='klippy'}
+# Vemos si las ocurrencias son las que esperamos.
+str_view_all(strvacunas, "\\d\\w\\w")
+
+# Podemos filtrar
+strvacunas[str_which(strvacunas, "\\d\\w\\w")]
+
+# También podemos extraer
 str_extract(strvacunas, "\\d\\w\\w")
+
 ```
 
-#### Todas las ocurrencias
+#### Extraer todas las ocurrencias
 ```{r, echo=TRUE,  class.source='klippy'}
 str_extract_all(strvacunas, "\\d\\w\\w")
 ```
 
 #### Uno o más letras entre paréntesis
 ```{r, echo=TRUE,  class.source='klippy'}
+str_view_all(strvacunas, "\\(\\w+\\)")
+
 str_extract_all(strvacunas, "\\(\\w+\\)")
 ```
 
 #### Uno o más, letras en mayúscula, entre paréntesis
 ```{r, echo=TRUE,  class.source='klippy'}
+str_view_all(strvacunas, "\\([:upper:]+\\)")
+
 str_extract_all(strvacunas, "\\([:upper:]+\\)")
 ```
 
-#### 4 o más, letras en mayúscula, entre paréntesis
+#### 4 o más, letras en mayúscula, juntas.
 ```{r, echo=TRUE,  class.source='klippy'}
+str_view_all(strvacunas, "[:upper:]{4,}")
+
 str_extract_all(strvacunas, "[:upper:]{4,}")
 ```
 
+#### 
+
+#### Finalmente, lo que queriamos hacer es extraer para cada registro de vacuna un nombre de vacuna.
 #### Uno o más caracteres entre A y Z, ó "AstraZeneca ó ...
 #### Luego le saco los paréntesis
 #### Y termino pasando todo a mayusculas.

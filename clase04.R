@@ -4,8 +4,11 @@ library(readr)
 library(ggplot2)
 
 dmy("28FEB2021")
+
 dmy("28/02/2021")
+
 dmy("29/02/2021")
+
 dmy("29/02/2020")
 
 dmy_hms("28FEB2021:15:15:20")
@@ -195,3 +198,31 @@ str_extract(shopping_list, "\\d")
 str_extract(shopping_list, "[a-z]+")
 str_extract(shopping_list, "[a-z]{1,4}")
 str_extract(shopping_list, "\\b[a-z]{1,4}\\b")
+
+
+
+vacunas <- read_csv("datos/dataset_total_vacunas.csv")
+
+vacunas[which(is.na(vacunas$DOSIS_3)), "DOSIS_3"] <- 0
+
+vacunas <- vacunas %>% mutate(total = (DOSIS_1 + DOSIS_2 + DOSIS_3))
+
+vacunas <- vacunas %>% mutate(FECHA_ADMINISTRACION = as_date(dmy_hms(FECHA_ADMINISTRACION)))
+
+vacunas %>% count(FECHA_ADMINISTRACION, wt = total, name = "total") %>%
+  ggplot(aes(FECHA_ADMINISTRACION, total)) +
+  geom_line()
+
+
+
+
+
+
+vacunas %>% count(VACUNA)
+
+vacunas %>% count(VACUNA) %>% .$VACUNA 
+
+vacunas %>% count(VACUNA) %>% .$n
+
+vacunas$GENERO
+
