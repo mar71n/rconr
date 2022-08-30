@@ -425,7 +425,7 @@ barrios %>% select(barrio, comuna)
 barrios %>% select(!WKT)
 ```
 
-#### Sín usar *dplyr*, podemos usar [**[**](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/Extract) para seleccionar columnas
+#### Sín usar *dplyr*, podemos usar [*\[*](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/Extract) para seleccionar columnas
 
 ```{r, echo=TRUE,  class.source='klippy'}
 
@@ -460,9 +460,11 @@ comunas %>% select(COMUNAS, BARRIOS)
 ##### Para crear gráficos con *ggplot* hay que instalar el paquete con *install.package()*, por única vez.
 ##### Luego hay que cargarlo con *library()* la primera vez que lo queremos usar en una sesión.
 ```{r, echo=TRUE,  class.source='klippy'}
-library(ggplot2)
 # install.packages("ggplot2")
+library(ggplot2)
+```
 
+```{r, echo=TRUE,  class.source='klippy'}
 ggplot(barrios) +
   geom_bar(aes(x = barrio, weight = area)) +
              coord_flip()
@@ -474,9 +476,11 @@ ggplot(barrios %>% select(barrio, area)) +
 
 #### Instalar y usar *sf* puede requerir más trabajo que los otros paquetes que vimos.
 ```{r, echo=TRUE,  class.source='klippy'}
-library(sf)
 # install.packages("sf")
+library(sf)
+```
 
+```{r, echo=TRUE,  class.source='klippy'}
 barrios2 <- st_read("datos/barrios.csv")
 ```
 
@@ -513,4 +517,4 @@ ggplot(barrios2) +
 ***
 
 ### Bibliografia:
-#### [Cheat Sheet *dplyr*](https://github.com/rstudio/cheatsheets/blob/main/data-transformation.pdf)
+#### [Cheat Sheet *dplyr*](https://dplyr.tidyverse.org/index.html#cheat-sheet)

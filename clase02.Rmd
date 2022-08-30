@@ -23,9 +23,11 @@ Una versión actualizada de este material en : [clase02](https://mar71n.github.i
 ***
 
 ```{r, echo=TRUE,  class.source='klippy'}
+#install.packages("dplyr")
 library(dplyr)
-library(readr)
 #install.packages("readr")
+library(readr)
+#install.packages("lubridate")
 library(lubridate)
 ```
 
@@ -52,7 +54,8 @@ summary(vacunas)
 ##### veo que en DOSIS_3 hay NAs
 
 #### filtro los que tienen NAs
-#### con *[]*
+#### con [*\[*](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/Extract)
+#### y [*which*](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/which)
 ```{r, echo=TRUE,  class.source='klippy'}
 vacunas[which(is.na(vacunas$DOSIS_3)),c(-1,-8)]
 ```
@@ -69,12 +72,14 @@ summary(vacunas)
 ```
 
 #### Frecuencias
+##### Con [*base::table*](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/table)
 ```{r, echo=TRUE,  class.source='klippy'}
 table(vacunas$GENERO)
 
 table(vacunas$GRUPO_ETARIO)
 ```
 
+##### Con [*dplyr::count*](https://dplyr.tidyverse.org/reference/count.html
 #### Al modo dplyr:
 #### [dplyr::count](https://dplyr.tidyverse.org/reference/count.html)
 ```{r, echo=TRUE,  class.source='klippy'}
@@ -240,10 +245,16 @@ vacunas %>% pivot_longer(cols = c(DOSIS_1, DOSIS_2, DOSIS_3), names_to = "DOSIS"
 ##### *geom_bar* por defecto solo requiere *aes(x)* y hace un count
 ```{r, echo=TRUE,  class.source='klippy'}
 dfa <- data.frame(a = c("a","b","c","a"), b=c(2,5,2,1))
+dfa
+```
+
+```{r, echo=TRUE,  class.source='klippy'}
 ggplot(dfa, aes(a)) + 
   geom_bar() 
+```
 
-# El mismo gráfico con los valores por defecto explicitados:
+##### El mismo gráfico con los valores por defecto explicitados:
+```{r, echo=TRUE,  class.source='klippy'}
 ggplot(dfa, aes(a)) + 
   geom_bar(stat="count") 
 ```
@@ -292,4 +303,4 @@ ggplot(data2, aes(GRUPO_ETARIO, t, fill=GENERO)) +
 ***
 ### Bibliografia:
 #### [R para Ciencia de Datos - Cap 5 Transformación de datos](https://es.r4ds.hadley.nz/transform.html#transform)
-#### [Cheat Sheet *dplyr*](https://github.com/rstudio/cheatsheets/blob/main/data-transformation.pdf)
+#### [Cheat Sheet *dplyr*](https://dplyr.tidyverse.org/index.html#cheat-sheet)
