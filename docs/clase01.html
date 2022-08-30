@@ -596,6 +596,7 @@ Stack Overflow</a></p></li>
 <li><a href="https://ggplot2.tidyverse.org/"><strong>ggplot2</strong></a></li>
 <li><a href="https://readr.tidyverse.org/"><strong>readr</strong></a></li>
 <li><a href="https://lubridate.tidyverse.org/"><strong>lubridate</strong></a></li>
+<li><a href="https://stringr.tidyverse.org/"><strong>stringr</strong></a></li>
 </ul></li>
 </ul>
 </div>
@@ -709,6 +710,7 @@ las funciones matemáticas disponibles.</h5>
 <pre class="r klippy"><code>precio_anterior = 85.23
 precio_actual = 99.0
 diferencia = precio_actual - precio_anterior
+# La suma y la resta son peligrosas, porque cuando hay involucrados números de diferentes órdenes de magnitud, los dígitos del más pequeño se pierden
 # Que % aumento ? (del precio inicial)
 diferencia / precio_anterior * 100</code></pre>
 <pre><code>## [1] 16.15628</code></pre>
@@ -794,6 +796,17 @@ aumento(total_enero, total_marzo)</code></pre>
 <pre><code>## [1]   10   50 1000    0</code></pre>
 <pre class="r klippy"><code>aumento(precios_enero, precios_marzo)</code></pre>
 <pre><code>## [1] 10.000000  8.333333  5.000000  0.000000</code></pre>
+</div>
+<div id="hay-disponibles-muchas-funciones" class="section level4">
+<h4>Hay disponibles muchas funciones</h4>
+<pre class="r klippy"><code>max(precios_enero)</code></pre>
+<pre><code>## [1] 20000</code></pre>
+<pre class="r klippy"><code>min(precios_enero)</code></pre>
+<pre><code>## [1] 45</code></pre>
+<pre class="r klippy"><code>length(precios_enero)</code></pre>
+<pre><code>## [1] 4</code></pre>
+<pre class="r klippy"><code>mean(precios_enero)</code></pre>
+<pre><code>## [1] 5186.25</code></pre>
 <hr />
 <hr />
 </div>
@@ -967,12 +980,15 @@ Aires Data - Comunas</a></p>
 <div id="data.frame" class="section level4">
 <h4>data.frame</h4>
 <pre class="r klippy"><code># barrios &lt;- read.csv(&quot;https://cdn.buenosaires.gob.ar/datosabiertos/datasets/barrios/barrios.csv&quot;, encoding = &quot;UTF-8&quot;)
+# download.file(&quot;https://cdn.buenosaires.gob.ar/datosabiertos/datasets/barrios/barrios.csv&quot;, &quot;datos/barrios.csv&quot;)
 barrios &lt;- read.csv(&quot;datos/barrios.csv&quot;, encoding = &quot;UTF-8&quot;)
 
 # poblacion &lt;- read.csv(&quot;https://cdn.buenosaires.gob.ar/datosabiertos/datasets/barrios/caba_pob_barrios_2010.csv&quot;, encoding = &quot;UTF-8&quot;)
+# download.file(&quot;https://cdn.buenosaires.gob.ar/datosabiertos/datasets/barrios/caba_pob_barrios_2010.csv&quot;, &quot;datos/caba_pob_barrios_2010.csv&quot;)
 poblacion &lt;- read.csv(&quot;datos/caba_pob_barrios_2010.csv&quot;, encoding = &quot;UTF-8&quot;)
 
 # comunas &lt;- read.csv(&quot;https://cdn.buenosaires.gob.ar/datosabiertos/datasets/comunas/comunas.csv&quot;, encoding = &quot;UTF-8&quot;)
+# download.file(&quot;https://cdn.buenosaires.gob.ar/datosabiertos/datasets/comunas/comunas.csv&quot;, &quot;datos/comunas.csv&quot;)
 comunas &lt;- read.csv(&quot;datos/comunas.csv&quot;, encoding = &quot;UTF-8&quot;)
 
 names(barrios)</code></pre>
@@ -1001,8 +1017,12 @@ names(barrios)</code></pre>
 ##  Max.   :15845871</code></pre>
 </div>
 <div id="usamos-y-select-del-paquete-dplyr" class="section level4">
-<h4>Usamos <em>%&gt;%</em> y <em>select()</em> del paquete
-<em>dplyr</em></h4>
+<h4>Usamos <em>%&gt;%</em> y <em>select()</em> del paquete <a href="https://dplyr.tidyverse.org/"><em>dplyr</em></a></h4>
+<div id="dplyr" class="section level5">
+<h5><a href="https://dplyr.tidyverse.org/">dplyr</a></h5>
+</div>
+<div id="section" class="section level5">
+<h5><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></h5>
 <div id="estaremos-usando-paquetes-que-integran-tidyverse-y-que-se-instalan-al-instalar-este-último." class="section level6">
 <h6><strong>Estaremos usando paquetes que integran <em>tidyverse</em> y
 que se instalan al instalar este último.</strong></h6>
@@ -1010,7 +1030,9 @@ que se instalan al instalar este último.</strong></h6>
 <div id="pero-recomiendo-ir-instalando-a-medida-que-los-usemos." class="section level6">
 <h6><strong>Pero recomiendo ir instalando a medida que los
 usemos.</strong></h6>
-<pre class="r klippy"><code>library(dplyr)</code></pre>
+<pre class="r klippy"><code># install.packages(&quot;dplyr&quot;)
+
+library(dplyr)</code></pre>
 <pre><code>## 
 ## Attaching package: &#39;dplyr&#39;</code></pre>
 <pre><code>## The following objects are masked from &#39;package:stats&#39;:
@@ -1019,9 +1041,64 @@ usemos.</strong></h6>
 <pre><code>## The following objects are masked from &#39;package:base&#39;:
 ## 
 ##     intersect, setdiff, setequal, union</code></pre>
-<pre class="r klippy"><code># install.packages(&quot;dplyr&quot;)
-
-barrios %&gt;% select(barrio, comuna)</code></pre>
+<pre class="r klippy"><code>names(barrios)</code></pre>
+<pre><code>## [1] &quot;WKT&quot;       &quot;barrio&quot;    &quot;comuna&quot;    &quot;perimetro&quot; &quot;area&quot;</code></pre>
+</div>
+</div>
+</div>
+<div id="dplyrselect" class="section level4">
+<h4><a href="https://dplyr.tidyverse.org/reference/select.html">dplyr::select</a></h4>
+<pre class="r klippy"><code>select(barrios, barrio, comuna)</code></pre>
+<pre><code>##               barrio comuna
+## 1          CHACARITA     15
+## 2           PATERNAL     15
+## 3       VILLA CRESPO     15
+## 4   VILLA DEL PARQUE     11
+## 5            ALMAGRO      5
+## 6          CABALLITO      6
+## 7   VILLA SANTA RITA     11
+## 8       MONTE CASTRO     10
+## 9         VILLA REAL     10
+## 10            FLORES      7
+## 11          FLORESTA     10
+## 12      CONSTITUCION      1
+## 13     SAN CRISTOBAL      3
+## 14             BOEDO      5
+## 15   VELEZ SARSFIELD     10
+## 16        VILLA LURO     10
+## 17  PARQUE PATRICIOS      4
+## 18         MATADEROS      9
+## 19      VILLA LUGANO      8
+## 20         SAN TELMO      1
+## 21          SAAVEDRA     12
+## 22           COGHLAN     12
+## 23     VILLA URQUIZA     12
+## 24        COLEGIALES     13
+## 25         BALVANERA      3
+## 26 VILLA GRAL. MITRE     11
+## 27       PARQUE CHAS     15
+## 28         AGRONOMIA     15
+## 29     VILLA ORTUZAR     15
+## 30          BARRACAS      4
+## 31 PARQUE AVELLANEDA      9
+## 32  PARQUE CHACABUCO      7
+## 33     NUEVA POMPEYA      4
+## 34           PALERMO     14
+## 35   VILLA RIACHUELO      8
+## 36     VILLA SOLDATI      8
+## 37  VILLA PUEYRREDON     12
+## 38      VILLA DEVOTO     11
+## 39           LINIERS      9
+## 40         VERSALLES     10
+## 41     PUERTO MADERO      1
+## 42         MONSERRAT      1
+## 43       SAN NICOLAS      1
+## 44          BELGRANO     13
+## 45          RECOLETA      2
+## 46            RETIRO      1
+## 47             NUÑEZ     13
+## 48              BOCA      4</code></pre>
+<pre class="r klippy"><code>barrios %&gt;% select(barrio, comuna)</code></pre>
 <pre><code>##               barrio comuna
 ## 1          CHACARITA     15
 ## 2           PATERNAL     15
@@ -1122,11 +1199,12 @@ barrios %&gt;% select(barrio, comuna)</code></pre>
 ## 47             NUÑEZ     13 10785.261  4424199
 ## 48              BOCA      4 20060.004  5036240</code></pre>
 </div>
-</div>
 <div id="sín-usar-dplyr-podemos-usar-para-seleccionar-columnas" class="section level4">
-<h4>Sín usar <em>dplyr</em>, podemos usar <strong>[</strong> para
-seleccionar columnas</h4>
-<pre class="r klippy"><code>head(
+<h4>Sín usar <em>dplyr</em>, podemos usar [**<a href="https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/Extract">**</a>
+para seleccionar columnas</h4>
+<pre class="r klippy"><code># head() nos muestra los primeros elementos de un objeto
+
+head(
   barrios[c(&quot;barrio&quot;, &quot;comuna&quot;)]
 )</code></pre>
 <pre><code>##             barrio comuna
@@ -1136,10 +1214,9 @@ seleccionar columnas</h4>
 ## 4 VILLA DEL PARQUE     11
 ## 5          ALMAGRO      5
 ## 6        CABALLITO      6</code></pre>
-<pre class="r klippy"><code># head() nos muestra los primeros elementos de un objeto
-head(
-  barrios[c(2,3)]
-)</code></pre>
+<pre class="r klippy"><code># con el %&gt;% resulta más claro
+
+barrios[c(&quot;barrio&quot;, &quot;comuna&quot;)] %&gt;% head</code></pre>
 <pre><code>##             barrio comuna
 ## 1        CHACARITA     15
 ## 2         PATERNAL     15
@@ -1147,9 +1224,15 @@ head(
 ## 4 VILLA DEL PARQUE     11
 ## 5          ALMAGRO      5
 ## 6        CABALLITO      6</code></pre>
-<pre class="r klippy"><code>head(
-  barrios[c(-1,-4,-5)]
-)</code></pre>
+<pre class="r klippy"><code>barrios[c(2,3)] %&gt;% head</code></pre>
+<pre><code>##             barrio comuna
+## 1        CHACARITA     15
+## 2         PATERNAL     15
+## 3     VILLA CRESPO     15
+## 4 VILLA DEL PARQUE     11
+## 5          ALMAGRO      5
+## 6        CABALLITO      6</code></pre>
+<pre class="r klippy"><code>barrios[c(-1,-4,-5)] %&gt;% head</code></pre>
 <pre><code>##             barrio comuna
 ## 1        CHACARITA     15
 ## 2         PATERNAL     15
@@ -1281,6 +1364,14 @@ ggplot(barrios2) +
 <h3><a href="clase01_ejercicios.html">Ejercicios</a></h3>
 <hr />
 <hr />
+<hr />
+</div>
+<div id="bibliografia" class="section level3">
+<h3>Bibliografia:</h3>
+<div id="cheat-sheet-dplyr" class="section level4">
+<h4><a href="https://github.com/rstudio/cheatsheets/blob/main/data-transformation.pdf">Cheat
+Sheet <em>dplyr</em></a></h4>
+</div>
 </div>
 </div>
 

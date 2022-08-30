@@ -41,6 +41,7 @@ vacunas <- read_csv("datos/dataset_total_vacunas.csv")
 ```
 
 #### Una primera mirada, según lo que esperemos, por lo general alguno de estos:
+#### [readr::spec](https://readr.tidyverse.org/reference/spec.html)
 ```{r, echo=TRUE,  class.source='klippy'}
 spec(vacunas)
 
@@ -55,7 +56,7 @@ summary(vacunas)
 ```{r, echo=TRUE,  class.source='klippy'}
 vacunas[which(is.na(vacunas$DOSIS_3)),c(-1,-8)]
 ```
-#### o con *filter*
+#### o con [*dplyr::filter*](https://dplyr.tidyverse.org/reference/filter.html)
 ```{r, echo=TRUE,  class.source='klippy'}
 vacunas %>% filter(is.na(vacunas$DOSIS_3)) %>% select(-FECHA_ADMINISTRACION, -ID_CARGA)
 ```
@@ -75,6 +76,7 @@ table(vacunas$GRUPO_ETARIO)
 ```
 
 #### Al modo dplyr:
+#### [dplyr::count](https://dplyr.tidyverse.org/reference/count.html)
 ```{r, echo=TRUE,  class.source='klippy'}
 vacunas %>% count(GENERO)
 
@@ -88,7 +90,7 @@ vacunas %>% count(VACUNA, wt = DOSIS_1)
 ***
 
 #### Que pasa con las fechas ?
-##### Para esto cargamos la libreria *lubridate*
+##### Para esto cargamos la libreria [*lubridate*](https://lubridate.tidyverse.org/)
 ```{r, echo=TRUE,  class.source='klippy'}
 head(vacunas$FECHA_ADMINISTRACION)
 
@@ -210,7 +212,8 @@ data3 %>% tally()
 
 #### Otro paso para 'acomodar' los datos:
 #### DOSIS_1, DOSIS_2, DOSIS_3, no son tres variables, son tres valores de la variable DOSIS...
-#### *tidyr*, *pivot_longer()*
+#### [*tidyr*](https://tidyr.tidyverse.org/)
+#### [*tidyr::pivot_longer()*](https://tidyr.tidyverse.org/reference/pivot_longer.html)
 ```{r, echo=TRUE,  class.source='klippy'}
 # install.packages("tidyr")
 library(tidyr)
@@ -289,4 +292,4 @@ ggplot(data2, aes(GRUPO_ETARIO, t, fill=GENERO)) +
 ***
 ### Bibliografia:
 #### [R para Ciencia de Datos - Cap 5 Transformación de datos](https://es.r4ds.hadley.nz/transform.html#transform)
-
+#### [Cheat Sheet *dplyr*](https://github.com/rstudio/cheatsheets/blob/main/data-transformation.pdf)

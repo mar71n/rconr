@@ -56,9 +56,9 @@ as_date(dmy_hms("28FEB2021:15:15:20"))
 
 ```{r, echo=TRUE,  class.source='klippy'}
 # https://data.buenosaires.gob.ar/dataset/plan-de-vacunacion-covid-19
-#vacunas <- read_csv("https://cdn.buenosaires.gob.ar/datosabiertos/datasets/salud/plan-de-vacunacion-covid-19/dataset_total_vacunas.csv")
+vacunas <- read_csv("https://cdn.buenosaires.gob.ar/datosabiertos/datasets/salud/plan-de-vacunacion-covid-19/dataset_total_vacunas.csv")
 # download.file("https://cdn.buenosaires.gob.ar/datosabiertos/datasets/salud/plan-de-vacunacion-covid-19/dataset_total_vacunas.csv", "datos/dataset_total_vacunas.csv")
-vacunas <- read_csv("datos/dataset_total_vacunas.csv")
+#vacunas <- read_csv("datos/dataset_total_vacunas.csv")
 ```
 
 #### 0 en los valor NA de DOSIS_3

@@ -38,7 +38,10 @@ library(sf)
 # https://data.buenosaires.gob.ar/dataset/establecimientos-educativos
 # establecimientos <- read_csv("https://cdn.buenosaires.gob.ar/datosabiertos/datasets/ministerio-de-educacion/establecimientos-educativos/establecimientos_educativos_WGS84.csv")
 establecimientos <- read_csv("datos/establecimientos_educativos_WGS84.csv")
+```
 
+#### [readr::spec](https://readr.tidyverse.org/reference/spec.html)
+```{r, echo=TRUE,  class.source='klippy'}
 spec(establecimientos)
 
 head(establecimientos)

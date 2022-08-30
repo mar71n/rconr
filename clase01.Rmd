@@ -81,6 +81,7 @@ Para algunas instalaciones de paquetes en Windows
   - [**ggplot2**](https://ggplot2.tidyverse.org/)
   - [**readr**](https://readr.tidyverse.org/)
   - [**lubridate**](https://lubridate.tidyverse.org/)
+  - [**stringr**](https://stringr.tidyverse.org/)
 
 #### sf :
 - [r-spatial.github.io/sf/](https://r-spatial.github.io/sf/)
@@ -187,6 +188,7 @@ plot(x <- seq(0, 2*pi, 0.2), sin(x), type = "l")
 precio_anterior = 85.23
 precio_actual = 99.0
 diferencia = precio_actual - precio_anterior
+# La suma y la resta son peligrosas, porque cuando hay involucrados números de diferentes órdenes de magnitud, los dígitos del más pequeño se pierden
 # Que % aumento ? (del precio inicial)
 diferencia / precio_anterior * 100
 ((precio_actual / precio_anterior) - 1) * 100
@@ -270,6 +272,15 @@ precios_marzo - precios_enero
 
 aumento(precios_enero, precios_marzo)
 ```
+
+#### Hay disponibles muchas funciones
+```{r, echo=TRUE,  class.source='klippy'}
+max(precios_enero)
+min(precios_enero)
+length(precios_enero)
+mean(precios_enero)
+```
+
 
 ***
 ***
@@ -374,12 +385,15 @@ sapply(lt, mean)
 
 ```{r, echo=TRUE,  class.source='klippy'}
 # barrios <- read.csv("https://cdn.buenosaires.gob.ar/datosabiertos/datasets/barrios/barrios.csv", encoding = "UTF-8")
+# download.file("https://cdn.buenosaires.gob.ar/datosabiertos/datasets/barrios/barrios.csv", "datos/barrios.csv")
 barrios <- read.csv("datos/barrios.csv", encoding = "UTF-8")
 
 # poblacion <- read.csv("https://cdn.buenosaires.gob.ar/datosabiertos/datasets/barrios/caba_pob_barrios_2010.csv", encoding = "UTF-8")
+# download.file("https://cdn.buenosaires.gob.ar/datosabiertos/datasets/barrios/caba_pob_barrios_2010.csv", "datos/caba_pob_barrios_2010.csv")
 poblacion <- read.csv("datos/caba_pob_barrios_2010.csv", encoding = "UTF-8")
 
 # comunas <- read.csv("https://cdn.buenosaires.gob.ar/datosabiertos/datasets/comunas/comunas.csv", encoding = "UTF-8")
+# download.file("https://cdn.buenosaires.gob.ar/datosabiertos/datasets/comunas/comunas.csv", "datos/comunas.csv")
 comunas <- read.csv("datos/comunas.csv", encoding = "UTF-8")
 
 names(barrios)
@@ -389,33 +403,45 @@ str(barrios)
 summary(barrios)
 ```
 
-#### Usamos *%>%* y  *select()* del paquete *dplyr*
+#### Usamos *%>%* y  *select()* del paquete [*dplyr*](https://dplyr.tidyverse.org/)
+##### [dplyr](https://dplyr.tidyverse.org/)
+##### [%>%](https://magrittr.tidyverse.org/reference/pipe.html)
 ###### **Estaremos usando paquetes que integran *tidyverse* y que se instalan al instalar este último.**
 ###### **Pero recomiendo ir instalando a medida que los usemos.**
 ```{r, echo=TRUE,  class.source='klippy'}
-library(dplyr)
 # install.packages("dplyr")
+
+library(dplyr)
+
+names(barrios)
+```
+
+#### [dplyr::select](https://dplyr.tidyverse.org/reference/select.html)
+```{r, echo=TRUE,  class.source='klippy'}
+select(barrios, barrio, comuna)
 
 barrios %>% select(barrio, comuna)
 
 barrios %>% select(!WKT)
 ```
 
-#### Sín usar *dplyr*, podemos usar **[** para seleccionar columnas
+#### Sín usar *dplyr*, podemos usar [**[**](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/Extract) para seleccionar columnas
 
 ```{r, echo=TRUE,  class.source='klippy'}
+
+# head() nos muestra los primeros elementos de un objeto
+
 head(
   barrios[c("barrio", "comuna")]
 )
 
-# head() nos muestra los primeros elementos de un objeto
-head(
-  barrios[c(2,3)]
-)
+# con el %>% resulta más claro
 
-head(
-  barrios[c(-1,-4,-5)]
-)
+barrios[c("barrio", "comuna")] %>% head
+
+barrios[c(2,3)] %>% head
+
+barrios[c(-1,-4,-5)] %>% head
 ```
 
 ```{r, echo=TRUE,  class.source='klippy'}
@@ -484,3 +510,7 @@ ggplot(barrios2) +
 
 ***
 ***
+***
+
+### Bibliografia:
+#### [Cheat Sheet *dplyr*](https://github.com/rstudio/cheatsheets/blob/main/data-transformation.pdf)

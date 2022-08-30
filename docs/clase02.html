@@ -573,6 +573,9 @@ vacunas &lt;- read_csv(&quot;datos/dataset_total_vacunas.csv&quot;)</code></pre>
 <div id="una-primera-mirada-según-lo-que-esperemos-por-lo-general-alguno-de-estos" class="section level4">
 <h4>Una primera mirada, según lo que esperemos, por lo general alguno de
 estos:</h4>
+</div>
+<div id="readrspec" class="section level4">
+<h4><a href="https://readr.tidyverse.org/reference/spec.html">readr::spec</a></h4>
 <pre class="r klippy"><code>spec(vacunas)</code></pre>
 <pre><code>## cols(
 ##   FECHA_ADMINISTRACION = col_character(),
@@ -646,8 +649,8 @@ estos:</h4>
 ## 10 61 a 70      F      Sinopharm   Público                1       0      NA
 ## # … with 73 more rows</code></pre>
 </div>
-<div id="o-con-filter" class="section level4">
-<h4>o con <em>filter</em></h4>
+<div id="o-con-dplyrfilter" class="section level4">
+<h4>o con <a href="https://dplyr.tidyverse.org/reference/filter.html"><em>dplyr::filter</em></a></h4>
 <pre class="r klippy"><code>vacunas %&gt;% filter(is.na(vacunas$DOSIS_3)) %&gt;% select(-FECHA_ADMINISTRACION, -ID_CARGA)</code></pre>
 <pre><code>## # A tibble: 83 × 7
 ##    GRUPO_ETARIO GENERO VACUNA      TIPO_EFECTOR     DOSIS_1 DOSIS_2 DOSIS_3
@@ -706,6 +709,9 @@ summary(vacunas)</code></pre>
 </div>
 <div id="al-modo-dplyr" class="section level4">
 <h4>Al modo dplyr:</h4>
+</div>
+<div id="dplyrcount" class="section level4">
+<h4><a href="https://dplyr.tidyverse.org/reference/count.html">dplyr::count</a></h4>
 <pre class="r klippy"><code>vacunas %&gt;% count(GENERO)</code></pre>
 <pre><code>## # A tibble: 3 × 2
 ##   GENERO     n
@@ -743,7 +749,7 @@ summary(vacunas)</code></pre>
 <div id="que-pasa-con-las-fechas" class="section level4">
 <h4>Que pasa con las fechas ?</h4>
 <div id="para-esto-cargamos-la-libreria-lubridate" class="section level5">
-<h5>Para esto cargamos la libreria <em>lubridate</em></h5>
+<h5>Para esto cargamos la libreria <a href="https://lubridate.tidyverse.org/"><em>lubridate</em></a></h5>
 <pre class="r klippy"><code>head(vacunas$FECHA_ADMINISTRACION)</code></pre>
 <pre><code>## [1] &quot;03FEB2021:00:00:00&quot; &quot;03FEB2021:00:00:00&quot; &quot;03FEB2021:00:00:00&quot;
 ## [4] &quot;03FEB2021:00:00:00&quot; &quot;03FEB2021:00:00:00&quot; &quot;03FEB2021:00:00:00&quot;</code></pre>
@@ -1029,8 +1035,11 @@ de las columnas y las filas</h5>
 <h4>DOSIS_1, DOSIS_2, DOSIS_3, no son tres variables, son tres valores
 de la variable DOSIS…</h4>
 </div>
-<div id="tidyr-pivot_longer" class="section level4">
-<h4><em>tidyr</em>, <em>pivot_longer()</em></h4>
+<div id="tidyr" class="section level4">
+<h4><a href="https://tidyr.tidyverse.org/"><em>tidyr</em></a></h4>
+</div>
+<div id="tidyrpivot_longer" class="section level4">
+<h4><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html"><em>tidyr::pivot_longer()</em></a></h4>
 <pre class="r klippy"><code># install.packages(&quot;tidyr&quot;)
 library(tidyr)
 
@@ -1148,6 +1157,10 @@ ggplot(dfa, aes(a, b)) +
 <div id="r-para-ciencia-de-datos---cap-5-transformación-de-datos" class="section level4">
 <h4><a href="https://es.r4ds.hadley.nz/transform.html#transform">R para
 Ciencia de Datos - Cap 5 Transformación de datos</a></h4>
+</div>
+<div id="cheat-sheet-dplyr" class="section level4">
+<h4><a href="https://github.com/rstudio/cheatsheets/blob/main/data-transformation.pdf">Cheat
+Sheet <em>dplyr</em></a></h4>
 </div>
 </div>
 
