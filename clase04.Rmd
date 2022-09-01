@@ -6,7 +6,8 @@ knit: (function(inputFile, encoding) {
   out_dir <- 'docs';
   rmarkdown::render(inputFile,
                     encoding="UTF-8",
-                    output_file=file.path(dirname(inputFile), out_dir, 'clase04.html')) })
+                    output_file=file.path(dirname(inputFile), out_dir, 'clase04.html'));
+  knitr::purl("clase04.Rmd", documentation = 2L, output = "./docs/clase04.R")  })
 ---
 
 ```
@@ -347,5 +348,9 @@ vacunas %>% count(VAC, wt = total, name = "DOSIS")
 ### Bibliografia:
 #### [R para Ciencia de Datos - Cap 16 Fechas y horas](https://es.r4ds.hadley.nz/fechas-y-horas.html#fechas-y-horas)
 ####  [R para Ciencia de Datos - Cap 14 Cadenas de caracteres](https://es.r4ds.hadley.nz/cadenas-de-caracteres.html#cadenas-de-caracteres)
+
+***
+
+[clase04.R](clase04.R)
 
 ***

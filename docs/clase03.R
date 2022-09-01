@@ -1,0 +1,302 @@
+#' ---
+#' title: "Clase 03"
+#' output: html_document
+#' #date: '2022-05-30'
+#' knit: (function(inputFile, encoding) {
+#'   out_dir <- 'docs';
+#'   rmarkdown::render(inputFile,
+#'                     encoding="UTF-8",
+#'                     output_file=file.path(dirname(inputFile), out_dir, 'clase03.html'));
+#'   knitr::purl("clase03.Rmd", documentation = 2L, output = "./docs/clase03.R")  })
+#' ---
+#' 
+## ----klippy, echo=FALSE, include=TRUE-----------------------------------------
+klippy::klippy('')
+
+#' 
+#' ```
+#' Tibles join, gráficos :
+#' inner_join, left_join, right_join, full_join, semi_join, anti_join
+#' ggplot, geom_point, facet_grid, geom_bar, stat_count, stat_summary
+#' ```
+#' 
+#' Una versión actualizada de este material en : [clase03](https://mar71n.github.io/rconr/clase03.html)
+#' 
+#' ***
+#' 
+## ---- echo=TRUE,  class.source='klippy'---------------------------------------
+library(dplyr)
+library(readr)
+library(ggplot2)
+library(sf)
+
+#' 
+#' ***
+#' 
+#' ### Datasets
+#' #### Establecimientos Educativos
+## ---- echo=TRUE,  class.source='klippy'---------------------------------------
+# https://data.buenosaires.gob.ar/dataset/establecimientos-educativos
+# establecimientos <- read_csv("https://cdn.buenosaires.gob.ar/datosabiertos/datasets/ministerio-de-educacion/establecimientos-educativos/establecimientos_educativos_WGS84.csv")
+establecimientos <- read_csv("datos/establecimientos_educativos_WGS84.csv")
+
+#' 
+#' #### [readr::spec](https://readr.tidyverse.org/reference/spec.html)
+## ---- echo=TRUE,  class.source='klippy'---------------------------------------
+spec(establecimientos)
+
+head(establecimientos)
+
+names(establecimientos)
+
+names(establecimientos) <- toupper(names(establecimientos))
+
+establecimientos %>% distinct(BARRIO)
+
+c(establecimientos %>% distinct(BARRIO))
+
+n_distinct(establecimientos$BARRIO)
+
+#' 
+## ---- echo=TRUE,  class.source='klippy'---------------------------------------
+# poblacion <- read_csv("https://cdn.buenosaires.gob.ar/datosabiertos/datasets/barrios/caba_pob_barrios_2010.csv")
+poblacion <- read_csv("datos/caba_pob_barrios_2010.csv")
+
+poblacion %>% count(BARRIO) %>% filter(n != 1)
+
+poblacion %>% distinct(BARRIO)
+
+n_distinct(poblacion$BARRIO)
+
+c(poblacion %>% distinct(BARRIO))
+
+#' 
+#' #### dplyr::setdiff()
+#' ##### [Operaciones de conjuntos](https://dplyr.tidyverse.org/articles/two-table.html#set-operations)
+## ---- echo=TRUE,  class.source='klippy'---------------------------------------
+setdiff(establecimientos$BARRIO, poblacion$BARRIO)
+
+setdiff(poblacion$BARRIO, establecimientos$BARRIO)
+
+#' 
+#' #### base::which()
+## ---- echo=TRUE,  class.source='klippy'---------------------------------------
+which(establecimientos[, "BARRIO"] == "MONTSERRAT")
+which(poblacion[, "BARRIO"] == "MONSERRAT")
+
+which(establecimientos[, "BARRIO"] == "SAN NIICOLAS")
+which(poblacion[, "BARRIO"] == "SAN NICOLAS")
+
+#' 
+#' #### full_join()
+#' ##### [Uniones de transformación](https://dplyr.tidyverse.org/reference/mutate-joins.html)
+## ---- echo=TRUE,  class.source='klippy'---------------------------------------
+establecimientos %>% full_join(poblacion, by = "BARRIO") %>% 
+  select(NOMBRE_ABR, BARRIO, POBLACION) %>% 
+  filter(is.na(NOMBRE_ABR) | is.na(POBLACION) ) %>% 
+  arrange(POBLACION)
+
+#' 
+#' #### anti_join()
+#' #### [Uniones de filtro](https://dplyr.tidyverse.org/reference/filter-joins.html)
+## ---- echo=TRUE,  class.source='klippy'---------------------------------------
+establecimientos %>% anti_join(poblacion, by = "BARRIO") %>% select(NOMBRE_ABR, BARRIO)
+
+poblacion %>% anti_join(establecimientos, by = "BARRIO")
+
+
+#' 
+#' ### Editamos los valores erroneos
+## ---- echo=TRUE,  class.source='klippy'---------------------------------------
+establecimientos[which(establecimientos[, "BARRIO"] == "MONTSERRAT"),"BARRIO"] <- "MONSERRAT"
+establecimientos[which(establecimientos[, "BARRIO"] == "SAN NIICOLAS"),"BARRIO"] <- "SAN NICOLAS"
+
+
+#' 
+#' ***
+#' 
+#' ### Agrupando por barrio, con población
+#' #### *group_by()* , *left_join()*
+#' ##### [Uniones de transformación](https://dplyr.tidyverse.org/reference/mutate-joins.html)
+## ---- echo=TRUE,  class.source='klippy'---------------------------------------
+establecimientos %>% group_by(BARRIO) %>% 
+  summarise(ESTABLECIMIENTOS = n()) %>% 
+  left_join(poblacion) 
+
+#' 
+#' ### Le agregamos una columna de establecimientos cada 1000 habitantes
+## ---- echo=TRUE,  class.source='klippy'---------------------------------------
+establecimientos %>% group_by(BARRIO) %>% summarise(ESTABLECIMIENTOS = n()) %>%
+  left_join(poblacion) %>%
+  mutate(CADA_1000 = (ESTABLECIMIENTOS * 1000) / POBLACION)
+
+#' 
+#' 
+#' ***
+#' ***
+#' 
+#' #### Un gráfico que ya hicimos, solo cambian los datos
+#' ##### Notemos que la sintaxis del gráfico es practicamente idéntica, lo que sí requirió trabajo es armar bien los datos.
+## ---- echo=TRUE,  class.source='klippy'---------------------------------------
+barrios2 <- st_read("datos/barrios.csv")
+
+barrios3 <- establecimientos %>% group_by(BARRIO) %>% summarise(ESTABLECIMIENTOS = n()) %>%
+  left_join(poblacion) %>%
+  mutate(CADA_1000 = (ESTABLECIMIENTOS * 1000) / POBLACION)
+
+
+ggplot(barrios2 %>% left_join(barrios3, by = c("barrio" = "BARRIO") )) + 
+  geom_sf(aes(fill=CADA_1000))
+
+#' 
+#' ***
+#' ***
+#' ***
+#' 
+#' ### ggplot()
+#' #### __Completando los gráficos__
+#' 
+#' ##### [¿Qué es la gramática de los gráficos?](https://ggplot2-book.org/introduction.html#what-is-the-grammar-of-graphics)
+#' ##### Un gráfico esta compuesto por los **datos** que vamos a graficar.
+#' ##### Y por **mapping**: la definición de cómo las variables de esos datos son mostrados
+#' ##### __Hay 5 componentes de mapping__:
+#' - ##### Layer : colección de elementos geométricos y estadísticas. 
+#'   + ##### geom : puntos, líneas, polígonos
+#'   + ##### stats : conteo, ajuste de un modelo lineal, etc 
+#' - ##### Scales : Asigna los valores en el espacio de datos al espacio estético.
+#' ##### Incluye el color, relleno, tamaño. También leyendas y ejes
+#' - ##### Coord : Sistema de coordenadas. Por lo general cartesianas, pero puede ser polares
+#' ##### proyecciones geográficas, etc
+#' - ##### Facet : especifica cómo dividir y mostrar subconjuntos de datos
+#' - ##### Theme : controla puntos más finos, tamaño de fuente, color de fondo  
+#' 
+#' ##### [Uso básico](https://ggplot2-book.org/getting-started.html#basic-use)
+#' ##### __Tres componentes claves__:
+#' - ##### data
+#' - ##### aesthetic mappings
+#' - ##### al menos un layer, creado con geom
+#' 
+## ---- echo=TRUE,  class.source='klippy'---------------------------------------
+# https://data.buenosaires.gob.ar/dataset/plan-de-vacunacion-covid-19
+# vacunas <- read_csv("https://cdn.buenosaires.gob.ar/datosabiertos/datasets/salud/plan-de-vacunacion-covid-19/dataset_total_vacunas.csv")
+# download.file("https://cdn.buenosaires.gob.ar/datosabiertos/datasets/salud/plan-de-vacunacion-covid-19/dataset_total_vacunas.csv", "datos/dataset_total_vacunas.csv")
+vacunas <- read_csv("datos/dataset_total_vacunas.csv")
+
+names(vacunas)
+
+data1 <- vacunas %>% 
+  mutate(total = (DOSIS_1 + DOSIS_2 + DOSIS_3)) %>% 
+  select(FECHA_ADMINISTRACION, GENERO, GRUPO_ETARIO, total) %>%
+  group_by(GRUPO_ETARIO) %>% 
+  summarise(TGRUPO = sum(total, na.rm=TRUE))
+
+data1
+
+data2 <- vacunas %>% 
+  mutate(total = (DOSIS_1 + DOSIS_2 + DOSIS_3)) %>% 
+  select(FECHA_ADMINISTRACION, GENERO, GRUPO_ETARIO, total) %>%
+  group_by(GRUPO_ETARIO, GENERO) %>% 
+  summarise(TGG = sum(total, na.rm=TRUE)) %>%
+  left_join(data1, by = "GRUPO_ETARIO") %>%
+  mutate(PPGG = round(TGG / TGRUPO * 100, 2))
+
+data2
+
+#' #### [geom_text](https://ggplot2.tidyverse.org/reference/geom_text.html)
+#' #### [labs](https://ggplot2.tidyverse.org/reference/labs.html)
+## ---- echo=TRUE,  class.source='klippy'---------------------------------------
+ggplot(data2, aes(GRUPO_ETARIO, TGG, fill=GENERO)) + 
+  geom_bar(stat="identity", position = "stack", colour = "grey") +
+  geom_text(aes(label= TGG), vjust= -0.5, color="black", size=3, position = position_stack(vjust = 0.5)) +
+  labs(
+    x = "Grupo Etario", 
+    y = "Total por Género", 
+    fill = "Género",
+    title = "Vacunados por Grupo Etario",
+    subtitle = "Por Género",
+    caption = "Fuente: www.databuenosaires.gob.ar"
+  )
+
+
+ggplot(data2, aes(GRUPO_ETARIO, TGG, fill=GENERO)) + 
+  geom_bar(stat="identity", position = "fill", colour = "grey") +
+  geom_text(aes(label= round(PPGG, 2)), vjust= -0.5, color="black", size=3, position = position_fill(vjust = 0.5)) +
+  labs(
+    x = "Grupo Etario", 
+    y = "% por Género", 
+    fill = "Género",
+    title = "Vacunados por Grupo Etario",
+    subtitle = "Porciento del Genero",
+    caption = "Fuente: www.databuenosaires.gob.ar"
+  )
+
+
+#' 
+#' ***
+#' ***
+#' 
+#' ### Compartiendo los datos al pedir ayuda, responder o mostrar comportamientos:
+## ---- echo=TRUE, eval=FALSE, class.source='klippy'----------------------------
+## dput(data2)
+
+#' #### Compartimos esta salida
+## ---- echo=TRUE, eval=FALSE, class.source='klippy'----------------------------
+## structure(list(GRUPO_ETARIO = c("30 o menos", "30 o menos", "30 o menos",
+## "31 a 40", "31 a 40", "31 a 40", "41 a 50", "41 a 50", "41 a 50",
+## "51 a 60", "51 a 60", "61 a 70", "61 a 70", "61 a 70", "71 a 80",
+## "71 a 80", "81 a 90", "81 a 90", "91 o mas", "91 o mas"), GENERO = c("F",
+## "M", "N", "F", "M", "N", "F", "M", "N", "F", "M", "F", "M", "N",
+## "F", "M", "F", "M", "F", "M"), TGG = c(1210000, 1157366, 20,
+## 683382, 630074, 9, 660293, 593204, 1, 524800, 450708, 449852,
+## 347727, 1, 385841, 248420, 218723, 105779, 53467, 15660), TGRUPO = c(2367386,
+## 2367386, 2367386, 1313465, 1313465, 1313465, 1253498, 1253498,
+## 1253498, 975508, 975508, 797580, 797580, 797580, 634261, 634261,
+## 324502, 324502, 69127, 69127), PPGG = c(51.11, 48.89, 0, 52.03,
+## 47.97, 0, 52.68, 47.32, 0, 53.8, 46.2, 56.4, 43.6, 0, 60.83,
+## 39.17, 67.4, 32.6, 77.35, 22.65)), class = c("grouped_df", "tbl_df",
+## "tbl", "data.frame"), row.names = c(NA, -20L), groups = structure(list(
+##     GRUPO_ETARIO = c("30 o menos", "31 a 40", "41 a 50", "51 a 60",
+##     "61 a 70", "71 a 80", "81 a 90", "91 o mas"), .rows = structure(list(
+##         1:3, 4:6, 7:9, 10:11, 12:14, 15:16, 17:18, 19:20), ptype = integer(0), class = c("vctrs_list_of",
+##     "vctrs_vctr", "list"))), class = c("tbl_df", "tbl", "data.frame"
+## ), row.names = c(NA, -8L), .drop = TRUE))
+
+#' 
+#' #### Por lo general asignandolo a una variable
+## ---- echo=TRUE,  class.source='klippy'---------------------------------------
+datos <- structure(list(GRUPO_ETARIO = c("30 o menos", "30 o menos", "30 o menos", 
+"31 a 40", "31 a 40", "31 a 40", "41 a 50", "41 a 50", "41 a 50", 
+"51 a 60", "51 a 60", "61 a 70", "61 a 70", "61 a 70", "71 a 80", 
+"71 a 80", "81 a 90", "81 a 90", "91 o mas", "91 o mas"), GENERO = c("F", 
+"M", "N", "F", "M", "N", "F", "M", "N", "F", "M", "F", "M", "N", 
+"F", "M", "F", "M", "F", "M"), TGG = c(1210000, 1157366, 20, 
+683382, 630074, 9, 660293, 593204, 1, 524800, 450708, 449852, 
+347727, 1, 385841, 248420, 218723, 105779, 53467, 15660), TGRUPO = c(2367386, 
+2367386, 2367386, 1313465, 1313465, 1313465, 1253498, 1253498, 
+1253498, 975508, 975508, 797580, 797580, 797580, 634261, 634261, 
+324502, 324502, 69127, 69127), PPGG = c(51.11, 48.89, 0, 52.03, 
+47.97, 0, 52.68, 47.32, 0, 53.8, 46.2, 56.4, 43.6, 0, 60.83, 
+39.17, 67.4, 32.6, 77.35, 22.65)), class = c("grouped_df", "tbl_df", 
+"tbl", "data.frame"), row.names = c(NA, -20L), groups = structure(list(
+    GRUPO_ETARIO = c("30 o menos", "31 a 40", "41 a 50", "51 a 60", 
+    "61 a 70", "71 a 80", "81 a 90", "91 o mas"), .rows = structure(list(
+        1:3, 4:6, 7:9, 10:11, 12:14, 15:16, 17:18, 19:20), ptype = integer(0), class = c("vctrs_list_of", 
+    "vctrs_vctr", "list"))), class = c("tbl_df", "tbl", "data.frame"
+), row.names = c(NA, -8L), .drop = TRUE))
+
+datos
+
+#' 
+#' 
+#' ***
+#' ***
+#' ### Bibliografia:
+#' #### [R para Ciencia de Datos - Cap 13 Datos relacionales](https://es.r4ds.hadley.nz/datos-relacionales.html#datos-relacionales)
+#' #### [R para Ciencia de Datos - Cap 28 Comunicar con gráficos](https://es.r4ds.hadley.nz/comunicar-con-gr%C3%A1ficos.html#comunicar-con-gr%C3%A1ficos)
+#' #### [Elegant Graphics for Data Analysis](https://ggplot2-book.org)
+#' 
+#' ***
+#' 
+#' [clase03.R](clase03.R)
+#' 
+#' ***

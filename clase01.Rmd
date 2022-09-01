@@ -6,7 +6,8 @@ knit: (function(inputFile, encoding) {
   out_dir <- 'docs';
   rmarkdown::render(inputFile,
                     encoding="UTF-8",
-                    output_file=file.path(dirname(inputFile), out_dir, 'clase01.html')) })
+                    output_file=file.path(dirname(inputFile), out_dir, 'clase01.html')); 
+  knitr::purl("clase01.Rmd", documentation = 2L, output = "./docs/clase01.R")  })
 ---
 
 ```{r klippy, echo=FALSE, include=TRUE}
@@ -523,3 +524,9 @@ ggplot(barrios2) +
 
 ### Bibliografia:
 #### [Cheat Sheet *dplyr*](https://dplyr.tidyverse.org/index.html#cheat-sheet)
+
+***
+
+[clase01.R](clase01.R)
+
+***

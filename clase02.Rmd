@@ -6,7 +6,8 @@ knit: (function(inputFile, encoding) {
   out_dir <- 'docs';
   rmarkdown::render(inputFile,
                     encoding="UTF-8",
-                    output_file=file.path(dirname(inputFile), out_dir, 'clase02.html')) })
+                    output_file=file.path(dirname(inputFile), out_dir, 'clase02.html'));
+  knitr::purl("clase02.Rmd", documentation = 2L, output = "./docs/clase02.R")  })
 ---
 
 ```{r klippy, echo=FALSE, include=TRUE}
@@ -314,3 +315,9 @@ ggplot(data2, aes(GRUPO_ETARIO, t, fill=GENERO)) +
 ### Bibliografia:
 #### [R para Ciencia de Datos - Cap 5 Transformación de datos](https://es.r4ds.hadley.nz/transform.html#transform)
 #### [Cheat Sheet *dplyr*](https://dplyr.tidyverse.org/index.html#cheat-sheet)
+
+***
+
+[clase02.R](clase02.R)
+
+***

@@ -6,7 +6,8 @@ knit: (function(inputFile, encoding) {
   out_dir <- 'docs';
   rmarkdown::render(inputFile,
                     encoding="UTF-8",
-                    output_file=file.path(dirname(inputFile), out_dir, 'clase03.html')) })
+                    output_file=file.path(dirname(inputFile), out_dir, 'clase03.html'));
+  knitr::purl("clase03.Rmd", documentation = 2L, output = "./docs/clase03.R")  })
 ---
 
 ```{r klippy, echo=FALSE, include=TRUE}
@@ -294,5 +295,8 @@ datos
 #### [R para Ciencia de Datos - Cap 28 Comunicar con gráficos](https://es.r4ds.hadley.nz/comunicar-con-gr%C3%A1ficos.html#comunicar-con-gr%C3%A1ficos)
 #### [Elegant Graphics for Data Analysis](https://ggplot2-book.org)
 
+***
+
+[clase03.R](clase03.R)
 
 ***
