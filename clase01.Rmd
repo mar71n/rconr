@@ -224,6 +224,8 @@ vnumeros <- c(1500, 4750, 7300, 3250, 4701, 3302, 5200)
 ```
 
 #### Podemos extraer el valor almacenado indicando la posición o índice:
+#### con [*\[*](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/Extract)
+
 ```{r, echo=TRUE,  class.source='klippy'}
 # el segundo elemento:
 vnumeros[2]
@@ -235,24 +237,27 @@ vnumeros[c(2,5)]
 vnumeros[5:7]
 ```
 #### Tambien pordemos extraer los valores que cumplan alguna condición:
+#### La función [base::*which*](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/which) nos responde qué índices son verdaderos.
 ```{r, echo=TRUE,  class.source='klippy'}
+# Al vectorizar, R evalúa la comparación elemento por elemento
+# vector booleano con TRUE donde el elemento es mayor que 4000, y FALSE en caso contrario.
 vnumeros > 4000
 
-# valores que cumplen la condición
+# elementos que cumplen la condición
 vnumeros[vnumeros > 4000] 
 
-# índices de los valores que cumplen la condición
+# índices de los elementos que cumplen la condición
 which(vnumeros > 4000)
 
 vnumeros[which(vnumeros > 4000)] 
 
-# índice del menor valor seguido del índice del segundo valor, y así..
+# índice del menor elemento seguido del índice del segundo valor, y así..
 order(vnumeros)
 
-# valores ordenados
+# elementos ordenados
 vnumeros[order(vnumeros)]
 
-# valores ordenados
+# elementos ordenados
 sort(vnumeros)
 ```
 

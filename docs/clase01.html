@@ -747,6 +747,9 @@ numericos, o todos caracteres, etc.</h4>
 <div id="podemos-extraer-el-valor-almacenado-indicando-la-posición-o-índice" class="section level4">
 <h4>Podemos extraer el valor almacenado indicando la posición o
 índice:</h4>
+</div>
+<div id="con" class="section level4">
+<h4>con <a href="https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/Extract"><em>[</em></a></h4>
 <pre class="r klippy"><code># el segundo elemento:
 vnumeros[2]</code></pre>
 <pre><code>## [1] 4750</code></pre>
@@ -760,23 +763,29 @@ vnumeros[5:7]</code></pre>
 <div id="tambien-pordemos-extraer-los-valores-que-cumplan-alguna-condición" class="section level4">
 <h4>Tambien pordemos extraer los valores que cumplan alguna
 condición:</h4>
-<pre class="r klippy"><code>vnumeros &gt; 4000</code></pre>
+</div>
+<div id="la-función-basewhich-nos-responde-qué-índices-son-verdaderos." class="section level4">
+<h4>La función <a href="https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/which">base::<em>which</em></a>
+nos responde qué índices son verdaderos.</h4>
+<pre class="r klippy"><code># Al vectorizar, R evalúa la comparación elemento por elemento
+# vector booleano con TRUE donde el elemento es mayor que 4000, y FALSE en caso contrario.
+vnumeros &gt; 4000</code></pre>
 <pre><code>## [1] FALSE  TRUE  TRUE FALSE  TRUE FALSE  TRUE</code></pre>
-<pre class="r klippy"><code># valores que cumplen la condición
+<pre class="r klippy"><code># elementos que cumplen la condición
 vnumeros[vnumeros &gt; 4000] </code></pre>
 <pre><code>## [1] 4750 7300 4701 5200</code></pre>
-<pre class="r klippy"><code># índices de los valores que cumplen la condición
+<pre class="r klippy"><code># índices de los elementos que cumplen la condición
 which(vnumeros &gt; 4000)</code></pre>
 <pre><code>## [1] 2 3 5 7</code></pre>
 <pre class="r klippy"><code>vnumeros[which(vnumeros &gt; 4000)] </code></pre>
 <pre><code>## [1] 4750 7300 4701 5200</code></pre>
-<pre class="r klippy"><code># índice del menor valor seguido del índice del segundo valor, y así..
+<pre class="r klippy"><code># índice del menor elemento seguido del índice del segundo valor, y así..
 order(vnumeros)</code></pre>
 <pre><code>## [1] 1 4 6 5 2 7 3</code></pre>
-<pre class="r klippy"><code># valores ordenados
+<pre class="r klippy"><code># elementos ordenados
 vnumeros[order(vnumeros)]</code></pre>
 <pre><code>## [1] 1500 3250 3302 4701 4750 5200 7300</code></pre>
-<pre class="r klippy"><code># valores ordenados
+<pre class="r klippy"><code># elementos ordenados
 sort(vnumeros)</code></pre>
 <pre><code>## [1] 1500 3250 3302 4701 4750 5200 7300</code></pre>
 </div>
