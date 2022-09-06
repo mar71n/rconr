@@ -128,9 +128,11 @@ establecimientos[which(establecimientos[, "BARRIO"] == "SAN NIICOLAS"),"BARRIO"]
 ```{r, echo=TRUE,  class.source='klippy'}
 establecimientosXbarrio <- establecimientos %>% group_by(BARRIO) %>% 
                             summarise(ESTABLECIMIENTOS = n())
-                            establecimientosXbarrio %>% left_join(poblacion) 
 
 establecimientosXbarrio
+                            
+establecimientosXbarrio %>% left_join(poblacion) 
+
 ```
 
 ### Le agregamos una columna de establecimientos cada 1000 habitantes
@@ -198,28 +200,31 @@ vacunas <- read_csv("datos/dataset_total_vacunas.csv")
 
 names(vacunas)
 
-data1 <- vacunas %>% 
+vacunasXgrupo <- vacunas %>% 
   mutate(total = (DOSIS_1 + DOSIS_2 + DOSIS_3)) %>% 
   select(FECHA_ADMINISTRACION, GENERO, GRUPO_ETARIO, total) %>%
   group_by(GRUPO_ETARIO) %>% 
   summarise(TGRUPO = sum(total, na.rm=TRUE))
 
-data1
+vacunasXgrupo
 
-data2 <- vacunas %>% 
+vacunasXgrupoXgenero <- vacunas %>% 
   mutate(total = (DOSIS_1 + DOSIS_2 + DOSIS_3)) %>% 
   select(FECHA_ADMINISTRACION, GENERO, GRUPO_ETARIO, total) %>%
   group_by(GRUPO_ETARIO, GENERO) %>% 
-  summarise(TGG = sum(total, na.rm=TRUE)) %>%
-  left_join(data1, by = "GRUPO_ETARIO") %>%
+  summarise(TGG = sum(total, na.rm=TRUE))
+
+vacunasXgrupoXgenero
+
+vacunasTotalGrupoGenero <- left_join(vacunasXgrupoXgenero, vacunasXgrupo, by = "GRUPO_ETARIO") %>%
   mutate(PPGG = round(TGG / TGRUPO * 100, 2))
 
-data2
+vacunasTotalGrupoGenero
 ```
 #### [geom_text](https://ggplot2.tidyverse.org/reference/geom_text.html)
 #### [labs](https://ggplot2.tidyverse.org/reference/labs.html)
 ```{r, echo=TRUE,  class.source='klippy'}
-ggplot(data2, aes(GRUPO_ETARIO, TGG, fill=GENERO)) + 
+ggplot(vacunasTotalGrupoGenero, aes(GRUPO_ETARIO, TGG, fill=GENERO)) + 
   geom_bar(stat="identity", position = "stack", colour = "grey") +
   geom_text(aes(label= TGG), vjust= -0.5, color="black", size=3, position = position_stack(vjust = 0.5)) +
   labs(
@@ -232,7 +237,7 @@ ggplot(data2, aes(GRUPO_ETARIO, TGG, fill=GENERO)) +
   )
 
 
-ggplot(data2, aes(GRUPO_ETARIO, TGG, fill=GENERO)) + 
+ggplot(vacunasTotalGrupoGenero, aes(GRUPO_ETARIO, TGG, fill=GENERO)) + 
   geom_bar(stat="identity", position = "fill", colour = "grey") +
   geom_text(aes(label= round(PPGG, 2)), vjust= -0.5, color="black", size=3, position = position_fill(vjust = 0.5)) +
   labs(
@@ -251,7 +256,7 @@ ggplot(data2, aes(GRUPO_ETARIO, TGG, fill=GENERO)) +
 
 ### Compartiendo los datos al pedir ayuda, responder o mostrar comportamientos:
 ```{r, echo=TRUE, eval=FALSE, class.source='klippy'}
-dput(data2)
+dput(vacunasTotalGrupoGenero)
 ```
 #### Compartimos esta salida
 ```{r, echo=TRUE, eval=FALSE, class.source='klippy'}
