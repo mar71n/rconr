@@ -38,6 +38,7 @@ library(sf)
 ```{r, echo=TRUE,  class.source='klippy'}
 # https://data.buenosaires.gob.ar/dataset/establecimientos-educativos
 # establecimientos <- read_csv("https://cdn.buenosaires.gob.ar/datosabiertos/datasets/ministerio-de-educacion/establecimientos-educativos/establecimientos_educativos_WGS84.csv")
+# download.file("https://cdn.buenosaires.gob.ar/datosabiertos/datasets/ministerio-de-educacion/establecimientos-educativos/establecimientos_educativos_WGS84.csv", "datos/establecimientos_educativos_WGS84.csv")
 establecimientos <- read_csv("datos/establecimientos_educativos_WGS84.csv")
 ```
 
@@ -74,17 +75,23 @@ c(poblacion %>% distinct(BARRIO))
 #### dplyr::setdiff()
 ##### [Operaciones de conjuntos](https://dplyr.tidyverse.org/articles/two-table.html#set-operations)
 ```{r, echo=TRUE,  class.source='klippy'}
+# Los barrios que estan en establecimientod pero no en poblacion
 setdiff(establecimientos$BARRIO, poblacion$BARRIO)
 
+# los barrios que estan en poblacion pero no en establecimientos
 setdiff(poblacion$BARRIO, establecimientos$BARRIO)
 ```
 
-#### base::which()
+#### [*base::which()*](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/which)
 ```{r, echo=TRUE,  class.source='klippy'}
 which(establecimientos[, "BARRIO"] == "MONTSERRAT")
+
+which(establecimientos[, "BARRIO"] == "MONSERRAT")
+
 which(poblacion[, "BARRIO"] == "MONSERRAT")
 
 which(establecimientos[, "BARRIO"] == "SAN NIICOLAS")
+
 which(poblacion[, "BARRIO"] == "SAN NICOLAS")
 ```
 
@@ -119,33 +126,40 @@ establecimientos[which(establecimientos[, "BARRIO"] == "SAN NIICOLAS"),"BARRIO"]
 #### *group_by()* , *left_join()*
 ##### [Uniones de transformación](https://dplyr.tidyverse.org/reference/mutate-joins.html)
 ```{r, echo=TRUE,  class.source='klippy'}
-establecimientos %>% group_by(BARRIO) %>% 
-  summarise(ESTABLECIMIENTOS = n()) %>% 
-  left_join(poblacion) 
+establecimientosXbarrio <- establecimientos %>% group_by(BARRIO) %>% 
+                            summarise(ESTABLECIMIENTOS = n())
+                            establecimientosXbarrio %>% left_join(poblacion) 
+
+establecimientosXbarrio
 ```
 
 ### Le agregamos una columna de establecimientos cada 1000 habitantes
 ```{r, echo=TRUE,  class.source='klippy'}
-establecimientos %>% group_by(BARRIO) %>% summarise(ESTABLECIMIENTOS = n()) %>%
-  left_join(poblacion) %>%
-  mutate(CADA_1000 = (ESTABLECIMIENTOS * 1000) / POBLACION)
+establecimientosCada1000 <- establecimientosXbarrio %>% 
+                              left_join(poblacion) %>% 
+                              mutate(CADA_1000 = (ESTABLECIMIENTOS * 1000) / POBLACION)
+
+establecimientosCada1000
 ```
 
 
 ***
 ***
 
-#### Un gráfico que ya hicimos, solo cambian los datos
+#### Dos gráficos que ya hicimos, solo cambian los datos
 ##### Notemos que la sintaxis del gráfico es practicamente idéntica, lo que sí requirió trabajo es armar bien los datos.
 ```{r, echo=TRUE,  class.source='klippy'}
+
+ggplot(establecimientosCada1000) + 
+  geom_bar(aes(x = reorder(BARRIO, CADA_1000), weight = CADA_1000)) +
+  coord_flip()
+
+# sf procesa los poligonos:
 barrios2 <- st_read("datos/barrios.csv")
 
-barrios3 <- establecimientos %>% group_by(BARRIO) %>% summarise(ESTABLECIMIENTOS = n()) %>%
-  left_join(poblacion) %>%
-  mutate(CADA_1000 = (ESTABLECIMIENTOS * 1000) / POBLACION)
+establecimientosCada1000SF <- left_join( barrios2, establecimientosCada1000, by = c("barrio" = "BARRIO") )
 
-
-ggplot(barrios2 %>% left_join(barrios3, by = c("barrio" = "BARRIO") )) + 
+ggplot(establecimientosCada1000SF) + 
   geom_sf(aes(fill=CADA_1000))
 ```
 
