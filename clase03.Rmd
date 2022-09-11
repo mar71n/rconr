@@ -73,7 +73,42 @@ c(poblacion %>% distinct(BARRIO))
 ```
 
 #### dplyr::setdiff()
-##### [Operaciones de conjuntos](https://dplyr.tidyverse.org/articles/two-table.html#set-operations)
+- #### [Operaciones de conjuntos](https://dplyr.tidyverse.org/articles/two-table.html#set-operations)
+    ```{r, echo=TRUE,  class.source='klippy'}
+## Operaciones de conjuntos
+
+# diez primeros números pares
+pares <- seq(0,18, by=2)
+pares
+
+# diez primeros múltiplos de tres
+tres <- seq(0, 27, by=3)
+tres
+```
+##### *intersect*
+    ```{r, echo=TRUE,  class.source='klippy'}
+
+# numeros pares y múltiplos de tres
+# la intersección de los dos vectores, pensados como conjuntos
+intersect(pares, tres)
+```
+##### *union*
+    ```{r, echo=TRUE,  class.source='klippy'}
+# numeros pares ó múltiplos de tres
+# la unión, sin repetir, de los dos vectores pensados como conjuntos
+union(pares, tres)
+```
+##### *setdiff*
+    ```{r, echo=TRUE,  class.source='klippy'}
+# pares que no son múltiplo de tres
+setdiff(pares, tres)
+
+# múltiplos de tres que no son pares
+setdiff(tres, pares)
+```
+***
+
+##### Esto aplicado a los Barrios:
 ```{r, echo=TRUE,  class.source='klippy'}
 # Los barrios que estan en establecimientod pero no en poblacion
 setdiff(establecimientos$BARRIO, poblacion$BARRIO)
@@ -96,7 +131,50 @@ which(poblacion[, "BARRIO"] == "SAN NICOLAS")
 ```
 
 #### full_join()
-##### [Uniones de transformación](https://dplyr.tidyverse.org/reference/mutate-joins.html)
+- #### [Uniones de transformación](https://dplyr.tidyverse.org/reference/mutate-joins.html)
+    ```{r, echo=TRUE,  class.source='klippy'}
+### Uniones
+
+x <- tribble(
+  ~A, ~B, ~C,
+  #--|--|---
+  "a", "t", 1,
+  "b", "u", 2,
+  "c", "v", 3
+)
+
+x
+
+y <- tribble( ~A, ~B, ~D, "a", "t", 3, "b", "u", 2, "d", "w", 1)
+
+y
+
+## Uniones de transformación
+# Agregan columnas de y a x. Según haya coincidencias en las claves de unión.
+```
+- ##### *inner_join*
+    ```{r, echo=TRUE,  class.source='klippy'}
+# Solo las filas donde las claves coinciden
+inner_join(x, y)
+```
+- ##### *left_join*
+    ```{r, echo=TRUE,  class.source='klippy'}
+# todas las filas de x
+left_join(x, y)
+```
+- ##### *right_join*
+    ```{r, echo=TRUE,  class.source='klippy'}
+# todas las filas de y
+right_join(x, y)
+```
+- ##### *full_join*
+    ```{r, echo=TRUE,  class.source='klippy'}
+# todas las observaciones que están en x o en y
+full_join(x, y)
+```
+***
+
+#### En los Barrios:
 ```{r, echo=TRUE,  class.source='klippy'}
 establecimientos %>% full_join(poblacion, by = "BARRIO") %>% 
   select(NOMBRE_ABR, BARRIO, POBLACION) %>% 
@@ -105,7 +183,39 @@ establecimientos %>% full_join(poblacion, by = "BARRIO") %>%
 ```
 
 #### anti_join()
-#### [Uniones de filtro](https://dplyr.tidyverse.org/reference/filter-joins.html)
+- #### [Uniones de filtro](https://dplyr.tidyverse.org/reference/filter-joins.html)
+    ```{r, echo=TRUE,  class.source='klippy'}
+## Uniones de filtro
+
+x <- tribble( ~A, ~B, ~C, "a", "t", 1, "b", "u", 2, "c", "v", 3)
+
+x
+
+y <- tribble( ~A, ~B, ~D, "a", "t", 3, "b", "u", 2, "d", "w", 1)
+
+y
+```
+ - ##### *semi_join*
+    ```{r, echo=TRUE,  class.source='klippy'}
+# todas las observaciones de x que tienen una pareja en y
+# es un sub conjunto de x
+semi_join(x, y)
+# todas las observaciones de y que tienen una pareja en x
+# es un sub conjunto de y
+semi_join(y, x)
+```
+ - ##### *anti_join*
+    ```{r, echo=TRUE,  class.source='klippy'}
+# todas las observaciones de x que NO tienen una pareja en y
+# es un sub conjunto de x
+anti_join(x, y)
+# todas las observaciones de y que NO tienen una pareja en x
+# es un sub conjunto de y
+anti_join(x, y)
+```
+***
+
+#### Aplicado a los Barrios:
 ```{r, echo=TRUE,  class.source='klippy'}
 establecimientos %>% anti_join(poblacion, by = "BARRIO") %>% select(NOMBRE_ABR, BARRIO)
 

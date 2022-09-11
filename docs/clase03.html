@@ -708,9 +708,40 @@ poblacion &lt;- read_csv(&quot;datos/caba_pob_barrios_2010.csv&quot;)</code></pr
 </div>
 <div id="dplyrsetdiff" class="section level4">
 <h4>dplyr::setdiff()</h4>
-<div id="operaciones-de-conjuntos" class="section level5">
-<h5><a href="https://dplyr.tidyverse.org/articles/two-table.html#set-operations">Operaciones
-de conjuntos</a></h5>
+<ul>
+<li><h4 id="operaciones-de-conjuntos"><a href="https://dplyr.tidyverse.org/articles/two-table.html#set-operations">Operaciones
+de conjuntos</a></h4>
+<pre class="r klippy"><code>## Operaciones de conjuntos
+
+# diez primeros números pares
+pares &lt;- seq(0,18, by=2)
+pares</code></pre>
+<pre><code>##  [1]  0  2  4  6  8 10 12 14 16 18</code></pre>
+<pre class="r klippy"><code># diez primeros múltiplos de tres
+tres &lt;- seq(0, 27, by=3)
+tres</code></pre>
+<pre><code>##  [1]  0  3  6  9 12 15 18 21 24 27</code></pre>
+<h5 id="intersect"><em>intersect</em></h5>
+<pre class="r klippy"><code># numeros pares y múltiplos de tres
+# la intersección de los dos vectores, pensados como conjuntos
+intersect(pares, tres)</code></pre>
+<pre><code>## [1]  0  6 12 18</code></pre>
+<h5 id="union"><em>union</em></h5>
+<pre class="r klippy"><code># numeros pares ó múltiplos de tres
+# la unión, sin repetir, de los dos vectores pensados como conjuntos
+union(pares, tres)</code></pre>
+<pre><code>##  [1]  0  2  4  6  8 10 12 14 16 18  3  9 15 21 24 27</code></pre>
+<h5 id="setdiff"><em>setdiff</em></h5>
+<pre class="r klippy"><code># pares que no son múltiplo de tres
+setdiff(pares, tres)</code></pre>
+<pre><code>## [1]  2  4  8 10 14 16</code></pre>
+<pre class="r klippy"><code># múltiplos de tres que no son pares
+setdiff(tres, pares)</code></pre>
+<pre><code>## [1]  3  9 15 21 24 27</code></pre>
+<hr /></li>
+</ul>
+<div id="esto-aplicado-a-los-barrios" class="section level5">
+<h5>Esto aplicado a los Barrios:</h5>
 <pre class="r klippy"><code># Los barrios que estan en establecimientod pero no en poblacion
 setdiff(establecimientos$BARRIO, poblacion$BARRIO)</code></pre>
 <pre><code>## [1] &quot;MONTSERRAT&quot;   &quot;SAN NIICOLAS&quot;</code></pre>
@@ -737,9 +768,82 @@ setdiff(poblacion$BARRIO, establecimientos$BARRIO)</code></pre>
 </div>
 <div id="full_join" class="section level4">
 <h4>full_join()</h4>
-<div id="uniones-de-transformación" class="section level5">
-<h5><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">Uniones
-de transformación</a></h5>
+<ul>
+<li><h4 id="uniones-de-transformación"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">Uniones
+de transformación</a></h4>
+<pre class="r klippy"><code>### Uniones
+
+x &lt;- tribble(
+  ~A, ~B, ~C,
+  #--|--|---
+  &quot;a&quot;, &quot;t&quot;, 1,
+  &quot;b&quot;, &quot;u&quot;, 2,
+  &quot;c&quot;, &quot;v&quot;, 3
+)
+
+x</code></pre>
+<pre><code>## # A tibble: 3 × 3
+##   A     B         C
+##   &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt;
+## 1 a     t         1
+## 2 b     u         2
+## 3 c     v         3</code></pre>
+<pre class="r klippy"><code>y &lt;- tribble( ~A, ~B, ~D, &quot;a&quot;, &quot;t&quot;, 3, &quot;b&quot;, &quot;u&quot;, 2, &quot;d&quot;, &quot;w&quot;, 1)
+
+y</code></pre>
+<pre><code>## # A tibble: 3 × 3
+##   A     B         D
+##   &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt;
+## 1 a     t         3
+## 2 b     u         2
+## 3 d     w         1</code></pre>
+<pre class="r klippy"><code>## Uniones de transformación
+# Agregan columnas de y a x. Según haya coincidencias en las claves de unión.</code></pre></li>
+<li><h5 id="inner_join"><em>inner_join</em></h5>
+<pre class="r klippy"><code># Solo las filas donde las claves coinciden
+inner_join(x, y)</code></pre>
+<pre><code>## Joining, by = c(&quot;A&quot;, &quot;B&quot;)</code></pre>
+<pre><code>## # A tibble: 2 × 4
+##   A     B         C     D
+##   &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1 a     t         1     3
+## 2 b     u         2     2</code></pre></li>
+<li><h5 id="left_join"><em>left_join</em></h5>
+<pre class="r klippy"><code># todas las filas de x
+left_join(x, y)</code></pre>
+<pre><code>## Joining, by = c(&quot;A&quot;, &quot;B&quot;)</code></pre>
+<pre><code>## # A tibble: 3 × 4
+##   A     B         C     D
+##   &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1 a     t         1     3
+## 2 b     u         2     2
+## 3 c     v         3    NA</code></pre></li>
+<li><h5 id="right_join"><em>right_join</em></h5>
+<pre class="r klippy"><code># todas las filas de y
+right_join(x, y)</code></pre>
+<pre><code>## Joining, by = c(&quot;A&quot;, &quot;B&quot;)</code></pre>
+<pre><code>## # A tibble: 3 × 4
+##   A     B         C     D
+##   &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1 a     t         1     3
+## 2 b     u         2     2
+## 3 d     w        NA     1</code></pre></li>
+<li><h5 id="full_join-1"><em>full_join</em></h5>
+<pre class="r klippy"><code># todas las observaciones que están en x o en y
+full_join(x, y)</code></pre>
+<pre><code>## Joining, by = c(&quot;A&quot;, &quot;B&quot;)</code></pre>
+<pre><code>## # A tibble: 4 × 4
+##   A     B         C     D
+##   &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1 a     t         1     3
+## 2 b     u         2     2
+## 3 c     v         3    NA
+## 4 d     w        NA     1</code></pre>
+<hr /></li>
+</ul>
+</div>
+<div id="en-los-barrios" class="section level4">
+<h4>En los Barrios:</h4>
 <pre class="r klippy"><code>establecimientos %&gt;% full_join(poblacion, by = &quot;BARRIO&quot;) %&gt;% 
   select(NOMBRE_ABR, BARRIO, POBLACION) %&gt;% 
   filter(is.na(NOMBRE_ABR) | is.na(POBLACION) ) %&gt;% 
@@ -759,13 +863,72 @@ de transformación</a></h5>
 ## 10 EPjs 04       MONTSERRAT        NA
 ## # … with 50 more rows</code></pre>
 </div>
-</div>
 <div id="anti_join" class="section level4">
 <h4>anti_join()</h4>
-</div>
-<div id="uniones-de-filtro" class="section level4">
-<h4><a href="https://dplyr.tidyverse.org/reference/filter-joins.html">Uniones
+<ul>
+<li><h4 id="uniones-de-filtro"><a href="https://dplyr.tidyverse.org/reference/filter-joins.html">Uniones
 de filtro</a></h4>
+<pre class="r klippy"><code>## Uniones de filtro
+
+x &lt;- tribble( ~A, ~B, ~C, &quot;a&quot;, &quot;t&quot;, 1, &quot;b&quot;, &quot;u&quot;, 2, &quot;c&quot;, &quot;v&quot;, 3)
+
+x</code></pre>
+<pre><code>## # A tibble: 3 × 3
+##   A     B         C
+##   &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt;
+## 1 a     t         1
+## 2 b     u         2
+## 3 c     v         3</code></pre>
+<pre class="r klippy"><code>y &lt;- tribble( ~A, ~B, ~D, &quot;a&quot;, &quot;t&quot;, 3, &quot;b&quot;, &quot;u&quot;, 2, &quot;d&quot;, &quot;w&quot;, 1)
+
+y</code></pre>
+<pre><code>## # A tibble: 3 × 3
+##   A     B         D
+##   &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt;
+## 1 a     t         3
+## 2 b     u         2
+## 3 d     w         1</code></pre></li>
+<li><h5 id="semi_join"><em>semi_join</em></h5>
+<pre class="r klippy"><code># todas las observaciones de x que tienen una pareja en y
+# es un sub conjunto de x
+semi_join(x, y)</code></pre>
+<pre><code>## Joining, by = c(&quot;A&quot;, &quot;B&quot;)</code></pre>
+<pre><code>## # A tibble: 2 × 3
+##   A     B         C
+##   &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt;
+## 1 a     t         1
+## 2 b     u         2</code></pre>
+<pre class="r klippy"><code># todas las observaciones de y que tienen una pareja en x
+# es un sub conjunto de y
+semi_join(y, x)</code></pre>
+<pre><code>## Joining, by = c(&quot;A&quot;, &quot;B&quot;)</code></pre>
+<pre><code>## # A tibble: 2 × 3
+##   A     B         D
+##   &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt;
+## 1 a     t         3
+## 2 b     u         2</code></pre></li>
+<li><h5 id="anti_join-1"><em>anti_join</em></h5>
+<pre class="r klippy"><code># todas las observaciones de x que NO tienen una pareja en y
+# es un sub conjunto de x
+anti_join(x, y)</code></pre>
+<pre><code>## Joining, by = c(&quot;A&quot;, &quot;B&quot;)</code></pre>
+<pre><code>## # A tibble: 1 × 3
+##   A     B         C
+##   &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt;
+## 1 c     v         3</code></pre>
+<pre class="r klippy"><code># todas las observaciones de y que NO tienen una pareja en x
+# es un sub conjunto de y
+anti_join(x, y)</code></pre>
+<pre><code>## Joining, by = c(&quot;A&quot;, &quot;B&quot;)</code></pre>
+<pre><code>## # A tibble: 1 × 3
+##   A     B         C
+##   &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt;
+## 1 c     v         3</code></pre>
+<hr /></li>
+</ul>
+</div>
+<div id="aplicado-a-los-barrios" class="section level4">
+<h4>Aplicado a los Barrios:</h4>
 <pre class="r klippy"><code>establecimientos %&gt;% anti_join(poblacion, by = &quot;BARRIO&quot;) %&gt;% select(NOMBRE_ABR, BARRIO)</code></pre>
 <pre><code>## # A tibble: 59 × 2
 ##    NOMBRE_ABR    BARRIO    
