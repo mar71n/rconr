@@ -242,9 +242,64 @@ t2
 ***
 ***
 
-### [**stringr**](https://stringr.tidyverse.org/)
 ```{r, echo=TRUE,  class.source='klippy'}
 library(stringr)
+```
+
+### [**stringr**](https://stringr.tidyverse.org/)
+- #### las funciones comienzan con str_ y reciben un vector de strings como primer argumento
+    ```{r, echo=TRUE,  class.source='klippy'}
+str_length("Cuso R")
+
+x <- c("why", "video", "cross", "extra", "deal", "authority")
+
+str_view_all(x, "[aeiou]")
+```
+- #### str_detect
+    ```{r, echo=TRUE,  class.source='klippy'}
+# verdadero si hay alguna coincidencia, false en caso contrario
+str_detect(x, "[aeiou]")
+```
+- #### str_count
+    ```{r, echo=TRUE,  class.source='klippy'}
+# cuenta la cantidad de coincidencias
+str_count(x, "[aeiou]")
+```
+- #### str_subset
+    ```{r, echo=TRUE,  class.source='klippy'}
+# extrae los componentes que tienen coincidencias
+str_subset(x, "[aeiou]")
+```
+- #### str_locate
+    ```{r, echo=TRUE,  class.source='klippy'}
+# la posición de la coincidencias
+str_locate(x, "[aeiou]")
+```
+- #### str_replace
+    ```{r, echo=TRUE,  class.source='klippy'}
+str_replace(x, "[aeiou]", "?")
+```
+- #### str_extract
+    ```{r, echo=TRUE,  class.source='klippy'}
+# extrae el texto que coincide
+str_view(x, "r[aeiou]")
+str_extract(x, "r[aeiou]")
+str_locate(x, "r[aeiou]")
+```
+- #### Otros ejemplos:
+    ```{r, echo=TRUE,  class.source='klippy'}
+x <- c("PALERMO", "BALVANERA", "Barracas", "San Telmo", "CABALLITO", "PARQUE PATRICIOS")
+str_view_all(x, "[aeiou]")
+str_view_all(x, "(?i)[aeiou]")
+str_view_all(x, "^B")
+str_view_all(x, "[Oo]$")
+str_subset(x, "[Oo]$")
+str_subset(x, " ")
+
+str_to_lower(x)
+str_to_upper(x)
+str_to_title(x)
+str_to_sentence(x)
 ```
 
 #### la variable VACUNA
