@@ -76,6 +76,16 @@ Para algunas instalaciones de paquetes en Windows
 
 ### Paquetes:
 
+#### Librería estándar :
+##### Estos paquetes se instalan junto con R. Por lo que no hace falta instalarlos con *install.packages()*
+##### [*Paquetes de la librería estándar*](https://stat.ethz.ch/R-manual/R-devel/doc/html/packages.html)
+##### Algunos de ellos se cargan al comenzar, por lo que tampoco hace falta cargarlos con *library()*
+- [base](https://stat.ethz.ch/R-manual/R-devel/library/base/html/00Index.html)
+- [stats](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/00Index.html)
+- [utils](https://stat.ethz.ch/R-manual/R-devel/library/utils/html/00Index.html)
+- [datasets](https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/00Index.html)
+- ...
+
 #### Tidyverse :
 - [www.tidyverse.org](https://www.tidyverse.org/packages/)
   - [**dplyr**](https://dplyr.tidyverse.org/)
@@ -88,6 +98,9 @@ Para algunas instalaciones de paquetes en Windows
 - [r-spatial.github.io/sf/](https://r-spatial.github.io/sf/)
 
 ***
+
+#### Con este link se puede crear un R-notebook en Google Drive, que nos vá a servir para seguir la mayoría de los ejemplos que encontramos en la web:
+#### [colab.to/r](https://colab.to/r)
 
 ## Variables y tipos, importar algunos datos:
 
@@ -136,7 +149,7 @@ typeof(2+1i)
 ```
 
 #### Con _**?**item_ nos muestra ayuda sobre el _item_
-##### Los ejemplos siguientes nos muestran en el panel de *Help* las funciones matemáticas disponibles.
+##### Los ejemplos siguientes nos muestran en el panel de *Help* las funciones matemáticas disponibles con la librería estándar.
 ```{r}
 ?Arithmetic # Operadores aritméticos
 
@@ -298,12 +311,16 @@ matriz <- matrix(c(18, 8.10, 20, 9, 21,	9.45, 22,	9.90, 23,	10.35), ncol = 2, by
 
 matriz
 
+# La columna 1
 matriz[,1]
 
+# La fila 3
 matriz[3,]
 
+# El elemeneto guardado en la fila 3, columna 1
 matriz[3,1]
 
+# Las filas desde la 2 a la 4
 matriz[2:4,]
 ```
 
@@ -410,7 +427,6 @@ summary(barrios)
 ```
 
 #### Usamos *%>%* y  *select()* del paquete [*dplyr*](https://dplyr.tidyverse.org/)
-##### [dplyr](https://dplyr.tidyverse.org/)
 ##### [%>%](https://magrittr.tidyverse.org/reference/pipe.html)
 ###### **Estaremos usando paquetes que integran *tidyverse* y que se instalan al instalar este último.**
 ###### **Pero recomiendo ir instalando a medida que los usemos.**
@@ -431,11 +447,17 @@ barrios %>% select(barrio, comuna)
 barrios %>% select(!WKT)
 ```
 
-#### Sín usar *dplyr*, podemos usar [*\[*](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/Extract) para seleccionar columnas
+#### De la librería estándar, podemos usar
+[*$*](https://stat.ethz.ch/R-manual/R-devel/library/base/html/Extract.html) ó
+[*\[*](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/Extract) para seleccionar columnas
 
 ```{r, echo=TRUE,  class.source='klippy'}
 
 # head() nos muestra los primeros elementos de un objeto
+
+head(
+  barrios$area
+)
 
 head(
   barrios[c("barrio", "comuna")]
