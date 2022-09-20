@@ -60,6 +60,8 @@ klippy::klippy('')
 #' - [www.rstudio.com](https://www.rstudio.com/)
 #' - [www.rstudio.com/products/rstudio/download/](https://www.rstudio.com/products/rstudio/download/)
 #' 
+#' #### RStudio se convierte en **Posit** en Octubre. [**posit.co**](https://posit.co/)
+#' 
 #' ***
 #' 
 #' ### Búsquedas y ayuda :
