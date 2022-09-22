@@ -80,9 +80,8 @@ table(vacunas$GENERO)
 table(vacunas$GRUPO_ETARIO)
 
 #' 
-#' ##### Con [*dplyr::count*](https://dplyr.tidyverse.org/reference/count.html
 #' #### Al modo dplyr:
-#' #### [dplyr::count](https://dplyr.tidyverse.org/reference/count.html)
+#' ##### Con [*dplyr::count*](https://dplyr.tidyverse.org/reference/count.html)
 ## ---- echo=TRUE,  class.source='klippy'---------------------------------------
 vacunas %>% count(GENERO)
 
@@ -310,6 +309,12 @@ ggplot(data2, aes(GRUPO_ETARIO, t, fill=GENERO)) +
   geom_bar(stat="identity", position = "fill", colour = "grey")
 
 #' 
+#' ***
+#' ***
+#' 
+#' ### [Ejercicios](clase02_ejercicios.html)
+#' 
+#' ***
 #' ***
 #' ***
 #' ### Bibliografia:
