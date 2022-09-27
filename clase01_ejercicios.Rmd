@@ -23,19 +23,19 @@ barrios <- read.csv("https://cdn.buenosaires.gob.ar/datosabiertos/datasets/barri
 #### Donde "area" es el área de cada barrio medido en m2.
 
 #### cual es la superficie de CABA ? 
-```{r, echo=FALSE,  class.source='klippy'}
+```{r, echo=TRUE,  class.source='klippy'}
 sum(barrios$area)
 ```
 
 ### 02)
 #### que superficie tiene el barrio más pequeño ?
-```{r, echo=FALSE,  class.source='klippy'}
+```{r, echo=TRUE,  class.source='klippy'}
 min(barrios$area)
 ```
 
 ### 03)
 #### y en Km2 ?
-```{r, echo=FALSE,  class.source='klippy'}
+```{r, echo=TRUE,  class.source='klippy'}
 barrios$areaKm <- barrios$area/(1000*1000)
 sum(barrios$areaKm)
 min(barrios$areaKm)
@@ -43,13 +43,13 @@ min(barrios$areaKm)
 
 ### 04)
 #### cual es el barrio con más superficie ?
-```{r, echo=FALSE,  class.source='klippy'}
+```{r, echo=TRUE,  class.source='klippy'}
 barrios[barrios$area == max(barrios$area), "barrio"]
 ```
 
 ### 05)
 #### que barrios tienen mayor superficie que la superficie promedio.
-```{r, echo=FALSE,  class.source='klippy'}
+```{r, echo=TRUE,  class.source='klippy'}
 areapromedio <- mean(barrios$area)
 barrios[barrios$area > areapromedio, "barrio"]
 ```
