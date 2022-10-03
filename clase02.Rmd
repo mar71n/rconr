@@ -198,7 +198,52 @@ vacunas %>% mutate(total = (DOSIS_1 + DOSIS_2 + DOSIS_3)) %>%
 ```
 
 #### Filtrar y ordenar
-##### *filter()* y *arange()*
+##### *filter()* y [*arrange()*](https://dplyr.tidyverse.org/reference/arrange.html)
+- ##### **arrange()** ordena las filas de un data frame por los valores de las columnas seleccionadas.
+  ##### A diferencia de otros verbos dplyr, arrange() ignora en gran medida la agrupación; debe mencionar explícitamente las variables de agrupación (o usar .by_group = TRUE) para agruparlas. Las funciones se evaluan una vez para todos los datos, no por grupo.
+  ##### Devuelve  un data frame del mismo tipo que los datos de entrada.
+
+    ```{r, echo=TRUE,  class.source='klippy'}
+x <- tribble(
+  ~A, ~B, ~C,
+  #--|--|---
+  "a", "t", 1,
+  "c", NA, 3,
+  "b", "u", 2,
+  "a", "b", 1,
+  "c", "b", 3
+)
+
+x
+
+arrange(x, A)
+
+# Por ejemplo, las funciones de summarise se evaluan por grupo
+x %>% group_by(A) %>% summarise(sum(C))
+
+# arrange() no se evalua por grupo
+x %>% group_by(A, B) %>% arrange(A)
+
+# a menos que se indique con *.by_group = TRUE*
+x %>% group_by(A, B) %>% arrange(A, .by_group = TRUE)
+
+# La columna A ordenada
+sort(x$A)
+
+# sort() no incluye los registros con NA
+sort(x$B)
+
+# arrange() ordena al final los NA
+arrange(x, B)
+
+# Se comporta igual que base::order()
+x[order(x$B),]
+```
+
+***
+
+##### Seguimos con las vacunas ...
+
 ```{r, echo=TRUE,  class.source='klippy'}
 vacunas %>% mutate(total = (DOSIS_1 + DOSIS_2 + DOSIS_3)) %>% 
             select(FECHA_ADMINISTRACION, GENERO, GRUPO_ETARIO, total) %>%
