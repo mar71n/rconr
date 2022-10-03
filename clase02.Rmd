@@ -224,7 +224,7 @@ x %>% group_by(A) %>% summarise(sum(C))
 # arrange() no se evalua por grupo
 x %>% group_by(A, B) %>% arrange(A)
 
-# a menos que se indique con *.by_group = TRUE*
+# a menos que se indique con .by_group = TRUE
 x %>% group_by(A, B) %>% arrange(A, .by_group = TRUE)
 
 # La columna A ordenada
@@ -282,7 +282,7 @@ ggplot(data1, aes(GENERO,t, fill = GENERO)) +
 
 ***
 
-##### *options(...)* nos permite ver y configurar opciones globales de R.
+##### [*options(...)*](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/options) nos permite ver y configurar opciones globales de R.
 ##### Entre ellas, ***scipen***, con la que podemos controlar cuando usar notación cientifica.
 ##### _*scipen*_: Los valores positivos sesgan hacia la notación fija y los negativos hacia la notación científica: se preferirá la notación fija a menos que sea más que dígitos scipen más anchos.
 ##### Por defecto es cero.

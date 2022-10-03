@@ -1003,7 +1003,7 @@ x %&gt;% group_by(A, B) %&gt;% arrange(A)</code></pre>
 ## 3 b     u         2
 ## 4 c     &lt;NA&gt;      3
 ## 5 c     b         3</code></pre>
-<pre class="r klippy"><code># a menos que se indique con *.by_group = TRUE*
+<pre class="r klippy"><code># a menos que se indique con .by_group = TRUE
 x %&gt;% group_by(A, B) %&gt;% arrange(A, .by_group = TRUE)</code></pre>
 <pre><code>## # A tibble: 5 × 3
 ## # Groups:   A, B [5]
@@ -1129,8 +1129,8 @@ data1</code></pre>
 <hr />
 </div>
 <div id="options-nos-permite-ver-y-configurar-opciones-globales-de-r." class="section level5">
-<h5><em>options(…)</em> nos permite ver y configurar opciones globales
-de R.</h5>
+<h5><a href="https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/options"><em>options(…)</em></a>
+nos permite ver y configurar opciones globales de R.</h5>
 </div>
 <div id="entre-ellas-scipen-con-la-que-podemos-controlar-cuando-usar-notación-cientifica." class="section level5">
 <h5>Entre ellas, <strong><em>scipen</em></strong>, con la que podemos
