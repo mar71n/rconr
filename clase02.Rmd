@@ -56,7 +56,7 @@ summary(vacunas)
 
 #### filtro los que tienen NAs
 #### con [*\[*](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/Extract)
-#### y [*which*](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/which)
+
 ```{r, echo=TRUE,  class.source='klippy'}
 vacunas[is.na(vacunas$DOSIS_3),c(-1,-8)]
 ```
@@ -117,13 +117,53 @@ table(vacunas$GRUPO_ETARIO)
 ```
 
 #### Al modo dplyr:
-##### Con [*dplyr::count*](https://dplyr.tidyverse.org/reference/count.html)
-```{r, echo=TRUE,  class.source='klippy'}
+- [summarise](https://dplyr.tidyverse.org/reference/summarise.html) Resume cada grupo en menos filas.
+
+  El resultado es una (o más) filas para cada combinación de variables de agrupación; si no hay variables de agrupación, la salida tendrá una sola fila que resuma todas las observaciones en la entrada. Contendrá una columna para cada variable de agrupación y una columna para cada una de las estadísticas de resumen que haya especificado.
+  summarise() y summarize() son sinónimos.
+
+ - Funciones útiles
+
+   - Centro:  mean(), median()
+
+   - Dispersión: sd(), IQR(), mad()
+
+   - Rango: min(), max(), quantile()
+
+   - Posición: first(), last(), nth()
+
+   - Cuenta: n(), n_distinct()
+
+   - Lógico: any(), all()
+
+    ```{r, echo=TRUE,  class.source='klippy'}
+vacunas %>% summarise(mean(DOSIS_1))
+
+```
+
+
+- [group_by](https://dplyr.tidyverse.org/reference/group_by.html)
+
+  group_by() toma un tbl existente y lo convierte en un tbl agrupado donde las operaciones se realizan "por grupo". ungroup() elimina la agrupación.
+    ```{r, echo=TRUE,  class.source='klippy'}
+vacunas %>% group_by(GENERO) %>% summarise(mean(DOSIS_1))
+```
+
+- [count](https://dplyr.tidyverse.org/reference/count.html)
+
+  *count()* le permite contar rápidamente los valores únicos de una o más variables: **df %>% count(a, b)** es aproximadamente *equivalente* a **df %>% group_by(a, b) %>% summarise(n = n() )**. 
+  *count()* está emparejado con tally(), un asistente de nivel inferior que es equivalente a df %>% summarise(n = n()). 
+
+  Pasamos un **wt** para ponderar, cambiando el resumen de n = n() a n = sum(wt). 
+
+    ```{r, echo=TRUE,  class.source='klippy'}
 vacunas %>% count(GENERO)
+
+vacunas %>% group_by(GENERO) %>% summarise(total = n())
 
 vacunas %>% count(GENERO, wt = DOSIS_1)
 
-vacunas %>% group_by(GENERO) %>% summarise(total = n())
+vacunas %>% group_by(GENERO) %>% summarise(total = sum(DOSIS_1))
 
 vacunas %>% count(VACUNA, wt = DOSIS_1)
 ```
@@ -175,7 +215,7 @@ vacunas %>% mutate(total = (DOSIS_1 + DOSIS_2 + DOSIS_3)) %>% select(FECHA_ADMIN
 ```
 
 #### Calculamos totales agrupando por GENERO
-##### **goup_by()** y **summarise()**
+##### [**goup_by()**](https://dplyr.tidyverse.org/reference/group_by.html) y [**summarise()**](https://dplyr.tidyverse.org/reference/summarise.html)
 ```{r, echo=TRUE,  class.source='klippy'}
 library(ggplot2)
 

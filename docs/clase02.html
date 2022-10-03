@@ -635,9 +635,6 @@ estos:</h4>
 </div>
 <div id="con" class="section level4">
 <h4>con <a href="https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/Extract"><em>[</em></a></h4>
-</div>
-<div id="y-which" class="section level4">
-<h4>y <a href="https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/which"><em>which</em></a></h4>
 <pre class="r klippy"><code>vacunas[is.na(vacunas$DOSIS_3),c(-1,-8)]</code></pre>
 <pre><code>## # A tibble: 83 × 7
 ##    GRUPO_ETARIO GENERO VACUNA      TIPO_EFECTOR     DOSIS_1 DOSIS_2 DOSIS_3
@@ -775,11 +772,59 @@ summary(vacunas)</code></pre>
 </div>
 <div id="al-modo-dplyr" class="section level4">
 <h4>Al modo dplyr:</h4>
-<div id="con-dplyrcount" class="section level5">
-<h5>Con <a href="https://dplyr.tidyverse.org/reference/count.html"><em>dplyr::count</em></a></h5>
+<ul>
+<li><p><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a>
+Resume cada grupo en menos filas.</p>
+<p>El resultado es una (o más) filas para cada combinación de variables
+de agrupación; si no hay variables de agrupación, la salida tendrá una
+sola fila que resuma todas las observaciones en la entrada. Contendrá
+una columna para cada variable de agrupación y una columna para cada una
+de las estadísticas de resumen que haya especificado. summarise() y
+summarize() son sinónimos.</p></li>
+<li><p>Funciones útiles</p>
+<ul>
+<li><p>Centro: mean(), median()</p></li>
+<li><p>Dispersión: sd(), IQR(), mad()</p></li>
+<li><p>Rango: min(), max(), quantile()</p></li>
+<li><p>Posición: first(), last(), nth()</p></li>
+<li><p>Cuenta: n(), n_distinct()</p></li>
+<li><p>Lógico: any(), all()</p></li>
+</ul>
+<pre class="r klippy"><code>vacunas %&gt;% summarise(mean(DOSIS_1))</code></pre>
+<pre><code>## # A tibble: 1 × 1
+##   `mean(DOSIS_1)`
+##             &lt;dbl&gt;
+## 1            75.3</code></pre></li>
+<li><p><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></p>
+<p>group_by() toma un tbl existente y lo convierte en un tbl agrupado
+donde las operaciones se realizan “por grupo”. ungroup() elimina la
+agrupación.</p>
+<pre class="r klippy"><code>vacunas %&gt;% group_by(GENERO) %&gt;% summarise(mean(DOSIS_1))</code></pre>
+<pre><code>## # A tibble: 3 × 2
+##   GENERO `mean(DOSIS_1)`
+##   &lt;chr&gt;            &lt;dbl&gt;
+## 1 F               77.9  
+## 2 M               72.7  
+## 3 N                0.373</code></pre></li>
+<li><p><a href="https://dplyr.tidyverse.org/reference/count.html">count</a></p>
+<p><em>count()</em> le permite contar rápidamente los valores únicos de
+una o más variables: <strong>df %&gt;% count(a, b)</strong> es
+aproximadamente <em>equivalente</em> a <strong>df %&gt;% group_by(a, b)
+%&gt;% summarise(n = n() )</strong>. <em>count()</em> está emparejado
+con tally(), un asistente de nivel inferior que es equivalente a df
+%&gt;% summarise(n = n()).</p>
+<p>Pasamos un <strong>wt</strong> para ponderar, cambiando el resumen de
+n = n() a n = sum(wt).</p>
 <pre class="r klippy"><code>vacunas %&gt;% count(GENERO)</code></pre>
 <pre><code>## # A tibble: 3 × 2
 ##   GENERO     n
+##   &lt;chr&gt;  &lt;int&gt;
+## 1 F      19941
+## 2 M      18539
+## 3 N         51</code></pre>
+<pre class="r klippy"><code>vacunas %&gt;% group_by(GENERO) %&gt;% summarise(total = n())</code></pre>
+<pre><code>## # A tibble: 3 × 2
+##   GENERO total
 ##   &lt;chr&gt;  &lt;int&gt;
 ## 1 F      19941
 ## 2 M      18539
@@ -791,13 +836,13 @@ summary(vacunas)</code></pre>
 ## 1 F      1554001
 ## 2 M      1348112
 ## 3 N           19</code></pre>
-<pre class="r klippy"><code>vacunas %&gt;% group_by(GENERO) %&gt;% summarise(total = n())</code></pre>
+<pre class="r klippy"><code>vacunas %&gt;% group_by(GENERO) %&gt;% summarise(total = sum(DOSIS_1))</code></pre>
 <pre><code>## # A tibble: 3 × 2
-##   GENERO total
-##   &lt;chr&gt;  &lt;int&gt;
-## 1 F      19941
-## 2 M      18539
-## 3 N         51</code></pre>
+##   GENERO   total
+##   &lt;chr&gt;    &lt;dbl&gt;
+## 1 F      1554001
+## 2 M      1348112
+## 3 N           19</code></pre>
 <pre class="r klippy"><code>vacunas %&gt;% count(VACUNA, wt = DOSIS_1)</code></pre>
 <pre><code>## # A tibble: 7 × 2
 ##   VACUNA                                                                    n
@@ -808,9 +853,9 @@ summary(vacunas)</code></pre>
 ## 4 Sputnik                                                              887466
 ## 5 vacuna Coronavirus (CANSINO), vial x 1 dosis                          29443
 ## 6 vacuna Coronavirus (PFIZER) 1ra - 2da dosis, vial x 6 dosis (0.3ml)  193282
-## 7 vacuna Coronavirus (PFIZER) pediátrica, vial x 10 dosis (0.2ml)        2767</code></pre>
+## 7 vacuna Coronavirus (PFIZER) pediátrica, vial x 10 dosis (0.2ml)        2767</code></pre></li>
+</ul>
 <hr />
-</div>
 </div>
 <div id="que-pasa-con-las-fechas" class="section level4">
 <h4>Que pasa con las fechas ?</h4>
@@ -956,7 +1001,8 @@ summary(vacunas)</code></pre>
 <div id="calculamos-totales-agrupando-por-genero" class="section level4">
 <h4>Calculamos totales agrupando por GENERO</h4>
 <div id="goup_by-y-summarise" class="section level5">
-<h5><strong>goup_by()</strong> y <strong>summarise()</strong></h5>
+<h5><a href="https://dplyr.tidyverse.org/reference/group_by.html"><strong>goup_by()</strong></a>
+y <a href="https://dplyr.tidyverse.org/reference/summarise.html"><strong>summarise()</strong></a></h5>
 <pre class="r klippy"><code>library(ggplot2)
 
 data1 &lt;- vacunas %&gt;% 
