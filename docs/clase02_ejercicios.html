@@ -559,22 +559,31 @@ pre code {
 </div>
 <div id="que-superficie-tiene-el-barrio-más-pequeño" class="section level3">
 <h3>2) que superficie tiene el barrio más pequeño ?</h3>
+<pre class="r klippy"><code>min(barrios$area)</code></pre>
 <pre><code>## [1] 1232270</code></pre>
 </div>
 <div id="y-en-km2" class="section level3">
 <h3>03) y en Km2 ?</h3>
+<pre class="r klippy"><code>barrios %&gt;% mutate(areaKm = area / (1000 * 1000)) %&gt;% count(wt = areaKm, name = &quot;Area CABA (Km2)&quot;)</code></pre>
 <pre><code>##   Area CABA (Km2)
 ## 1        203.6497</code></pre>
+<pre class="r klippy"><code>barrios %&gt;% mutate(areaKm = area / (1000 * 1000)) %&gt;% select(areaKm) %&gt;% min()</code></pre>
 <pre><code>## [1] 1.23227</code></pre>
 </div>
 <div id="cual-es-el-barrio-con-más-superficie" class="section level3">
 <h3>04) cual es el barrio con más superficie ?</h3>
+<pre class="r klippy"><code>maximo &lt;- max(barrios$area)
+
+barrios %&gt;% filter(area == maximo) %&gt;% select(barrio, area)</code></pre>
 <pre><code>##    barrio     area
 ## 1 PALERMO 15845871</code></pre>
 </div>
 <div id="que-barrios-tienen-mayor-superficie-que-la-superficie-promedio." class="section level3">
 <h3>05) que barrios tienen mayor superficie que la superficie
 promedio.</h3>
+<pre class="r klippy"><code>areapromedio &lt;- mean(barrios$area)
+
+barrios %&gt;% filter(area &gt; areapromedio) %&gt;% select(barrio, area)</code></pre>
 <pre><code>##               barrio     area
 ## 1          CABALLITO  6851029
 ## 2             FLORES  8590784
