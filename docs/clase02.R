@@ -58,16 +58,52 @@ summary(vacunas)
 #' #### con [*\[*](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/Extract)
 #' #### y [*which*](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/which)
 ## ---- echo=TRUE,  class.source='klippy'---------------------------------------
-vacunas[which(is.na(vacunas$DOSIS_3)),c(-1,-8)]
+vacunas[is.na(vacunas$DOSIS_3),c(-1,-8)]
 
 #' #### o con [*dplyr::filter*](https://dplyr.tidyverse.org/reference/filter.html)
+#'  - ##### Subconjunto de datos donde todas las condiciones son VERDADERAS.
+## ---- echo=TRUE,  class.source='klippy'---------------------------------------
+x <- tribble(
+  ~A, ~B, ~C,
+  #--|--|---
+  "a", "t", 1,
+  "a", "b", 1,
+  "b", "u", 2,
+  "c", NA, 3,
+  "c", "b", 3
+)
+
+x
+
+# Las dos condiciones son VERDADERAS
+x %>% filter(A == "a", B == "b")
+
+# Equivalente a & (AND) con [
+x[x$A == "a" & x$B == "b",]
+
+# Si la condicion es NA, el registro es excluido por filter (cosa esperable), pero no por [
+x$B == "t"
+
+x %>% filter(B == "t")
+
+x[x$B == "t",]
+
+
+#' - #### Podemos usar para construir las condiciones:
+#'   - ##### ==, >, <, >= ...
+#'   - ##### &, |, !, xor()
+#'   - ##### is.na()
+#'   - ##### between(), near()
+#' 
+#' ***
+#' 
 ## ---- echo=TRUE,  class.source='klippy'---------------------------------------
 vacunas %>% filter(is.na(vacunas$DOSIS_3)) %>% select(-FECHA_ADMINISTRACION, -ID_CARGA)
 
 #' 
 #' #### pongo cero en esos NAs 
 ## ---- echo=TRUE,  class.source='klippy'---------------------------------------
-vacunas[which(is.na(vacunas$DOSIS_3)), "DOSIS_3"] <- 0
+vacunas[is.na(vacunas$DOSIS_3), "DOSIS_3"] <- 0
 
 summary(vacunas)
 
