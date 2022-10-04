@@ -185,7 +185,11 @@ max(dmy_hms(vacunas$FECHA_ADMINISTRACION))
 #' ***
 #' 
 #' #### Seleccionar columnas de interes, agregar columnas
-#' ##### *select()* y *mutate()*
+#' ##### *select()* y 
+#' ##### [mutate()](https://dplyr.tidyverse.org/reference/mutate.html)
+#'  - ##### Crear, modificar y eliminar columnas.
+#'    ##### **mutate()** agrega nuevas variables y conserva las existentes; **transmute()** agrega nuevas variables y elimina las existentes. Las nuevas variables sobrescriben las variables existentes del mismo nombre. Las variables se pueden eliminar estableciendo su valor en NULL
+#' 
 ## ---- echo=TRUE,  class.source='klippy'---------------------------------------
 vacunas %>% select(GENERO, GRUPO_ETARIO)
 
@@ -259,6 +263,8 @@ vacunas %>% mutate(total = (DOSIS_1 + DOSIS_2 + DOSIS_3)) %>% select(FECHA_ADMIN
 
 
 #' 
+#' ***
+#' 
 #' #### Calculamos totales agrupando por GENERO
 #' ##### [**goup_by()**](https://dplyr.tidyverse.org/reference/group_by.html) y [**summarise()**](https://dplyr.tidyverse.org/reference/summarise.html)
 ## ---- echo=TRUE,  class.source='klippy'---------------------------------------
@@ -273,11 +279,11 @@ data1 <- vacunas %>%
 data1
 
 #' 
-#' ##### **fill**, **geom_bar**, **geom_text**
+#' #### **fill**, **geom_bar**, **geom_text**
 ## ---- echo=TRUE,  class.source='klippy'---------------------------------------
-ggplot(data1, aes(GENERO,t, fill = GENERO)) + 
-  geom_bar(stat="identity", colour = "grey") +
-  geom_text(aes(label= t), vjust= -0.5, color="black", size=4)
+ggplot(data1) + 
+  geom_bar(aes(GENERO,t, fill = GENERO), stat="identity", colour = "grey") +
+  geom_text(aes(x= GENERO, y = t, label= t), vjust= -0.5, color="black", size=4)
 
 #' 
 #' ***
@@ -292,7 +298,7 @@ actual <- options("scipen")
 # indico que use notación fija a menos que sean mas de 10 digitos:
 options(scipen=10)
 
-#' #### Sín notación cientifica:
+#' #### Sín notación cientifica y "factor comun" en aes(...)
 ## ---- echo=TRUE,  class.source='klippy'---------------------------------------
 ggplot(data1, aes(GENERO,t, fill = GENERO)) + 
   geom_bar(stat="identity", colour = "grey") +
