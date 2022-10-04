@@ -77,12 +77,12 @@ c(poblacion %>% distinct(BARRIO))
     ```{r, echo=TRUE,  class.source='klippy'}
 ## Operaciones de conjuntos
 
-# diez primeros números pares
-pares <- seq(0,18, by=2)
+# números pares <= 30
+pares <- seq(0,30, by=2)
 pares
 
-# diez primeros múltiplos de tres
-tres <- seq(0, 27, by=3)
+# múltiplos de tres <= 30
+tres <- seq(0, 30, by=3)
 tres
 ```
 ##### *intersect*

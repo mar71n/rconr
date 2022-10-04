@@ -713,31 +713,31 @@ poblacion &lt;- read_csv(&quot;datos/caba_pob_barrios_2010.csv&quot;)</code></pr
 de conjuntos</a></h4>
 <pre class="r klippy"><code>## Operaciones de conjuntos
 
-# diez primeros números pares
-pares &lt;- seq(0,18, by=2)
+# números pares &lt;= 30
+pares &lt;- seq(0,30, by=2)
 pares</code></pre>
-<pre><code>##  [1]  0  2  4  6  8 10 12 14 16 18</code></pre>
-<pre class="r klippy"><code># diez primeros múltiplos de tres
-tres &lt;- seq(0, 27, by=3)
+<pre><code>##  [1]  0  2  4  6  8 10 12 14 16 18 20 22 24 26 28 30</code></pre>
+<pre class="r klippy"><code># múltiplos de tres &lt;= 30
+tres &lt;- seq(0, 30, by=3)
 tres</code></pre>
-<pre><code>##  [1]  0  3  6  9 12 15 18 21 24 27</code></pre>
+<pre><code>##  [1]  0  3  6  9 12 15 18 21 24 27 30</code></pre>
 <h5 id="intersect"><em>intersect</em></h5>
 <pre class="r klippy"><code># numeros pares y múltiplos de tres
 # la intersección de los dos vectores, pensados como conjuntos
 intersect(pares, tres)</code></pre>
-<pre><code>## [1]  0  6 12 18</code></pre>
+<pre><code>## [1]  0  6 12 18 24 30</code></pre>
 <h5 id="union"><em>union</em></h5>
 <pre class="r klippy"><code># numeros pares ó múltiplos de tres
 # la unión, sin repetir, de los dos vectores pensados como conjuntos
 union(pares, tres)</code></pre>
-<pre><code>##  [1]  0  2  4  6  8 10 12 14 16 18  3  9 15 21 24 27</code></pre>
+<pre><code>##  [1]  0  2  4  6  8 10 12 14 16 18 20 22 24 26 28 30  3  9 15 21 27</code></pre>
 <h5 id="setdiff"><em>setdiff</em></h5>
 <pre class="r klippy"><code># pares que no son múltiplo de tres
 setdiff(pares, tres)</code></pre>
-<pre><code>## [1]  2  4  8 10 14 16</code></pre>
+<pre><code>##  [1]  2  4  8 10 14 16 20 22 26 28</code></pre>
 <pre class="r klippy"><code># múltiplos de tres que no son pares
 setdiff(tres, pares)</code></pre>
-<pre><code>## [1]  3  9 15 21 24 27</code></pre>
+<pre><code>## [1]  3  9 15 21 27</code></pre>
 <hr /></li>
 </ul>
 <div id="esto-aplicado-a-los-barrios" class="section level5">
