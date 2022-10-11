@@ -64,7 +64,7 @@ vacunas <- read_csv("https://cdn.buenosaires.gob.ar/datosabiertos/datasets/salud
 
 #### 0 en los valor NA de DOSIS_3
 ```{r, echo=TRUE,  class.source='klippy'}
-vacunas[which(is.na(vacunas$DOSIS_3)), "DOSIS_3"] <- 0
+vacunas[is.na(vacunas$DOSIS_3), "DOSIS_3"] <- 0
 ```
 
 #### Agrego la columna de *total* para cada registro
