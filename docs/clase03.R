@@ -217,8 +217,10 @@ anti_join(x, y)
 #' 
 #' #### Aplicado a los Barrios:
 ## ---- echo=TRUE,  class.source='klippy'---------------------------------------
+# Todos los "establecimientos" que no tienen un BARRIO en la tabla de "poblacion"
 establecimientos %>% anti_join(poblacion, by = "BARRIO") %>% select(NOMBRE_ABR, BARRIO)
 
+# Los registros de "poblacion" que no coinciden con ningún BARRIO de "establecimientos"
 poblacion %>% anti_join(establecimientos, by = "BARRIO")
 
 
@@ -236,11 +238,13 @@ establecimientos[which(establecimientos[, "BARRIO"] == "SAN NIICOLAS"),"BARRIO"]
 #' #### *group_by()* , *left_join()*
 #' ##### [Uniones de transformación](https://dplyr.tidyverse.org/reference/mutate-joins.html)
 ## ---- echo=TRUE,  class.source='klippy'---------------------------------------
+# Calculamos la cantidad, con n= n(), de establecimientos por barrio
 establecimientosXbarrio <- establecimientos %>% group_by(BARRIO) %>% 
                             summarise(ESTABLECIMIENTOS = n())
 
 establecimientosXbarrio
-                            
+
+# A "establecimientosXbarrio" le agregamos "poblacion"
 establecimientosXbarrio %>% left_join(poblacion) 
 
 
@@ -365,6 +369,8 @@ ggplot(vacunasTotalGrupoGenero, aes(GRUPO_ETARIO, TGG, fill=GENERO)) +
 #' ***
 #' 
 #' ### Compartiendo los datos al pedir ayuda, responder o mostrar comportamientos:
+#' #### [base::dput](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/dput)
+#'  - ##### Escribe una representación en texto de un objeto de R, o usa una para recrear el objeto.
 ## ---- echo=TRUE, eval=FALSE, class.source='klippy'----------------------------
 ## dput(vacunasTotalGrupoGenero)
 
@@ -415,7 +421,17 @@ datos <- structure(list(GRUPO_ETARIO = c("30 o menos", "30 o menos", "30 o menos
 
 datos
 
+#' #### También se puede grabar en un archivo de texto:
 #' 
+## ---- echo=TRUE,  class.source='klippy'---------------------------------------
+dput(vacunasTotalGrupoGenero, "datos/vacunasTotalGrupoGenero.txt")
+
+#' 
+#' #### Que más tarde podemos recuperar con *dget()*
+## ---- echo=TRUE,  class.source='klippy'---------------------------------------
+datos <- dget("datos/vacunasTotalGrupoGenero.txt")
+datos
+
 #' 
 #' ***
 #' ***

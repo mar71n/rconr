@@ -159,8 +159,36 @@ vacunas %>% mutate(mes = floor_date(FECHA_ADMINISTRACION, "month")) %>%
 #' 
 #' ***
 #' ***
+#' 
+#' ### Grabar data frames
+#' #### [familia **readr::write_\*()**](https://readr.tidyverse.org/reference/write_delim.html)
+#'  - ##### Guarda un data frame en un archivo de texto donde las columnas son delimitadas por un caracter, por ejemplo "**,**" ó "**;**"
+#'    ##### Las funciones **write_\*()** agregan mejoras a las del tipo *write.csv()*. En primer lugar son más rápidas.
+#'    ##### **delim** = el delimitador
+#'      - #####        en write_delim es " "
+#'      - #####        en write_csv es ","
+#'      - #####        en write_csv2 es ";"
+#' 
+#'    ##### **append** = Si es FALSE, sobre escribe cualquier archivo existente. Si es TRUE, agrega los registros al final.
+#'    #####              En ambos casos, si el archivo no existe lo crea.
+#' 
+#'    ##### **col_names** = Si es FALSE no se agregan los nombres de columna en la primera fila, si es TRUE sí se agregan.
+#'    ##### El valor tiene que ser lo contrario de lo que se pase en append.
+#' 
+#'    ##### **quote** = En que casos entrecomillar los valores.
+#'      - #####             'needed' : solo si es necesario ( cuando el valor incluye comillas, el delimitador o saltos de linea)
+#'      - #####             'all' : entrecomillar todas las columnas
+#'      - #####             'none' : ninguno
+#' 
+#'    ##### **escape** = El tipo de escape a usar cuando hay comillas en los datos.
+#'      - #####         'double' : ""
+#'      - #####         'backslash' : \\
+#'      - #####         'none' : ninguno
+#' 
+#' ***
+#' 
 #' ### Guardar gráficos
-#' ### [**ggsave**](https://ggplot2.tidyverse.org/reference/ggsave.html)
+#' #### [**ggsave**](https://ggplot2.tidyverse.org/reference/ggsave.html)
 #' 
 #' ### Rscript
 #' ```
@@ -186,19 +214,25 @@ vacunas %>% mutate(mes = floor_date(FECHA_ADMINISTRACION, "month")) %>%
 #' 
 #' # FECHA_ADMINISTRACION con *lubridate*
 #' # siempre uso el tipo más simple posible, en este caso **date** por sobre **date-time** ya que la hora no la preciso
-#' vacunas <- vacunas %>% mutate(FECHA_ADMINISTRACION = as_date(dmy_hms(FECHA_ADMINISTRACION)))
+#' vacunasXdia <- vacunas %>% 
+#'   mutate(FECHA_ADMINISTRACION = as_date(dmy_hms(FECHA_ADMINISTRACION))) %>% 
+#'   mutate(annio = year(FECHA_ADMINISTRACION)) %>% 
+#'   count(FECHA_ADMINISTRACION, annio, wt = total, name = "total")
 #' 
+#' # calculo vacunas x año
+#' vacunasXannio <- vacunasXdia %>% count(annio, wt = total)
+#' # grabo en un archivo delimitado por ","
+#' write_csv(vacunasXannio, "vacunasXannio.csv")
 #' 
-#' p1 <- vacunas %>% mutate(annio = year(FECHA_ADMINISTRACION)) %>% 
-#'   count(FECHA_ADMINISTRACION, annio, wt = total, name = "total") %>%
+#' p1 <- vacunasXdia  %>%
 #'   ggplot(aes(FECHA_ADMINISTRACION, total, colour = factor(annio))) +
 #'   geom_line()
 #' 
-#' ggsave(filename = "vacunas300.png", plot = p1, device = "png", dpi = 300)
+#' ggsave(filename =  "vacunas300.png", plot = p1, device = "png", dpi = 300)
 #' 
-#' ggsave(filename = "vacunas200.png", plot = p1, device = "png", dpi = 200)
+#' ggsave(filename =  "vacunas200.png", plot = p1, device = "png", dpi = 200)
 #' 
-#' ggsave(filename = "vacunas100.png", plot = p1, device = "png", dpi = 100)
+#' ggsave(filename =  "vacunas100.png", plot = p1, device = "png", dpi = 100)
 #' ```
 #' 
 #' ***

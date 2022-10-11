@@ -379,12 +379,11 @@ data4 %>% ggplot(aes(x = GENERO, y = t, fill = GRUPO_ETARIO)) +
 #' 
 #' #### Un poco más de *ggplot*
 #' ##### *ggplot*, *aes*, *stat*, *position*, *facet*
-#' ##### *geom_bar* por defecto solo requiere *aes(x)* y hace un count
 ## ---- echo=TRUE,  class.source='klippy'---------------------------------------
 dfa <- data.frame(v1 = c("a","b","c","a"), v2 = c(2,5,2,1))
 dfa
 
-#' 
+#' #### *geom_bar* por defecto solo requiere *aes(x)* y hace un counteo. *stat ="count"*
 ## ---- echo=TRUE,  class.source='klippy'---------------------------------------
 ggplot(dfa, aes(v1)) + 
   geom_bar() 
@@ -399,11 +398,6 @@ ggplot(dfa, aes(v1)) +
 #' #### *geom_bar* con *stat = identity* agrupa por *x* ademas suma todos los casos
 #' #### requiere *aes(x, y)*
 ## ---- echo=TRUE,  class.source='klippy'---------------------------------------
-dfa <- data.frame(v1 = c("a","b","c"), v2 = c(3,5,2))
-ggplot(dfa, aes(v1, v2)) + 
-   geom_bar(stat="identity") 
-
-dfa <- data.frame(v1 = c("a","b","c","a"), v2 = c(2,5,2,1))
 ggplot(dfa, aes(v1, v2)) + 
   geom_bar(stat="identity") 
 

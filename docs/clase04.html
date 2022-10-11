@@ -1574,9 +1574,9 @@ library(kableExtra)</code></pre>
 <div id="section" class="section level4">
 <h4></h4>
 <pre class="r klippy"><code>now()</code></pre>
-<pre><code>## [1] &quot;2022-09-13 09:32:34 -03&quot;</code></pre>
+<pre><code>## [1] &quot;2022-10-10 23:36:18 -03&quot;</code></pre>
 <pre class="r klippy"><code>today()</code></pre>
-<pre><code>## [1] &quot;2022-09-13&quot;</code></pre>
+<pre><code>## [1] &quot;2022-10-10&quot;</code></pre>
 <pre class="r klippy"><code>as_date(dmy_hms(&quot;28FEB2021:15:15:20&quot;))</code></pre>
 <pre><code>## [1] &quot;2021-02-28&quot;</code></pre>
 <hr />
@@ -1729,11 +1729,62 @@ hora no la preciso</h4>
 <hr />
 </div>
 </div>
+<div id="grabar-data-frames" class="section level3">
+<h3>Grabar data frames</h3>
+<div id="familia-readrwrite_" class="section level4">
+<h4><a href="https://readr.tidyverse.org/reference/write_delim.html">familia
+<strong>readr::write_*()</strong></a></h4>
+<ul>
+<li><h5 id="guarda-un-data-frame-en-un-archivo-de-texto-donde-las-columnas-son-delimitadas-por-un-caracter-por-ejemplo-ó">Guarda
+un data frame en un archivo de texto donde las columnas son delimitadas
+por un caracter, por ejemplo “<strong>,</strong>” ó
+“<strong>;</strong>”</h5>
+<h5 id="las-funciones-write_-agregan-mejoras-a-las-del-tipo-write.csv.-en-primer-lugar-son-más-rápidas.">Las
+funciones <strong>write_*()</strong> agregan mejoras a las del tipo
+<em>write.csv()</em>. En primer lugar son más rápidas.</h5>
+<h5 id="delim-el-delimitador"><strong>delim</strong> = el
+delimitador</h5>
+<ul>
+<li><h5 id="en-write_delim-es">en write_delim es ” ”</h5></li>
+<li><h5 id="en-write_csv-es">en write_csv es “,”</h5></li>
+<li><h5 id="en-write_csv2-es">en write_csv2 es “;”</h5></li>
+</ul>
+<h5 id="append-si-es-false-sobre-escribe-cualquier-archivo-existente.-si-es-true-agrega-los-registros-al-final."><strong>append</strong>
+= Si es FALSE, sobre escribe cualquier archivo existente. Si es TRUE,
+agrega los registros al final.</h5>
+<h5 id="en-ambos-casos-si-el-archivo-no-existe-lo-crea.">En ambos casos,
+si el archivo no existe lo crea.</h5>
+<h5 id="col_names-si-es-false-no-se-agregan-los-nombres-de-columna-en-la-primera-fila-si-es-true-sí-se-agregan."><strong>col_names</strong>
+= Si es FALSE no se agregan los nombres de columna en la primera fila,
+si es TRUE sí se agregan.</h5>
+<h5 id="el-valor-tiene-que-ser-lo-contrario-de-lo-que-se-pase-en-append.">El
+valor tiene que ser lo contrario de lo que se pase en append.</h5>
+<h5 id="quote-en-que-casos-entrecomillar-los-valores."><strong>quote</strong>
+= En que casos entrecomillar los valores.</h5>
+<ul>
+<li><h5 id="needed-solo-si-es-necesario-cuando-el-valor-incluye-comillas-el-delimitador-o-saltos-de-linea">‘needed’
+: solo si es necesario ( cuando el valor incluye comillas, el
+delimitador o saltos de linea)</h5></li>
+<li><h5 id="all-entrecomillar-todas-las-columnas">‘all’ : entrecomillar
+todas las columnas</h5></li>
+<li><h5 id="none-ninguno">‘none’ : ninguno</h5></li>
+</ul>
+<h5 id="escape-el-tipo-de-escape-a-usar-cuando-hay-comillas-en-los-datos."><strong>escape</strong>
+= El tipo de escape a usar cuando hay comillas en los datos.</h5>
+<ul>
+<li><h5 id="double">‘double’ : “”</h5></li>
+<li><h5 id="backslash">‘backslash’ : \</h5></li>
+<li><h5 id="none-ninguno-1">‘none’ : ninguno</h5></li>
+</ul></li>
+</ul>
+<hr />
+</div>
+</div>
 <div id="guardar-gráficos" class="section level3">
 <h3>Guardar gráficos</h3>
+<div id="ggsave" class="section level4">
+<h4><a href="https://ggplot2.tidyverse.org/reference/ggsave.html"><strong>ggsave</strong></a></h4>
 </div>
-<div id="ggsave" class="section level3">
-<h3><a href="https://ggplot2.tidyverse.org/reference/ggsave.html"><strong>ggsave</strong></a></h3>
 </div>
 <div id="rscript" class="section level3">
 <h3>Rscript</h3>
@@ -1758,19 +1809,25 @@ vacunas &lt;- vacunas %&gt;% mutate(total = (DOSIS_1 + DOSIS_2 + DOSIS_3))
 
 # FECHA_ADMINISTRACION con *lubridate*
 # siempre uso el tipo más simple posible, en este caso **date** por sobre **date-time** ya que la hora no la preciso
-vacunas &lt;- vacunas %&gt;% mutate(FECHA_ADMINISTRACION = as_date(dmy_hms(FECHA_ADMINISTRACION)))
+vacunasXdia &lt;- vacunas %&gt;% 
+  mutate(FECHA_ADMINISTRACION = as_date(dmy_hms(FECHA_ADMINISTRACION))) %&gt;% 
+  mutate(annio = year(FECHA_ADMINISTRACION)) %&gt;% 
+  count(FECHA_ADMINISTRACION, annio, wt = total, name = &quot;total&quot;)
 
+# calculo vacunas x año
+vacunasXannio &lt;- vacunasXdia %&gt;% count(annio, wt = total)
+# grabo en un archivo delimitado por &quot;,&quot;
+write_csv(vacunasXannio, &quot;vacunasXannio.csv&quot;)
 
-p1 &lt;- vacunas %&gt;% mutate(annio = year(FECHA_ADMINISTRACION)) %&gt;% 
-  count(FECHA_ADMINISTRACION, annio, wt = total, name = &quot;total&quot;) %&gt;%
+p1 &lt;- vacunasXdia  %&gt;%
   ggplot(aes(FECHA_ADMINISTRACION, total, colour = factor(annio))) +
   geom_line()
 
-ggsave(filename = &quot;vacunas300.png&quot;, plot = p1, device = &quot;png&quot;, dpi = 300)
+ggsave(filename =  &quot;vacunas300.png&quot;, plot = p1, device = &quot;png&quot;, dpi = 300)
 
-ggsave(filename = &quot;vacunas200.png&quot;, plot = p1, device = &quot;png&quot;, dpi = 200)
+ggsave(filename =  &quot;vacunas200.png&quot;, plot = p1, device = &quot;png&quot;, dpi = 200)
 
-ggsave(filename = &quot;vacunas100.png&quot;, plot = p1, device = &quot;png&quot;, dpi = 100)</code></pre>
+ggsave(filename =  &quot;vacunas100.png&quot;, plot = p1, device = &quot;png&quot;, dpi = 100)</code></pre>
 <hr />
 <hr />
 </div>
@@ -1800,12 +1857,12 @@ t1 &lt;- vacunas %&gt;% count(GENERO, wt = total, name = &quot;APLICADAS&quot;) 
   tab_source_note(&quot;Fuente : www.databuenosaires.gob.ar&quot;)
 
 t1</code></pre>
-<div id="rjesztfhaf" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="kgtxljcxaa" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#rjesztfhaf .gt_table {
+#kgtxljcxaa .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -1830,7 +1887,7 @@ t1</code></pre>
   border-left-color: #D3D3D3;
 }
 
-#rjesztfhaf .gt_heading {
+#kgtxljcxaa .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1842,7 +1899,7 @@ t1</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#rjesztfhaf .gt_title {
+#kgtxljcxaa .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1854,7 +1911,7 @@ t1</code></pre>
   border-bottom-width: 0;
 }
 
-#rjesztfhaf .gt_subtitle {
+#kgtxljcxaa .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1866,13 +1923,13 @@ t1</code></pre>
   border-top-width: 0;
 }
 
-#rjesztfhaf .gt_bottom_border {
+#kgtxljcxaa .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#rjesztfhaf .gt_col_headings {
+#kgtxljcxaa .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1887,7 +1944,7 @@ t1</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#rjesztfhaf .gt_col_heading {
+#kgtxljcxaa .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1907,7 +1964,7 @@ t1</code></pre>
   overflow-x: hidden;
 }
 
-#rjesztfhaf .gt_column_spanner_outer {
+#kgtxljcxaa .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1919,15 +1976,15 @@ t1</code></pre>
   padding-right: 4px;
 }
 
-#rjesztfhaf .gt_column_spanner_outer:first-child {
+#kgtxljcxaa .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#rjesztfhaf .gt_column_spanner_outer:last-child {
+#kgtxljcxaa .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#rjesztfhaf .gt_column_spanner {
+#kgtxljcxaa .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1939,7 +1996,7 @@ t1</code></pre>
   width: 100%;
 }
 
-#rjesztfhaf .gt_group_heading {
+#kgtxljcxaa .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1964,7 +2021,7 @@ t1</code></pre>
   vertical-align: middle;
 }
 
-#rjesztfhaf .gt_empty_group_heading {
+#kgtxljcxaa .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1979,15 +2036,15 @@ t1</code></pre>
   vertical-align: middle;
 }
 
-#rjesztfhaf .gt_from_md > :first-child {
+#kgtxljcxaa .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#rjesztfhaf .gt_from_md > :last-child {
+#kgtxljcxaa .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#rjesztfhaf .gt_row {
+#kgtxljcxaa .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2006,7 +2063,7 @@ t1</code></pre>
   overflow-x: hidden;
 }
 
-#rjesztfhaf .gt_stub {
+#kgtxljcxaa .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2019,7 +2076,7 @@ t1</code></pre>
   padding-right: 5px;
 }
 
-#rjesztfhaf .gt_stub_row_group {
+#kgtxljcxaa .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2033,11 +2090,11 @@ t1</code></pre>
   vertical-align: top;
 }
 
-#rjesztfhaf .gt_row_group_first td {
+#kgtxljcxaa .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#rjesztfhaf .gt_summary_row {
+#kgtxljcxaa .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2047,16 +2104,16 @@ t1</code></pre>
   padding-right: 5px;
 }
 
-#rjesztfhaf .gt_first_summary_row {
+#kgtxljcxaa .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#rjesztfhaf .gt_first_summary_row.thick {
+#kgtxljcxaa .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#rjesztfhaf .gt_last_summary_row {
+#kgtxljcxaa .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2066,7 +2123,7 @@ t1</code></pre>
   border-bottom-color: #D3D3D3;
 }
 
-#rjesztfhaf .gt_grand_summary_row {
+#kgtxljcxaa .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2076,7 +2133,7 @@ t1</code></pre>
   padding-right: 5px;
 }
 
-#rjesztfhaf .gt_first_grand_summary_row {
+#kgtxljcxaa .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2086,11 +2143,11 @@ t1</code></pre>
   border-top-color: #D3D3D3;
 }
 
-#rjesztfhaf .gt_striped {
+#kgtxljcxaa .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#rjesztfhaf .gt_table_body {
+#kgtxljcxaa .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2099,7 +2156,7 @@ t1</code></pre>
   border-bottom-color: #D3D3D3;
 }
 
-#rjesztfhaf .gt_footnotes {
+#kgtxljcxaa .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2113,7 +2170,7 @@ t1</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#rjesztfhaf .gt_footnote {
+#kgtxljcxaa .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-left: 4px;
@@ -2122,7 +2179,7 @@ t1</code></pre>
   padding-right: 5px;
 }
 
-#rjesztfhaf .gt_sourcenotes {
+#kgtxljcxaa .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2136,7 +2193,7 @@ t1</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#rjesztfhaf .gt_sourcenote {
+#kgtxljcxaa .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -2144,36 +2201,36 @@ t1</code></pre>
   padding-right: 5px;
 }
 
-#rjesztfhaf .gt_left {
+#kgtxljcxaa .gt_left {
   text-align: left;
 }
 
-#rjesztfhaf .gt_center {
+#kgtxljcxaa .gt_center {
   text-align: center;
 }
 
-#rjesztfhaf .gt_right {
+#kgtxljcxaa .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#rjesztfhaf .gt_font_normal {
+#kgtxljcxaa .gt_font_normal {
   font-weight: normal;
 }
 
-#rjesztfhaf .gt_font_bold {
+#kgtxljcxaa .gt_font_bold {
   font-weight: bold;
 }
 
-#rjesztfhaf .gt_font_italic {
+#kgtxljcxaa .gt_font_italic {
   font-style: italic;
 }
 
-#rjesztfhaf .gt_super {
+#kgtxljcxaa .gt_super {
   font-size: 65%;
 }
 
-#rjesztfhaf .gt_two_val_uncert {
+#kgtxljcxaa .gt_two_val_uncert {
   display: inline-block;
   line-height: 1em;
   text-align: right;
@@ -2182,31 +2239,31 @@ t1</code></pre>
   margin-left: 0.1em;
 }
 
-#rjesztfhaf .gt_footnote_marks {
+#kgtxljcxaa .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#rjesztfhaf .gt_asterisk {
+#kgtxljcxaa .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#rjesztfhaf .gt_slash_mark {
+#kgtxljcxaa .gt_slash_mark {
   font-size: 0.7em;
   line-height: 0.7em;
   vertical-align: 0.15em;
 }
 
-#rjesztfhaf .gt_fraction_numerator {
+#kgtxljcxaa .gt_fraction_numerator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: 0.45em;
 }
 
-#rjesztfhaf .gt_fraction_denominator {
+#kgtxljcxaa .gt_fraction_denominator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: -0.05em;
@@ -2320,8 +2377,8 @@ argumento</h4>
 <pre class="r klippy"><code>x &lt;- c(&quot;why&quot;, &quot;video&quot;, &quot;cross&quot;, &quot;extra&quot;, &quot;deal&quot;, &quot;authority&quot;)
 
 str_view_all(x, &quot;[aeiou]&quot;)</code></pre>
-<div id="htmlwidget-14dd371ef358c105af8b" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-14dd371ef358c105af8b">{"x":{"html":"<ul>\n  <li>why<\/li>\n  <li>v<span class='match'>i<\/span>d<span class='match'>e<\/span><span class='match'>o<\/span><\/li>\n  <li>cr<span class='match'>o<\/span>ss<\/li>\n  <li><span class='match'>e<\/span>xtr<span class='match'>a<\/span><\/li>\n  <li>d<span class='match'>e<\/span><span class='match'>a<\/span>l<\/li>\n  <li><span class='match'>a<\/span><span class='match'>u<\/span>th<span class='match'>o<\/span>r<span class='match'>i<\/span>ty<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script></li>
+<div id="htmlwidget-31682a48ed624f361b68" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-31682a48ed624f361b68">{"x":{"html":"<ul>\n  <li>why<\/li>\n  <li>v<span class='match'>i<\/span>d<span class='match'>e<\/span><span class='match'>o<\/span><\/li>\n  <li>cr<span class='match'>o<\/span>ss<\/li>\n  <li><span class='match'>e<\/span>xtr<span class='match'>a<\/span><\/li>\n  <li>d<span class='match'>e<\/span><span class='match'>a<\/span>l<\/li>\n  <li><span class='match'>a<\/span><span class='match'>u<\/span>th<span class='match'>o<\/span>r<span class='match'>i<\/span>ty<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script></li>
 <li><h4 id="str_detect">str_detect</h4>
 <pre class="r klippy"><code># verdadero si hay alguna coincidencia, false en caso contrario
 str_detect(x, &quot;[aeiou]&quot;)</code></pre>
@@ -2350,8 +2407,8 @@ str_locate(x, &quot;[aeiou]&quot;)</code></pre>
 <li><h4 id="str_extract">str_extract</h4>
 <pre class="r klippy"><code># extrae el texto que coincide
 str_view(x, &quot;r[aeiou]&quot;)</code></pre>
-<div id="htmlwidget-0dd6a26e5d761822ac05" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-0dd6a26e5d761822ac05">{"x":{"html":"<ul>\n  <li>why<\/li>\n  <li>video<\/li>\n  <li>c<span class='match'>ro<\/span>ss<\/li>\n  <li>ext<span class='match'>ra<\/span><\/li>\n  <li>deal<\/li>\n  <li>autho<span class='match'>ri<\/span>ty<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-4b30da34f0492ded8066" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-4b30da34f0492ded8066">{"x":{"html":"<ul>\n  <li>why<\/li>\n  <li>video<\/li>\n  <li>c<span class='match'>ro<\/span>ss<\/li>\n  <li>ext<span class='match'>ra<\/span><\/li>\n  <li>deal<\/li>\n  <li>autho<span class='match'>ri<\/span>ty<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
 <pre class="r klippy"><code>str_extract(x, &quot;r[aeiou]&quot;)</code></pre>
 <pre><code>## [1] NA   NA   &quot;ro&quot; &quot;ra&quot; NA   &quot;ri&quot;</code></pre>
 <pre class="r klippy"><code>str_locate(x, &quot;r[aeiou]&quot;)</code></pre>
@@ -2365,17 +2422,17 @@ str_view(x, &quot;r[aeiou]&quot;)</code></pre>
 <li><h4 id="otros-ejemplos">Otros ejemplos:</h4>
 <pre class="r klippy"><code>x &lt;- c(&quot;PALERMO&quot;, &quot;BALVANERA&quot;, &quot;Barracas&quot;, &quot;San Telmo&quot;, &quot;CABALLITO&quot;, &quot;PARQUE PATRICIOS&quot;)
 str_view_all(x, &quot;[aeiou]&quot;)</code></pre>
-<div id="htmlwidget-a22e3d2bc9fd8f069bfc" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-a22e3d2bc9fd8f069bfc">{"x":{"html":"<ul>\n  <li>PALERMO<\/li>\n  <li>BALVANERA<\/li>\n  <li>B<span class='match'>a<\/span>rr<span class='match'>a<\/span>c<span class='match'>a<\/span>s<\/li>\n  <li>S<span class='match'>a<\/span>n T<span class='match'>e<\/span>lm<span class='match'>o<\/span><\/li>\n  <li>CABALLITO<\/li>\n  <li>PARQUE PATRICIOS<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-fbfc08404504a2ba876a" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-fbfc08404504a2ba876a">{"x":{"html":"<ul>\n  <li>PALERMO<\/li>\n  <li>BALVANERA<\/li>\n  <li>B<span class='match'>a<\/span>rr<span class='match'>a<\/span>c<span class='match'>a<\/span>s<\/li>\n  <li>S<span class='match'>a<\/span>n T<span class='match'>e<\/span>lm<span class='match'>o<\/span><\/li>\n  <li>CABALLITO<\/li>\n  <li>PARQUE PATRICIOS<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
 <pre class="r klippy"><code>str_view_all(x, &quot;(?i)[aeiou]&quot;)</code></pre>
-<div id="htmlwidget-9b42685f962aecb01a6a" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-9b42685f962aecb01a6a">{"x":{"html":"<ul>\n  <li>P<span class='match'>A<\/span>L<span class='match'>E<\/span>RM<span class='match'>O<\/span><\/li>\n  <li>B<span class='match'>A<\/span>LV<span class='match'>A<\/span>N<span class='match'>E<\/span>R<span class='match'>A<\/span><\/li>\n  <li>B<span class='match'>a<\/span>rr<span class='match'>a<\/span>c<span class='match'>a<\/span>s<\/li>\n  <li>S<span class='match'>a<\/span>n T<span class='match'>e<\/span>lm<span class='match'>o<\/span><\/li>\n  <li>C<span class='match'>A<\/span>B<span class='match'>A<\/span>LL<span class='match'>I<\/span>T<span class='match'>O<\/span><\/li>\n  <li>P<span class='match'>A<\/span>RQ<span class='match'>U<\/span><span class='match'>E<\/span> P<span class='match'>A<\/span>TR<span class='match'>I<\/span>C<span class='match'>I<\/span><span class='match'>O<\/span>S<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-08589d11537c2a8ce768" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-08589d11537c2a8ce768">{"x":{"html":"<ul>\n  <li>P<span class='match'>A<\/span>L<span class='match'>E<\/span>RM<span class='match'>O<\/span><\/li>\n  <li>B<span class='match'>A<\/span>LV<span class='match'>A<\/span>N<span class='match'>E<\/span>R<span class='match'>A<\/span><\/li>\n  <li>B<span class='match'>a<\/span>rr<span class='match'>a<\/span>c<span class='match'>a<\/span>s<\/li>\n  <li>S<span class='match'>a<\/span>n T<span class='match'>e<\/span>lm<span class='match'>o<\/span><\/li>\n  <li>C<span class='match'>A<\/span>B<span class='match'>A<\/span>LL<span class='match'>I<\/span>T<span class='match'>O<\/span><\/li>\n  <li>P<span class='match'>A<\/span>RQ<span class='match'>U<\/span><span class='match'>E<\/span> P<span class='match'>A<\/span>TR<span class='match'>I<\/span>C<span class='match'>I<\/span><span class='match'>O<\/span>S<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
 <pre class="r klippy"><code>str_view_all(x, &quot;^B&quot;)</code></pre>
-<div id="htmlwidget-24104de5a249b37e3b42" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-24104de5a249b37e3b42">{"x":{"html":"<ul>\n  <li>PALERMO<\/li>\n  <li><span class='match'>B<\/span>ALVANERA<\/li>\n  <li><span class='match'>B<\/span>arracas<\/li>\n  <li>San Telmo<\/li>\n  <li>CABALLITO<\/li>\n  <li>PARQUE PATRICIOS<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-19151fcf85eb46b5ca57" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-19151fcf85eb46b5ca57">{"x":{"html":"<ul>\n  <li>PALERMO<\/li>\n  <li><span class='match'>B<\/span>ALVANERA<\/li>\n  <li><span class='match'>B<\/span>arracas<\/li>\n  <li>San Telmo<\/li>\n  <li>CABALLITO<\/li>\n  <li>PARQUE PATRICIOS<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
 <pre class="r klippy"><code>str_view_all(x, &quot;[Oo]$&quot;)</code></pre>
-<div id="htmlwidget-be2cee75c46ac8059a65" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-be2cee75c46ac8059a65">{"x":{"html":"<ul>\n  <li>PALERM<span class='match'>O<\/span><\/li>\n  <li>BALVANERA<\/li>\n  <li>Barracas<\/li>\n  <li>San Telm<span class='match'>o<\/span><\/li>\n  <li>CABALLIT<span class='match'>O<\/span><\/li>\n  <li>PARQUE PATRICIOS<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-275a1568b41a3fedb704" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-275a1568b41a3fedb704">{"x":{"html":"<ul>\n  <li>PALERM<span class='match'>O<\/span><\/li>\n  <li>BALVANERA<\/li>\n  <li>Barracas<\/li>\n  <li>San Telm<span class='match'>o<\/span><\/li>\n  <li>CABALLIT<span class='match'>O<\/span><\/li>\n  <li>PARQUE PATRICIOS<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
 <pre class="r klippy"><code>str_subset(x, &quot;[Oo]$&quot;)</code></pre>
 <pre><code>## [1] &quot;PALERMO&quot;   &quot;San Telmo&quot; &quot;CABALLITO&quot;</code></pre>
 <pre class="r klippy"><code>str_subset(x, &quot; &quot;)</code></pre>
@@ -2420,8 +2477,8 @@ str_view_all(x, &quot;[aeiou]&quot;)</code></pre>
 <h4>Donde diga “Coronavirus”</h4>
 <pre class="r klippy"><code># Ver las coincidencias con el patron de búsqueda , útil para afinar la búsqueda.
 str_view_all(strvacunas, &quot;Coronavirus&quot;)</code></pre>
-<div id="htmlwidget-d274729caee6653ba1b3" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-d274729caee6653ba1b3">{"x":{"html":"<ul>\n  <li>AstraZeneca<\/li>\n  <li>Moderna<\/li>\n  <li>Sinopharm<\/li>\n  <li>Sputnik<\/li>\n  <li>vacuna <span class='match'>Coronavirus<\/span> (CANSINO), vial x 1 dosis<\/li>\n  <li>vacuna <span class='match'>Coronavirus<\/span> (PFIZER) 1ra - 2da dosis, vial x 6 dosis (0.3ml)<\/li>\n  <li>vacuna <span class='match'>Coronavirus<\/span> (PFIZER) pediátrica, vial x 10 dosis (0.2ml)<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-a3fdf8966910afea8fbe" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-a3fdf8966910afea8fbe">{"x":{"html":"<ul>\n  <li>AstraZeneca<\/li>\n  <li>Moderna<\/li>\n  <li>Sinopharm<\/li>\n  <li>Sputnik<\/li>\n  <li>vacuna <span class='match'>Coronavirus<\/span> (CANSINO), vial x 1 dosis<\/li>\n  <li>vacuna <span class='match'>Coronavirus<\/span> (PFIZER) 1ra - 2da dosis, vial x 6 dosis (0.3ml)<\/li>\n  <li>vacuna <span class='match'>Coronavirus<\/span> (PFIZER) pediátrica, vial x 10 dosis (0.2ml)<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
 <pre class="r klippy"><code># Filtrar por un patron de búsqueda
 strvacunas[str_which(strvacunas, &quot;Coronavirus&quot;)]</code></pre>
 <pre><code>## [1] &quot;vacuna Coronavirus (CANSINO), vial x 1 dosis&quot;                       
@@ -2439,8 +2496,8 @@ str_extract(strvacunas, &quot;Coronavirus&quot;)</code></pre>
 <h4>Un dígito seguido de dos caracteres de letras</h4>
 <pre class="r klippy"><code># Vemos si las ocurrencias son las que esperamos.
 str_view_all(strvacunas, &quot;\\d\\w\\w&quot;)</code></pre>
-<div id="htmlwidget-ccdd632b6fd2d4d2999c" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-ccdd632b6fd2d4d2999c">{"x":{"html":"<ul>\n  <li>AstraZeneca<\/li>\n  <li>Moderna<\/li>\n  <li>Sinopharm<\/li>\n  <li>Sputnik<\/li>\n  <li>vacuna Coronavirus (CANSINO), vial x 1 dosis<\/li>\n  <li>vacuna Coronavirus (PFIZER) <span class='match'>1ra<\/span> - <span class='match'>2da<\/span> dosis, vial x 6 dosis (0.<span class='match'>3ml<\/span>)<\/li>\n  <li>vacuna Coronavirus (PFIZER) pediátrica, vial x 10 dosis (0.<span class='match'>2ml<\/span>)<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-dbd204e54f660bd063c1" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-dbd204e54f660bd063c1">{"x":{"html":"<ul>\n  <li>AstraZeneca<\/li>\n  <li>Moderna<\/li>\n  <li>Sinopharm<\/li>\n  <li>Sputnik<\/li>\n  <li>vacuna Coronavirus (CANSINO), vial x 1 dosis<\/li>\n  <li>vacuna Coronavirus (PFIZER) <span class='match'>1ra<\/span> - <span class='match'>2da<\/span> dosis, vial x 6 dosis (0.<span class='match'>3ml<\/span>)<\/li>\n  <li>vacuna Coronavirus (PFIZER) pediátrica, vial x 10 dosis (0.<span class='match'>2ml<\/span>)<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
 <pre class="r klippy"><code># Podemos filtrar
 strvacunas[str_which(strvacunas, &quot;\\d\\w\\w&quot;)]</code></pre>
 <pre><code>## [1] &quot;vacuna Coronavirus (PFIZER) 1ra - 2da dosis, vial x 6 dosis (0.3ml)&quot;
@@ -2476,8 +2533,8 @@ str_extract(strvacunas, &quot;\\d\\w\\w&quot;)</code></pre>
 <div id="uno-o-más-letras-entre-paréntesis" class="section level4">
 <h4>Uno o más letras entre paréntesis</h4>
 <pre class="r klippy"><code>str_view_all(strvacunas, &quot;\\(\\w+\\)&quot;)</code></pre>
-<div id="htmlwidget-02f57405a7c0a3bef83e" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-02f57405a7c0a3bef83e">{"x":{"html":"<ul>\n  <li>AstraZeneca<\/li>\n  <li>Moderna<\/li>\n  <li>Sinopharm<\/li>\n  <li>Sputnik<\/li>\n  <li>vacuna Coronavirus <span class='match'>(CANSINO)<\/span>, vial x 1 dosis<\/li>\n  <li>vacuna Coronavirus <span class='match'>(PFIZER)<\/span> 1ra - 2da dosis, vial x 6 dosis (0.3ml)<\/li>\n  <li>vacuna Coronavirus <span class='match'>(PFIZER)<\/span> pediátrica, vial x 10 dosis (0.2ml)<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-1a2ce184529632ae8456" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1a2ce184529632ae8456">{"x":{"html":"<ul>\n  <li>AstraZeneca<\/li>\n  <li>Moderna<\/li>\n  <li>Sinopharm<\/li>\n  <li>Sputnik<\/li>\n  <li>vacuna Coronavirus <span class='match'>(CANSINO)<\/span>, vial x 1 dosis<\/li>\n  <li>vacuna Coronavirus <span class='match'>(PFIZER)<\/span> 1ra - 2da dosis, vial x 6 dosis (0.3ml)<\/li>\n  <li>vacuna Coronavirus <span class='match'>(PFIZER)<\/span> pediátrica, vial x 10 dosis (0.2ml)<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
 <pre class="r klippy"><code>str_extract_all(strvacunas, &quot;\\(\\w+\\)&quot;)</code></pre>
 <pre><code>## [[1]]
 ## character(0)
@@ -2503,8 +2560,8 @@ str_extract(strvacunas, &quot;\\d\\w\\w&quot;)</code></pre>
 <div id="uno-o-más-letras-en-mayúscula-entre-paréntesis" class="section level4">
 <h4>Uno o más, letras en mayúscula, entre paréntesis</h4>
 <pre class="r klippy"><code>str_view_all(strvacunas, &quot;\\([:upper:]+\\)&quot;)</code></pre>
-<div id="htmlwidget-e60e18f06b153c5fb495" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-e60e18f06b153c5fb495">{"x":{"html":"<ul>\n  <li>AstraZeneca<\/li>\n  <li>Moderna<\/li>\n  <li>Sinopharm<\/li>\n  <li>Sputnik<\/li>\n  <li>vacuna Coronavirus <span class='match'>(CANSINO)<\/span>, vial x 1 dosis<\/li>\n  <li>vacuna Coronavirus <span class='match'>(PFIZER)<\/span> 1ra - 2da dosis, vial x 6 dosis (0.3ml)<\/li>\n  <li>vacuna Coronavirus <span class='match'>(PFIZER)<\/span> pediátrica, vial x 10 dosis (0.2ml)<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-8f3b37255cad6a11862d" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-8f3b37255cad6a11862d">{"x":{"html":"<ul>\n  <li>AstraZeneca<\/li>\n  <li>Moderna<\/li>\n  <li>Sinopharm<\/li>\n  <li>Sputnik<\/li>\n  <li>vacuna Coronavirus <span class='match'>(CANSINO)<\/span>, vial x 1 dosis<\/li>\n  <li>vacuna Coronavirus <span class='match'>(PFIZER)<\/span> 1ra - 2da dosis, vial x 6 dosis (0.3ml)<\/li>\n  <li>vacuna Coronavirus <span class='match'>(PFIZER)<\/span> pediátrica, vial x 10 dosis (0.2ml)<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
 <pre class="r klippy"><code>str_extract_all(strvacunas, &quot;\\([:upper:]+\\)&quot;)</code></pre>
 <pre><code>## [[1]]
 ## character(0)
@@ -2530,8 +2587,8 @@ str_extract(strvacunas, &quot;\\d\\w\\w&quot;)</code></pre>
 <div id="o-más-letras-en-mayúscula-juntas." class="section level4">
 <h4>4 o más, letras en mayúscula, juntas.</h4>
 <pre class="r klippy"><code>str_view_all(strvacunas, &quot;[:upper:]{4,}&quot;)</code></pre>
-<div id="htmlwidget-dd76b6627cda1c27527c" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-dd76b6627cda1c27527c">{"x":{"html":"<ul>\n  <li>AstraZeneca<\/li>\n  <li>Moderna<\/li>\n  <li>Sinopharm<\/li>\n  <li>Sputnik<\/li>\n  <li>vacuna Coronavirus (<span class='match'>CANSINO<\/span>), vial x 1 dosis<\/li>\n  <li>vacuna Coronavirus (<span class='match'>PFIZER<\/span>) 1ra - 2da dosis, vial x 6 dosis (0.3ml)<\/li>\n  <li>vacuna Coronavirus (<span class='match'>PFIZER<\/span>) pediátrica, vial x 10 dosis (0.2ml)<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-12586c293bf41bfb0196" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-12586c293bf41bfb0196">{"x":{"html":"<ul>\n  <li>AstraZeneca<\/li>\n  <li>Moderna<\/li>\n  <li>Sinopharm<\/li>\n  <li>Sputnik<\/li>\n  <li>vacuna Coronavirus (<span class='match'>CANSINO<\/span>), vial x 1 dosis<\/li>\n  <li>vacuna Coronavirus (<span class='match'>PFIZER<\/span>) 1ra - 2da dosis, vial x 6 dosis (0.3ml)<\/li>\n  <li>vacuna Coronavirus (<span class='match'>PFIZER<\/span>) pediátrica, vial x 10 dosis (0.2ml)<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
 <pre class="r klippy"><code>str_extract_all(strvacunas, &quot;[:upper:]{4,}&quot;)</code></pre>
 <pre><code>## [[1]]
 ## character(0)

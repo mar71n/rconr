@@ -929,7 +929,8 @@ anti_join(x, y)</code></pre>
 </div>
 <div id="aplicado-a-los-barrios" class="section level4">
 <h4>Aplicado a los Barrios:</h4>
-<pre class="r klippy"><code>establecimientos %&gt;% anti_join(poblacion, by = &quot;BARRIO&quot;) %&gt;% select(NOMBRE_ABR, BARRIO)</code></pre>
+<pre class="r klippy"><code># Todos los &quot;establecimientos&quot; que no tienen un BARRIO en la tabla de &quot;poblacion&quot;
+establecimientos %&gt;% anti_join(poblacion, by = &quot;BARRIO&quot;) %&gt;% select(NOMBRE_ABR, BARRIO)</code></pre>
 <pre><code>## # A tibble: 59 × 2
 ##    NOMBRE_ABR    BARRIO    
 ##    &lt;chr&gt;         &lt;chr&gt;     
@@ -944,7 +945,8 @@ anti_join(x, y)</code></pre>
 ##  9 EPjs 04       MONTSERRAT
 ## 10 CV Dan Juv 08 MONTSERRAT
 ## # … with 49 more rows</code></pre>
-<pre class="r klippy"><code>poblacion %&gt;% anti_join(establecimientos, by = &quot;BARRIO&quot;)</code></pre>
+<pre class="r klippy"><code># Los registros de &quot;poblacion&quot; que no coinciden con ningún BARRIO de &quot;establecimientos&quot;
+poblacion %&gt;% anti_join(establecimientos, by = &quot;BARRIO&quot;)</code></pre>
 <pre><code>## # A tibble: 1 × 2
 ##   BARRIO    POBLACION
 ##   &lt;chr&gt;         &lt;dbl&gt;
@@ -964,7 +966,8 @@ establecimientos[which(establecimientos[, &quot;BARRIO&quot;] == &quot;SAN NIICO
 <div id="uniones-de-transformación-1" class="section level5">
 <h5><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">Uniones
 de transformación</a></h5>
-<pre class="r klippy"><code>establecimientosXbarrio &lt;- establecimientos %&gt;% group_by(BARRIO) %&gt;% 
+<pre class="r klippy"><code># Calculamos la cantidad, con n= n(), de establecimientos por barrio
+establecimientosXbarrio &lt;- establecimientos %&gt;% group_by(BARRIO) %&gt;% 
                             summarise(ESTABLECIMIENTOS = n())
 
 establecimientosXbarrio</code></pre>
@@ -982,7 +985,8 @@ establecimientosXbarrio</code></pre>
 ##  9 CHACARITA               38
 ## 10 COGHLAN                 10
 ## # … with 38 more rows</code></pre>
-<pre class="r klippy"><code>establecimientosXbarrio %&gt;% left_join(poblacion) </code></pre>
+<pre class="r klippy"><code># A &quot;establecimientosXbarrio&quot; le agregamos &quot;poblacion&quot;
+establecimientosXbarrio %&gt;% left_join(poblacion) </code></pre>
 <pre><code>## Joining, by = &quot;BARRIO&quot;</code></pre>
 <pre><code>## # A tibble: 48 × 3
 ##    BARRIO    ESTABLECIMIENTOS POBLACION
@@ -1242,7 +1246,15 @@ vacunasTotalGrupoGenero</code></pre>
 <div id="compartiendo-los-datos-al-pedir-ayuda-responder-o-mostrar-comportamientos" class="section level3">
 <h3>Compartiendo los datos al pedir ayuda, responder o mostrar
 comportamientos:</h3>
+<div id="basedput" class="section level4">
+<h4><a href="https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/dput">base::dput</a></h4>
+<ul>
+<li><h5 id="escribe-una-representación-en-texto-de-un-objeto-de-r-o-usa-una-para-recrear-el-objeto.">Escribe
+una representación en texto de un objeto de R, o usa una para recrear el
+objeto.</h5></li>
+</ul>
 <pre class="r klippy"><code>dput(vacunasTotalGrupoGenero)</code></pre>
+</div>
 <div id="compartimos-esta-salida" class="section level4">
 <h4>Compartimos esta salida</h4>
 <pre class="r klippy"><code>structure(list(GRUPO_ETARIO = c(&quot;30 o menos&quot;, &quot;30 o menos&quot;, &quot;30 o menos&quot;, 
@@ -1287,6 +1299,39 @@ comportamientos:</h3>
     &quot;vctrs_vctr&quot;, &quot;list&quot;))), class = c(&quot;tbl_df&quot;, &quot;tbl&quot;, &quot;data.frame&quot;
 ), row.names = c(NA, -8L), .drop = TRUE))
 
+datos</code></pre>
+<pre><code>## # A tibble: 20 × 5
+## # Groups:   GRUPO_ETARIO [8]
+##    GRUPO_ETARIO GENERO     TGG  TGRUPO  PPGG
+##    &lt;chr&gt;        &lt;chr&gt;    &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;
+##  1 30 o menos   F      1210000 2367386  51.1
+##  2 30 o menos   M      1157366 2367386  48.9
+##  3 30 o menos   N           20 2367386   0  
+##  4 31 a 40      F       683382 1313465  52.0
+##  5 31 a 40      M       630074 1313465  48.0
+##  6 31 a 40      N            9 1313465   0  
+##  7 41 a 50      F       660293 1253498  52.7
+##  8 41 a 50      M       593204 1253498  47.3
+##  9 41 a 50      N            1 1253498   0  
+## 10 51 a 60      F       524800  975508  53.8
+## 11 51 a 60      M       450708  975508  46.2
+## 12 61 a 70      F       449852  797580  56.4
+## 13 61 a 70      M       347727  797580  43.6
+## 14 61 a 70      N            1  797580   0  
+## 15 71 a 80      F       385841  634261  60.8
+## 16 71 a 80      M       248420  634261  39.2
+## 17 81 a 90      F       218723  324502  67.4
+## 18 81 a 90      M       105779  324502  32.6
+## 19 91 o mas     F        53467   69127  77.4
+## 20 91 o mas     M        15660   69127  22.6</code></pre>
+</div>
+<div id="también-se-puede-grabar-en-un-archivo-de-texto" class="section level4">
+<h4>También se puede grabar en un archivo de texto:</h4>
+<pre class="r klippy"><code>dput(vacunasTotalGrupoGenero, &quot;datos/vacunasTotalGrupoGenero.txt&quot;)</code></pre>
+</div>
+<div id="que-más-tarde-podemos-recuperar-con-dget" class="section level4">
+<h4>Que más tarde podemos recuperar con <em>dget()</em></h4>
+<pre class="r klippy"><code>datos &lt;- dget(&quot;datos/vacunasTotalGrupoGenero.txt&quot;)
 datos</code></pre>
 <pre><code>## # A tibble: 20 × 5
 ## # Groups:   GRUPO_ETARIO [8]
