@@ -10,6 +10,8 @@ knit: (function(inputFile, encoding) {
 output: html_document
 ---
 
-[Apuntes](apuntes.html)
+[Apuntes 2023](apuntes2023/apuntes.html)
 
-[Genero NCA](genero.html)
+[Apuntes 2022](apuntes2022/apuntes.html)
+
+[Genero NCA](generonca/genero.html)
