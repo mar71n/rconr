@@ -1,0 +1,39 @@
+---
+title: "Datos, estadísticas, tabulados y gráficos con R."
+#author: "mar71n"
+#date: "12 de julio de 2023"
+knit: (function(inputFile, encoding) {
+  out_dir <- '../docs/apuntes2023';
+  rmarkdown::render(inputFile,
+                    encoding="UTF-8",
+                    output_file=file.path(dirname(inputFile), out_dir, 'apuntes.html')) })
+output: html_document
+---
+## Nivel 1
+
+[Clase 1:](clase01.html)
+Instalación, ayuda, búsquedas:
+R, CRAN, R-seek, RStudio, install.packages, library
+Variables y tipos, importar datos:
+vectores, matrices, factores, list, asignación
+dataframe, tibles
+
+[Clase 2:](clase02.html)
+Tibles, filtrar y agrupar:
+dplyr, filter, arrange, select, mutate,
+summarise, group_by, ungroup,
+
+[Clase 3:](clase03.html)
+Tibles join, gráficos :
+inner_join, left_join, right_join, full_join, semi_join, anti_join
+ggplot, geom_point, facet_grid, geom_bar, stat_count, stat_summary
+
+[Clase 4:](clase04.html)
+Más gráficos , tabulados , fechas
+fill, position, geom_boxplot, coord_flip, geom_abline
+tabulados:
+gt, kableExtra, dt, plotly
+fechas:
+lubridate
+
+
