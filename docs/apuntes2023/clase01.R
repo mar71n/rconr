@@ -252,6 +252,15 @@ vnumeros[c(2,5)]
 # del quinto al septimo elementos:
 vnumeros[5:7]
 
+vnumeros[TRUE]
+#[1] 1500 4750 7300 3250 4701 3302 5200
+vnumeros[FALSE]
+#numeric(0)
+vnumeros[c(TRUE, FALSE)]
+#[1] 1500 7300 4701 5200
+
+# que pasa aca? reciclado
+
 #' #### Tambien pordemos extraer los valores que cumplan alguna condición:
 #' #### La función [base::*which*](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/which) nos responde qué índices son verdaderos.
 ## ---- echo=TRUE,  class.source='klippy'---------------------------------------
@@ -487,6 +496,71 @@ str(poblacion)
 
 comunas %>% select(COMUNAS, BARRIOS)
 
+#' 
+#' EAH
+## -----------------------------------------------------------------------------
+# https://readr.tidyverse.org/
+library(readr)
+
+eah2021_ind <- read_csv2("../datos/eah2021_bu_ampliada/eah2021_bu_ampliada_ind.txt")
+
+head(eah2021_ind)
+# tiene que coincidir con los 12868 que dice eah2021_bu_ampliada_totales_de_control.xls
+nrow(eah2021_ind)
+ncol(eah2021_ind)
+
+# https://dplyr.tidyverse.org/
+library(dplyr)
+
+# tiene que coincidir con los 3.078.939 que dice eah2021_bu_ampliada_totales_de_control.xls
+eah2021_ind %>% count(sexo, wt=fexp) %>% summarise(tot = sum(n))
+eah2021_ind %>% count(sexo, wt=fexp) %>% mutate(porc = n / sum(n))
+
+eah2021_ind %>% count(comuna, sexo, wt=fexp)
+
+eah2021_ind$sexo <- factor(eah2021_ind$sexo, c(1,2), c('Varon','Mujer'))
+
+eah2021_ind %>% group_by(comuna) %>%  count( sexo, wt=fexp) %>% mutate(porc = n / sum(n))
+
+# https://tidyr.tidyverse.org/
+# install.packages("tidyr") # also installing the dependencies ‘stringi’, ‘purrr’, ‘stringr’
+library(tidyr)
+eah2021_ind %>% group_by(comuna) %>%  count( sexo, wt=fexp) %>% mutate(porc = n / sum(n)) %>%
+  pivot_wider(names_from = sexo, values_from = c(n, porc))
+
+library(readxl)
+# install.packages("readxl")  # also installing the dependencies ‘rematch’, ‘cellranger’
+p01 <- read_excel("../datos/eahcuadros/P01.xlsx", sheet = "2021")
+
+names(p01)
+
+head(p01)
+
+# https://cienciadedatos.github.io/r4ds/20-vectors.html
+
+p01[[1]][3:18]
+
+as.numeric(p01[[3]][3:18])
+as.numeric(p01[[4]][3:18])
+
+mp01 <- matrix(c(as.numeric(p01[[3]][3:18]), as.numeric(p01[[4]][3:18])), ncol = 2,
+       dimnames = list(p01[[1]][3:18], c("Varon","Mujer")))
+
+str(mp01)
+
+mp01
+
+mp01[12,]
+mp01["11",]
+mp01[, "Varon"]
+mp01["Total",]
+
+marginSums(mp01,1)
+cbind(mp01, total = marginSums(mp01,1))
+
+
+#' 
+#' 
 #' 
 #' ##### Para crear gráficos con *ggplot* hay que instalar el paquete con *install.package()*, por única vez.
 #' ##### Luego hay que cargarlo con *library()* la primera vez que lo queremos usar en una sesión.

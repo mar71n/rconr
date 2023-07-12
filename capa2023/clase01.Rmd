@@ -502,7 +502,7 @@ EAH
 # https://readr.tidyverse.org/
 library(readr)
 
-eah2021_ind <- read_csv2("eah2021_bu_ampliada_ind.txt")
+eah2021_ind <- read_csv2("../datos/eah2021_bu_ampliada/eah2021_bu_ampliada_ind.txt")
 
 head(eah2021_ind)
 # tiene que coincidir con los 12868 que dice eah2021_bu_ampliada_totales_de_control.xls
@@ -530,7 +530,7 @@ eah2021_ind %>% group_by(comuna) %>%  count( sexo, wt=fexp) %>% mutate(porc = n 
 
 library(readxl)
 # install.packages("readxl")  # also installing the dependencies ‘rematch’, ‘cellranger’
-p01 <- read_excel("../P01.xlsx", sheet = "2021")
+p01 <- read_excel("../datos/eahcuadros/P01.xlsx", sheet = "2021")
 
 names(p01)
 

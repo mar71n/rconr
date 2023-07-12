@@ -785,6 +785,17 @@ vnumeros[c(2,5)]</code></pre>
 <pre class="r klippy"><code># del quinto al septimo elementos:
 vnumeros[5:7]</code></pre>
 <pre><code>## [1] 4701 3302 5200</code></pre>
+<pre class="r klippy"><code>vnumeros[TRUE]</code></pre>
+<pre><code>## [1] 1500 4750 7300 3250 4701 3302 5200</code></pre>
+<pre class="r klippy"><code>#[1] 1500 4750 7300 3250 4701 3302 5200
+vnumeros[FALSE]</code></pre>
+<pre><code>## numeric(0)</code></pre>
+<pre class="r klippy"><code>#numeric(0)
+vnumeros[c(TRUE, FALSE)]</code></pre>
+<pre><code>## [1] 1500 7300 4701 5200</code></pre>
+<pre class="r klippy"><code>#[1] 1500 7300 4701 5200
+
+# que pasa aca? reciclado</code></pre>
 </div>
 <div id="tambien-pordemos-extraer-los-valores-que-cumplan-alguna-condición" class="section level4">
 <h4>Tambien pordemos extraer los valores que cumplan alguna
@@ -1334,6 +1345,210 @@ names(comunas)</code></pre>
 ## 13                                         LINIERS - MATADEROS - PARQUE AVELLANEDA
 ## 14                                  VILLA LUGANO - VILLA RIACHUELO - VILLA SOLDATI
 ## 15    CONSTITUCION - MONTSERRAT - PUERTO MADERO - RETIRO - SAN NICOLAS - SAN TELMO</code></pre>
+<p>EAH</p>
+<pre class="r"><code># https://readr.tidyverse.org/
+library(readr)</code></pre>
+<pre><code>## Warning: package &#39;readr&#39; was built under R version 4.2.2</code></pre>
+<pre class="r"><code>eah2021_ind &lt;- read_csv2(&quot;../datos/eah2021_bu_ampliada/eah2021_bu_ampliada_ind.txt&quot;)</code></pre>
+<pre><code>## ℹ Using &quot;&#39;,&#39;&quot; as decimal and &quot;&#39;.&#39;&quot; as grouping mark. Use `read_delim()` for more control.</code></pre>
+<pre><code>## Rows: 12868 Columns: 139
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;;&quot;
+## chr   (1): sem_hs
+## dbl (138): id, nhogar, miembro, comuna, dominio, edad, sexo, parentes_2, p5_...
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre class="r"><code>head(eah2021_ind)</code></pre>
+<pre><code>## # A tibble: 6 × 139
+##      id nhogar miembro comuna dominio  edad  sexo parentes_2  p5_2  p6_a  p6_b
+##   &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;      &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1     1      1       1      5       4    18     1          1     6    95    95
+## 2     1      1       2      5       4    16     2          7     6    95    95
+## 3     2      1       1     14       4    18     2          1     6    95    95
+## 4     3      1       1      2       4    18     2          1     6    95    95
+## 5     4      1       1      4       3    18     1          1     1    95    95
+## 6     4      1       2      4       3    16     2          2     1    95    95
+## # … with 128 more variables: estado &lt;dbl&gt;, categori &lt;dbl&gt;, t1 &lt;dbl&gt;, t2 &lt;dbl&gt;,
+## #   t3 &lt;dbl&gt;, t4 &lt;dbl&gt;, t5 &lt;dbl&gt;, t6 &lt;dbl&gt;, t7 &lt;dbl&gt;, t8 &lt;dbl&gt;, t9 &lt;dbl&gt;,
+## #   t10 &lt;dbl&gt;, t11 &lt;dbl&gt;, t12 &lt;dbl&gt;, t13 &lt;dbl&gt;, t14 &lt;dbl&gt;, t15 &lt;dbl&gt;,
+## #   t18 &lt;dbl&gt;, t19 &lt;dbl&gt;, t19_bis &lt;dbl&gt;, t28 &lt;dbl&gt;, t29 &lt;dbl&gt;, t29a &lt;dbl&gt;,
+## #   t30 &lt;dbl&gt;, sem_hs &lt;chr&gt;, t33 &lt;dbl&gt;, t34 &lt;dbl&gt;, t35 &lt;dbl&gt;, t37_cod_2 &lt;dbl&gt;,
+## #   t37_coda_2 &lt;dbl&gt;, t38 &lt;dbl&gt;, t39 &lt;dbl&gt;, t40a &lt;dbl&gt;, t40b &lt;dbl&gt;, t40 &lt;dbl&gt;,
+## #   t41_cod_2 &lt;dbl&gt;, t47 &lt;dbl&gt;, t48 &lt;dbl&gt;, t49 &lt;dbl&gt;, t50a &lt;dbl&gt;, t50b &lt;dbl&gt;, …</code></pre>
+<pre class="r"><code># tiene que coincidir con los 12868 que dice eah2021_bu_ampliada_totales_de_control.xls
+nrow(eah2021_ind)</code></pre>
+<pre><code>## [1] 12868</code></pre>
+<pre class="r"><code>ncol(eah2021_ind)</code></pre>
+<pre><code>## [1] 139</code></pre>
+<pre class="r"><code># https://dplyr.tidyverse.org/
+library(dplyr)
+
+# tiene que coincidir con los 3.078.939 que dice eah2021_bu_ampliada_totales_de_control.xls
+eah2021_ind %&gt;% count(sexo, wt=fexp) %&gt;% summarise(tot = sum(n))</code></pre>
+<pre><code>## # A tibble: 1 × 1
+##       tot
+##     &lt;dbl&gt;
+## 1 3078939</code></pre>
+<pre class="r"><code>eah2021_ind %&gt;% count(sexo, wt=fexp) %&gt;% mutate(porc = n / sum(n))</code></pre>
+<pre><code>## # A tibble: 2 × 3
+##    sexo       n  porc
+##   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;
+## 1     1 1447532 0.470
+## 2     2 1631407 0.530</code></pre>
+<pre class="r"><code>eah2021_ind %&gt;% count(comuna, sexo, wt=fexp)</code></pre>
+<pre><code>## # A tibble: 30 × 3
+##    comuna  sexo      n
+##     &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;
+##  1      1     1 128411
+##  2      1     2 128838
+##  3      2     1  66660
+##  4      2     2  82692
+##  5      3     1  91478
+##  6      3     2 101989
+##  7      4     1 115247
+##  8      4     2 125173
+##  9      5     1  86462
+## 10      5     2 101227
+## # … with 20 more rows</code></pre>
+<pre class="r"><code>eah2021_ind$sexo &lt;- factor(eah2021_ind$sexo, c(1,2), c(&#39;Varon&#39;,&#39;Mujer&#39;))
+
+eah2021_ind %&gt;% group_by(comuna) %&gt;%  count( sexo, wt=fexp) %&gt;% mutate(porc = n / sum(n))</code></pre>
+<pre><code>## # A tibble: 30 × 4
+## # Groups:   comuna [15]
+##    comuna sexo       n  porc
+##     &lt;dbl&gt; &lt;fct&gt;  &lt;dbl&gt; &lt;dbl&gt;
+##  1      1 Varon 128411 0.499
+##  2      1 Mujer 128838 0.501
+##  3      2 Varon  66660 0.446
+##  4      2 Mujer  82692 0.554
+##  5      3 Varon  91478 0.473
+##  6      3 Mujer 101989 0.527
+##  7      4 Varon 115247 0.479
+##  8      4 Mujer 125173 0.521
+##  9      5 Varon  86462 0.461
+## 10      5 Mujer 101227 0.539
+## # … with 20 more rows</code></pre>
+<pre class="r"><code># https://tidyr.tidyverse.org/
+# install.packages(&quot;tidyr&quot;) # also installing the dependencies ‘stringi’, ‘purrr’, ‘stringr’
+library(tidyr)
+eah2021_ind %&gt;% group_by(comuna) %&gt;%  count( sexo, wt=fexp) %&gt;% mutate(porc = n / sum(n)) %&gt;%
+  pivot_wider(names_from = sexo, values_from = c(n, porc))</code></pre>
+<pre><code>## # A tibble: 15 × 5
+## # Groups:   comuna [15]
+##    comuna n_Varon n_Mujer porc_Varon porc_Mujer
+##     &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;
+##  1      1  128411  128838      0.499      0.501
+##  2      2   66660   82692      0.446      0.554
+##  3      3   91478  101989      0.473      0.527
+##  4      4  115247  125173      0.479      0.521
+##  5      5   86462  101227      0.461      0.539
+##  6      6   84955  100700      0.458      0.542
+##  7      7  114225  127978      0.472      0.528
+##  8      8  110175  119365      0.480      0.520
+##  9      9   83031   88421      0.484      0.516
+## 10     10   80149   90545      0.470      0.530
+## 11     11   89798  100314      0.472      0.528
+## 12     12  100597  114417      0.468      0.532
+## 13     13  108093  128376      0.457      0.543
+## 14     14  102829  124312      0.453      0.547
+## 15     15   85422   97060      0.468      0.532</code></pre>
+<pre class="r"><code>library(readxl)
+# install.packages(&quot;readxl&quot;)  # also installing the dependencies ‘rematch’, ‘cellranger’
+p01 &lt;- read_excel(&quot;../datos/eahcuadros/P01.xlsx&quot;, sheet = &quot;2021&quot;)</code></pre>
+<pre><code>## New names:
+## • `` -&gt; `...2`
+## • `` -&gt; `...3`
+## • `` -&gt; `...4`</code></pre>
+<pre class="r"><code>names(p01)</code></pre>
+<pre><code>## [1] &quot;Distribución porcentual de la población por sexo según comuna. Ciudad de Buenos Aires. Año 2021&quot;
+## [2] &quot;...2&quot;                                                                                           
+## [3] &quot;...3&quot;                                                                                           
+## [4] &quot;...4&quot;</code></pre>
+<pre class="r"><code>head(p01)</code></pre>
+<pre><code>## # A tibble: 6 × 4
+##   `Distribución porcentual de la población por sexo según co…` ...2  ...3  ...4 
+##   &lt;chr&gt;                                                        &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;
+## 1 Comuna                                                       Total Sexo  &lt;NA&gt; 
+## 2 &lt;NA&gt;                                                         &lt;NA&gt;  Varón Mujer
+## 3 Total                                                        100   47    53   
+## 4 1                                                            100   49.9  50.1 
+## 5 2                                                            100   44.6  55.4 
+## 6 3                                                            100   47.3  52.7</code></pre>
+<pre class="r"><code># https://cienciadedatos.github.io/r4ds/20-vectors.html
+
+p01[[1]][3:18]</code></pre>
+<pre><code>##  [1] &quot;Total&quot; &quot;1&quot;     &quot;2&quot;     &quot;3&quot;     &quot;4&quot;     &quot;5&quot;     &quot;6&quot;     &quot;7&quot;     &quot;8&quot;    
+## [10] &quot;9&quot;     &quot;10&quot;    &quot;11&quot;    &quot;12&quot;    &quot;13&quot;    &quot;14&quot;    &quot;15&quot;</code></pre>
+<pre class="r"><code>as.numeric(p01[[3]][3:18])</code></pre>
+<pre><code>##  [1] 47.0 49.9 44.6 47.3 47.9 46.1 45.8 47.2 48.0 48.4 47.0 47.2 46.8 45.7 45.3
+## [16] 46.8</code></pre>
+<pre class="r"><code>as.numeric(p01[[4]][3:18])</code></pre>
+<pre><code>##  [1] 53.0 50.1 55.4 52.7 52.1 53.9 54.2 52.8 52.0 51.6 53.0 52.8 53.2 54.3 54.7
+## [16] 53.2</code></pre>
+<pre class="r"><code>mp01 &lt;- matrix(c(as.numeric(p01[[3]][3:18]), as.numeric(p01[[4]][3:18])), ncol = 2,
+       dimnames = list(p01[[1]][3:18], c(&quot;Varon&quot;,&quot;Mujer&quot;)))
+
+str(mp01)</code></pre>
+<pre><code>##  num [1:16, 1:2] 47 49.9 44.6 47.3 47.9 46.1 45.8 47.2 48 48.4 ...
+##  - attr(*, &quot;dimnames&quot;)=List of 2
+##   ..$ : chr [1:16] &quot;Total&quot; &quot;1&quot; &quot;2&quot; &quot;3&quot; ...
+##   ..$ : chr [1:2] &quot;Varon&quot; &quot;Mujer&quot;</code></pre>
+<pre class="r"><code>mp01</code></pre>
+<pre><code>##       Varon Mujer
+## Total  47.0  53.0
+## 1      49.9  50.1
+## 2      44.6  55.4
+## 3      47.3  52.7
+## 4      47.9  52.1
+## 5      46.1  53.9
+## 6      45.8  54.2
+## 7      47.2  52.8
+## 8      48.0  52.0
+## 9      48.4  51.6
+## 10     47.0  53.0
+## 11     47.2  52.8
+## 12     46.8  53.2
+## 13     45.7  54.3
+## 14     45.3  54.7
+## 15     46.8  53.2</code></pre>
+<pre class="r"><code>mp01[12,]</code></pre>
+<pre><code>## Varon Mujer 
+##  47.2  52.8</code></pre>
+<pre class="r"><code>mp01[&quot;11&quot;,]</code></pre>
+<pre><code>## Varon Mujer 
+##  47.2  52.8</code></pre>
+<pre class="r"><code>mp01[, &quot;Varon&quot;]</code></pre>
+<pre><code>## Total     1     2     3     4     5     6     7     8     9    10    11    12 
+##  47.0  49.9  44.6  47.3  47.9  46.1  45.8  47.2  48.0  48.4  47.0  47.2  46.8 
+##    13    14    15 
+##  45.7  45.3  46.8</code></pre>
+<pre class="r"><code>mp01[&quot;Total&quot;,]</code></pre>
+<pre><code>## Varon Mujer 
+##    47    53</code></pre>
+<pre class="r"><code>marginSums(mp01,1)</code></pre>
+<pre><code>## Total     1     2     3     4     5     6     7     8     9    10    11    12 
+##   100   100   100   100   100   100   100   100   100   100   100   100   100 
+##    13    14    15 
+##   100   100   100</code></pre>
+<pre class="r"><code>cbind(mp01, total = marginSums(mp01,1))</code></pre>
+<pre><code>##       Varon Mujer total
+## Total  47.0  53.0   100
+## 1      49.9  50.1   100
+## 2      44.6  55.4   100
+## 3      47.3  52.7   100
+## 4      47.9  52.1   100
+## 5      46.1  53.9   100
+## 6      45.8  54.2   100
+## 7      47.2  52.8   100
+## 8      48.0  52.0   100
+## 9      48.4  51.6   100
+## 10     47.0  53.0   100
+## 11     47.2  52.8   100
+## 12     46.8  53.2   100
+## 13     45.7  54.3   100
+## 14     45.3  54.7   100
+## 15     46.8  53.2   100</code></pre>
 <div id="para-crear-gráficos-con-ggplot-hay-que-instalar-el-paquete-con-install.package-por-única-vez." class="section level5">
 <h5>Para crear gráficos con <em>ggplot</em> hay que instalar el paquete
 con <em>install.package()</em>, por única vez.</h5>
