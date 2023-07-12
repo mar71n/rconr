@@ -3,7 +3,7 @@ title: "Datos, estadísticas, tabulados y gráficos con R."
 #author: "Rampo"
 #date: "19 de mayo de 2022"
 knit: (function(inputFile, encoding) {
-  out_dir <- 'docs';
+  out_dir <- '../docs/apuntes2022';
   rmarkdown::render(inputFile,
                     encoding="UTF-8",
                     output_file=file.path(dirname(inputFile), out_dir, 'apuntes.html')) })

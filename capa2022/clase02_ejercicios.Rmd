@@ -3,7 +3,7 @@ title: "Ejercicios propuestos - Clase 02"
 output: html_document
 #date: '2022-05-30'
 knit: (function(inputFile, encoding) {
-  out_dir <- 'docs';
+  out_dir <- '../docs/apuntes2022';
   rmarkdown::render(inputFile,
                     encoding="UTF-8",
                     output_file=file.path(dirname(inputFile), out_dir, 'clase02_ejercicios.html')) })

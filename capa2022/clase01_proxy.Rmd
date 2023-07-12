@@ -2,7 +2,7 @@
 title: "Configurar proxy"
 output: html_document
 knit: (function(inputFile, encoding) {
-  out_dir <- 'docs';
+  out_dir <- '../docs/apuntes2022';
   rmarkdown::render(inputFile,
                     encoding="UTF-8",
                     output_file=file.path(dirname(inputFile), out_dir, 'clase01_proxy.html')) })
