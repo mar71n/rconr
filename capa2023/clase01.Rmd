@@ -50,6 +50,9 @@ En redes que usan un proxy para conectarse a internet: [configurar proxy](clase0
 ### Rtools :
 Para algunas instalaciones de paquetes en Windows
 
+- para R4.3:
+[https://cran.r-project.org/bin/windows/Rtools/rtools43/rtools.html](https://cran.r-project.org/bin/windows/Rtools/rtools43/rtools.html)
+
 - para R4.2:
 [https://cran.r-project.org/bin/windows/Rtools/rtools42/rtools.html](https://cran.r-project.org/bin/windows/Rtools/rtools42/rtools.html)
 
@@ -57,10 +60,10 @@ Para algunas instalaciones de paquetes en Windows
 [https://cran.r-project.org/bin/windows/Rtools/history.html](https://cran.r-project.org/bin/windows/Rtools/history.html)
 
 ### Rstudio :
-- [www.rstudio.com](https://www.rstudio.com/)
-- [www.rstudio.com/products/rstudio/download/](https://www.rstudio.com/products/rstudio/download/)
+- [posit.co](https://posit.co/products/open-source/rstudio/)
+- [posit.co/downloads](https://posit.co/downloads/)
 
-#### RStudio se convierte en **Posit** en Octubre. [**posit.co**](https://posit.co/)
+##### RStudio se conviertio en **Posit** en Octubre de 2022. [**posit.co**](https://posit.co/)
 
 ***
 
@@ -72,7 +75,7 @@ Para algunas instalaciones de paquetes en Windows
 
 - [https://community.rstudio.com/](https://community.rstudio.com/)
 
-- [versión en español de Stack Overflow](https://es.stackoverflow.com/)
+- [versión en español de Stack Overflow tag [r]](https://es.stackoverflow.com/questions/tagged/r)
 
 ***
 
@@ -93,6 +96,7 @@ Para algunas instalaciones de paquetes en Windows
   - [**dplyr**](https://dplyr.tidyverse.org/)
   - [**ggplot2**](https://ggplot2.tidyverse.org/)
   - [**readr**](https://readr.tidyverse.org/)
+  - [**readxl**](https://readxl.tidyverse.org/)
   - [**lubridate**](https://lubridate.tidyverse.org/)
   - [**stringr**](https://stringr.tidyverse.org/)
 
