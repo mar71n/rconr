@@ -195,7 +195,7 @@ typeof(2+1i)
 ## # abs(x)
 ## # sqrt(x)
 
-#' 
+#' <!--/
 #' #### Podemos graficar una función
 #' 
 ## ---- echo=TRUE,  class.source='klippy'---------------------------------------
@@ -224,10 +224,10 @@ aumento <- function(x, y){
 # acá llamo a la función y obtengo el resultado
 aumento(precio_anterior, precio_actual)
 
+#' /-->
 #' 
 #' ***
 #' ***
-#' 
 #' ## Vectores
 #' #### Los vectores solo pueden contener valores de un mismo tipo. Todos numericos, o todos caracteres, etc.
 #' 
@@ -258,12 +258,8 @@ vnumeros[5:7]
 
 vnumeros[TRUE]
 #[1] 1500 4750 7300 3250 4701 3302 5200
-vnumeros[FALSE]
-#numeric(0)
-vnumeros[c(TRUE, FALSE)]
-#[1] 1500 7300 4701 5200
+vnumeros[c(FALSE, TRUE, TRUE, FALSE, TRUE, FALSE, TRUE)]
 
-# que pasa aca? reciclado
 
 #' #### Tambien pordemos extraer los valores que cumplan alguna condición:
 #' #### La función [base::*which*](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/which) nos responde qué índices son verdaderos.
@@ -289,6 +285,12 @@ vnumeros[order(vnumeros)]
 # elementos ordenados
 sort(vnumeros)
 
+vnumeros[c(TRUE, FALSE)]
+#[1] 1500 7300 4701 5200
+
+# que pasa aca? reciclado
+
+
 #' 
 #' 
 #' #### Puedo hacer operaciones con los vectores, o pasarlos como argumento de funciones que así lo admitan:
@@ -300,13 +302,14 @@ precios_marzo <- c(110, 650, 21000, 45)
 total_enero <- sum(precios_enero)
 total_marzo <- sum(precios_marzo)
 
-aumento(total_enero, total_marzo)
-
-precios_marzo - precios_enero
-
-aumento(precios_enero, precios_marzo)
-
+#' <!--/
+#' aumento(total_enero, total_marzo)
 #' 
+#' precios_marzo - precios_enero
+#' 
+#' aumento(precios_enero, precios_marzo)
+#' ```
+#' /-->
 #' #### Hay disponibles muchas funciones
 ## ---- echo=TRUE,  class.source='klippy'---------------------------------------
 max(precios_enero)
@@ -501,7 +504,47 @@ str(poblacion)
 comunas %>% select(COMUNAS, BARRIOS)
 
 #' 
-#' EAH
+#' ***
+#' ***
+#' 
+#' ### EAH
+#' #### Link de acceso a Base usuarios EAH2021:
+#' 
+#' [Usuarios EAH2021](https://www.estadisticaciudad.gob.ar/eyc/?p=135622)
+#' 
+#' Esto me descarga un zip que contiene:
+#' 
+#' eah2021_bu_ampliada_calculo_cv.xls  *los CV*
+#' 
+#' eah2021_bu_ampliada_diseño_de_registros.xls  *diseño de registro, hogares e individuales*
+#' 
+#' eah2021_bu_ampliada_hog.txt   *hogares , separado por ";"*
+#' 
+#' eah2021_bu_ampliada_ind.txt     *individuales, separado por ";"*
+#' 
+#' eah2021_bu_ampliada_totales_de_control.xls    *totales de control*
+#' 
+#' Notas_sobre_clasificadores_de_rama_de_actividad_economica_y_ocupacion.pdf
+#' 
+#' t_ocup_2.txt
+#' 
+#' t_rama_2.txt
+#' 
+#' #### Links de acceso a todos los tabulados básicoa EAH2021
+#' 
+#' [tabulados básicoa EAH2021](https://www.estadisticaciudad.gob.ar/eyc/?page_id=99454)
+#' 
+#' 
+## ---- echo=TRUE, class.source='klippy'----------------------------------------
+# barrios <- read.csv("https://cdn.buenosaires.gob.ar/datosabiertos/datasets/barrios/barrios.csv", encoding = "UTF-8")
+# download.file("https://cdn.buenosaires.gob.ar/datosabiertos/datasets/barrios/barrios.csv", "../datos/barrios.csv")
+barrios <- read.csv("../datos/barrios.csv", encoding = "UTF-8")
+
+
+
+#' 
+#' ![](../datos/eahcuadros/cuadro01.png){width='400px'}
+#' 
 ## -----------------------------------------------------------------------------
 # https://readr.tidyverse.org/
 library(readr)
@@ -583,6 +626,8 @@ ggplot(barrios %>% select(barrio, area)) +
   coord_flip()
 
 #' 
+#' 
+#' <!--
 #' #### Instalar y usar *sf* puede requerir más trabajo que los otros paquetes que vimos.
 ## ---- echo=TRUE,  class.source='klippy'---------------------------------------
 # install.packages("sf")
@@ -615,6 +660,10 @@ barrios2$comuna <- factor(barrios2$comuna, levels = c("1", "2", "3", "4", "5", "
 ggplot(barrios2) + 
   geom_sf(aes(fill=comuna))
 
+#' 
+#' -->
+#' 
+#' 
 #' 
 #' ***
 #' ***
