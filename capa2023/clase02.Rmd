@@ -1,0 +1,449 @@
+---
+title: "Clase 02"
+output: html_document
+#date: '2023-07-12'
+knit: (function(inputFile, encoding) {
+  out_dir <- '../docs/apuntes2023';
+  rmarkdown::render(inputFile,
+                    encoding="UTF-8",
+                    output_file=file.path(dirname(inputFile), out_dir, 'clase02.html'));
+  knitr::purl("clase02.Rmd", documentation = 2L, output = "../docs/apuntes2023/clase02.R")  })
+---
+
+```{r klippy, echo=FALSE, include=TRUE}
+klippy::klippy('')
+```
+
+```
+Tibles, filtrar y agrupar:
+dplyr, filter, arrange, select, mutate,
+summarise, group_by, ungroup,
+```
+Una versión actualizada de este material en : [clase02](https://mar71n.github.io/rconr/clase02.html)
+
+***
+
+```{r, echo=TRUE,  class.source='klippy'}
+#install.packages("dplyr")
+library(dplyr)
+#install.packages("readr")
+library(readr)
+#install.packages("lubridate")
+library(lubridate)
+```
+
+***
+
+### Datasets
+#### Tomamos de data.buenosaires el registro de vacunaciones:
+```{r, echo=TRUE,  class.source='klippy'}
+# https://data.buenosaires.gob.ar/dataset/plan-de-vacunacion-covid-19
+#vacunas <- read_csv("https://cdn.buenosaires.gob.ar/datosabiertos/datasets/salud/plan-de-vacunacion-covid-19/dataset_total_vacunas.csv")
+# download.file("https://cdn.buenosaires.gob.ar/datosabiertos/datasets/salud/plan-de-vacunacion-covid-19/dataset_total_vacunas.csv", "datos/dataset_total_vacunas.csv")
+vacunas <- read_csv("datos/dataset_total_vacunas.csv")
+```
+
+#### Una primera mirada, según lo que esperemos, por lo general alguno de estos:
+#### [readr::spec](https://readr.tidyverse.org/reference/spec.html)
+```{r, echo=TRUE,  class.source='klippy'}
+spec(vacunas)
+
+head(vacunas)
+
+summary(vacunas)
+```
+##### veo que en DOSIS_3 hay NAs
+
+#### filtro los que tienen NAs
+#### con [*\[*](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/Extract)
+
+```{r, echo=TRUE,  class.source='klippy'}
+vacunas[is.na(vacunas$DOSIS_3),c(-1,-8)]
+```
+#### o con [*dplyr::filter*](https://dplyr.tidyverse.org/reference/filter.html)
+ - ##### Subconjunto de datos donde todas las condiciones son VERDADERAS.
+    ```{r, echo=TRUE,  class.source='klippy'}
+x <- tribble(
+  ~A, ~B, ~C,
+  #--|--|---
+  "a", "t", 1,
+  "a", "b", 1,
+  "b", "u", 2,
+  "c", NA, 3,
+  "c", "b", 3
+)
+
+x
+
+# Las dos condiciones son VERDADERAS
+x %>% filter(A == "a", B == "b")
+
+# Equivalente a & (AND) con [
+x[x$A == "a" & x$B == "b",]
+
+# Si la condicion es NA, el registro es excluido por filter (cosa esperable), pero no por [
+x$B == "t"
+
+x %>% filter(B == "t")
+
+x[x$B == "t",]
+
+    ```
+- #### Podemos usar para construir las condiciones:
+  - ##### ==, >, <, >= ...
+  - ##### &, |, !, xor()
+  - ##### is.na()
+  - ##### between(), near()
+
+***
+
+```{r, echo=TRUE,  class.source='klippy'}
+vacunas %>% filter(is.na(vacunas$DOSIS_3)) %>% select(-FECHA_ADMINISTRACION, -ID_CARGA)
+```
+
+#### pongo cero en esos NAs 
+```{r, echo=TRUE,  class.source='klippy'}
+vacunas[is.na(vacunas$DOSIS_3), "DOSIS_3"] <- 0
+
+summary(vacunas)
+```
+
+#### Frecuencias
+##### Con [*base::table*](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/table)
+```{r, echo=TRUE,  class.source='klippy'}
+table(vacunas$GENERO)
+
+table(vacunas$GRUPO_ETARIO)
+```
+
+#### Al modo dplyr:
+- [summarise](https://dplyr.tidyverse.org/reference/summarise.html) Resume cada grupo en menos filas.
+
+  El resultado es una (o más) filas para cada combinación de variables de agrupación; si no hay variables de agrupación, la salida tendrá una sola fila que resuma todas las observaciones en la entrada. Contendrá una columna para cada variable de agrupación y una columna para cada una de las estadísticas de resumen que haya especificado.
+  summarise() y summarize() son sinónimos.
+
+ - Funciones útiles
+
+   - Centro:  mean(), median()
+
+   - Dispersión: sd(), IQR(), mad()
+
+   - Rango: min(), max(), quantile()
+
+   - Posición: first(), last(), nth()
+
+   - Cuenta: n(), n_distinct()
+
+   - Lógico: any(), all()
+
+    ```{r, echo=TRUE,  class.source='klippy'}
+vacunas %>% summarise(mean(DOSIS_1))
+
+```
+
+
+- [group_by](https://dplyr.tidyverse.org/reference/group_by.html)
+
+  group_by() toma un tbl existente y lo convierte en un tbl agrupado donde las operaciones se realizan "por grupo". ungroup() elimina la agrupación.
+    ```{r, echo=TRUE,  class.source='klippy'}
+vacunas %>% group_by(GENERO) %>% summarise(mean(DOSIS_1))
+```
+
+- [count](https://dplyr.tidyverse.org/reference/count.html)
+
+  *count()* le permite contar rápidamente los valores únicos de una o más variables: **df %>% count(a, b)** es aproximadamente *equivalente* a **df %>% group_by(a, b) %>% summarise(n = n() )**. 
+  *count()* está emparejado con tally(), un asistente de nivel inferior que es equivalente a df %>% summarise(n = n()). 
+
+  Pasamos un **wt** para ponderar, cambiando el resumen de n = n() a n = sum(wt). 
+
+    ```{r, echo=TRUE,  class.source='klippy'}
+vacunas %>% count(GENERO)
+
+vacunas %>% group_by(GENERO) %>% summarise(total = n())
+
+vacunas %>% count(GENERO, wt = DOSIS_1)
+
+vacunas %>% group_by(GENERO) %>% summarise(total = sum(DOSIS_1))
+
+vacunas %>% count(VACUNA, wt = DOSIS_1)
+```
+
+***
+
+#### Que pasa con las fechas ?
+##### Para esto cargamos la libreria [*lubridate*](https://lubridate.tidyverse.org/)
+```{r, echo=TRUE,  class.source='klippy'}
+head(vacunas$FECHA_ADMINISTRACION)
+
+max(vacunas$FECHA_ADMINISTRACION)
+
+dmy_hms(head(vacunas$FECHA_ADMINISTRACION))
+
+max(dmy_hms(vacunas$FECHA_ADMINISTRACION))
+```
+
+***
+
+#### Seleccionar columnas de interes, agregar columnas
+##### *select()* y 
+##### [mutate()](https://dplyr.tidyverse.org/reference/mutate.html)
+ - ##### Crear, modificar y eliminar columnas.
+   ##### **mutate()** agrega nuevas variables y conserva las existentes; **transmute()** agrega nuevas variables y elimina las existentes. Las nuevas variables sobrescriben las variables existentes del mismo nombre. Las variables se pueden eliminar estableciendo su valor en NULL
+
+```{r, echo=TRUE,  class.source='klippy'}
+vacunas %>% select(GENERO, GRUPO_ETARIO)
+
+vacunas %>% select(GENERO, GRUPO_ETARIO, DOSIS_1, DOSIS_2, DOSIS_3)
+
+vacunas %>% select(GENERO, GRUPO_ETARIO, starts_with("DOSIS"))
+
+vacunas %>% mutate(total = (DOSIS_1 + DOSIS_2 + DOSIS_3)) %>% 
+            select(FECHA_ADMINISTRACION, GENERO, GRUPO_ETARIO, total)
+```
+
+#### Filtrar y ordenar
+##### *filter()* y [*arrange()*](https://dplyr.tidyverse.org/reference/arrange.html)
+- ##### **arrange()** ordena las filas de un data frame por los valores de las columnas seleccionadas.
+  ##### A diferencia de otros verbos dplyr, arrange() ignora en gran medida la agrupación; debe mencionar explícitamente las variables de agrupación (o usar .by_group = TRUE) para agruparlas. Las funciones se evaluan una vez para todos los datos, no por grupo.
+  ##### Devuelve  un data frame del mismo tipo que los datos de entrada.
+
+    ```{r, echo=TRUE,  class.source='klippy'}
+x <- tribble(
+  ~A, ~B, ~C,
+  #--|--|---
+  "a", "t", 1,
+  "c", NA, 3,
+  "b", "u", 2,
+  "a", "b", 1,
+  "c", "b", 3
+)
+
+x
+
+arrange(x, A)
+
+# Por ejemplo, las funciones de summarise se evaluan por grupo
+x %>% group_by(A) %>% summarise(sum(C))
+
+# arrange() no se evalua por grupo
+x %>% group_by(A, B) %>% arrange(A)
+
+# a menos que se indique con .by_group = TRUE
+x %>% group_by(A, B) %>% arrange(A, .by_group = TRUE)
+
+# La columna A ordenada
+sort(x$A)
+
+# sort() no incluye los registros con NA
+sort(x$B)
+
+# arrange() ordena al final los NA
+arrange(x, B)
+
+# Se comporta igual que base::order()
+x[order(x$B),]
+```
+
+***
+
+##### Seguimos con las vacunas ...
+
+```{r, echo=TRUE,  class.source='klippy'}
+vacunas %>% mutate(total = (DOSIS_1 + DOSIS_2 + DOSIS_3)) %>% 
+            select(FECHA_ADMINISTRACION, GENERO, GRUPO_ETARIO, total) %>%
+            filter(GENERO == "F")
+
+vacunas %>% mutate(total = (DOSIS_1 + DOSIS_2 + DOSIS_3)) %>% select(FECHA_ADMINISTRACION, GENERO, GRUPO_ETARIO, total) %>%
+  filter(GRUPO_ETARIO == "51 a 60") %>%
+  arrange(desc(total))
+
+vacunas %>% mutate(total = (DOSIS_1 + DOSIS_2 + DOSIS_3)) %>% select(FECHA_ADMINISTRACION, GENERO, GRUPO_ETARIO, total) %>%
+  filter(total > 1000) %>%
+  arrange(GENERO, desc(GRUPO_ETARIO))
+
+```
+
+***
+
+#### Calculamos totales agrupando por GENERO
+##### [**goup_by()**](https://dplyr.tidyverse.org/reference/group_by.html) y [**summarise()**](https://dplyr.tidyverse.org/reference/summarise.html)
+```{r, echo=TRUE,  class.source='klippy'}
+library(ggplot2)
+
+data1 <- vacunas %>% 
+         mutate(total = (DOSIS_1 + DOSIS_2 + DOSIS_3)) %>% 
+         select(FECHA_ADMINISTRACION, GENERO, GRUPO_ETARIO, total) %>%
+         group_by(GENERO) %>% 
+         summarise(t = sum(total, na.rm=TRUE))
+
+data1
+```
+
+#### **fill**, **geom_bar**, **geom_text**
+```{r, echo=TRUE,  class.source='klippy'}
+ggplot(data1) + 
+  geom_bar(aes(GENERO,t, fill = GENERO), stat="identity", colour = "grey") +
+  geom_text(aes(x= GENERO, y = t, label= t), vjust= -0.5, color="black", size=4)
+```
+
+***
+
+##### [*options(...)*](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/options) nos permite ver y configurar opciones globales de R.
+##### Entre ellas, ***scipen***, con la que podemos controlar cuando usar notación cientifica.
+##### _*scipen*_: Los valores positivos sesgan hacia la notación fija y los negativos hacia la notación científica: se preferirá la notación fija a menos que sea más que dígitos scipen más anchos.
+##### Por defecto es cero.
+```{r, echo=TRUE,  class.source='klippy'}
+# guardo el valor actual
+actual <- options("scipen")
+# indico que use notación fija a menos que sean mas de 10 digitos:
+options(scipen=10)
+```
+#### Sín notación cientifica y "factor comun" en aes(...)
+```{r, echo=TRUE,  class.source='klippy'}
+ggplot(data1, aes(GENERO,t, fill = GENERO)) + 
+  geom_bar(stat="identity", colour = "grey") +
+  geom_text(aes(label= t), vjust= -0.5, color="black", size=4)
+
+# vuelvo a poner el valor anterior.
+options(scipen=actual[[1]])
+
+```
+
+***
+
+#### Calculamos totales por GENERO y GRUPO_ETARIO
+```{r, echo=TRUE,  class.source='klippy'}
+data2 <- vacunas %>% 
+         mutate(total = (DOSIS_1 + DOSIS_2 + DOSIS_3)) %>% 
+         select(FECHA_ADMINISTRACION, GENERO, GRUPO_ETARIO, total) %>%
+         group_by(GRUPO_ETARIO, GENERO) %>% 
+         summarise(t = sum(total, na.rm=TRUE))
+
+data2
+
+ggplot(data2, aes(GENERO,t, fill=GRUPO_ETARIO)) + 
+  geom_bar(stat="identity", colour = "grey") 
+
+ggplot(data2, aes(GRUPO_ETARIO, t, fill=GENERO)) + 
+  geom_bar(stat="identity") 
+```
+
+#### Ahora agrupo primero por GENERO y luego por GRUPO_ETARIO
+##### Ver que *data2* y *data3* son iguales salvo el orden de las columnas y las filas
+```{r, echo=TRUE,  class.source='klippy'}
+data3 <- vacunas %>% 
+         mutate(total = (DOSIS_1 + DOSIS_2 + DOSIS_3)) %>% 
+         select(FECHA_ADMINISTRACION, GENERO, GRUPO_ETARIO, total) %>%
+         group_by(GENERO, GRUPO_ETARIO) %>% summarise(t = sum(total, na.rm=TRUE))
+
+data1 %>% tally()
+data2 %>% tally()
+data3 %>% tally()
+```
+#### Los gráficos con data3 ¿Son iguales a los de data2?
+##### ¡ probar !
+
+***
+
+#### Otro paso para 'acomodar' los datos:
+#### Las "variables" DOSIS_1, DOSIS_2, DOSIS_3, es mejor verlas como tres valores de una nueva variable, implícita en el set de datos, que podemos llamar DOSIS.
+#### [*tidyr*](https://tidyr.tidyverse.org/)
+#### [*tidyr::pivot_longer()*](https://tidyr.tidyverse.org/reference/pivot_longer.html)
+```{r, echo=TRUE,  class.source='klippy'}
+# install.packages("tidyr")
+library(tidyr)
+
+vacunas %>% select(GRUPO_ETARIO, GENERO, DOSIS_1, DOSIS_2, DOSIS_3)
+
+vacunas %>% 
+  pivot_longer(cols = c(DOSIS_1, DOSIS_2, DOSIS_3), names_to = "DOSIS", values_to = "aplicadas") %>%
+  select(FECHA_ADMINISTRACION, GENERO, GRUPO_ETARIO, DOSIS, aplicadas)
+
+data4 <- vacunas %>% 
+         pivot_longer(cols = c(DOSIS_1, DOSIS_2, DOSIS_3), names_to = "DOSIS", values_to = "aplicadas") %>%
+         select(FECHA_ADMINISTRACION, GENERO, GRUPO_ETARIO, DOSIS, aplicadas) %>%
+         group_by(GRUPO_ETARIO, GENERO, DOSIS) %>% summarise(t = sum(aplicadas))
+
+data4
+```
+
+##### **facet_wrap**
+```{r, echo=TRUE,  class.source='klippy'}
+data4 %>% ggplot(aes(x = GENERO, y = t, fill = GRUPO_ETARIO)) +
+    geom_bar(stat="identity") +
+    facet_wrap(~ DOSIS)
+```
+
+***
+***
+
+#### Un poco más de *ggplot*
+##### *ggplot*, *aes*, *stat*, *position*, *facet*
+```{r, echo=TRUE,  class.source='klippy'}
+dfa <- data.frame(v1 = c("a","b","c","a"), v2 = c(2,5,2,1))
+dfa
+```
+#### *geom_bar* por defecto solo requiere *aes(x)* y hace un counteo. *stat ="count"*
+```{r, echo=TRUE,  class.source='klippy'}
+ggplot(dfa, aes(v1)) + 
+  geom_bar() 
+```
+
+##### El mismo gráfico con los valores por defecto explicitados:
+```{r, echo=TRUE,  class.source='klippy'}
+ggplot(dfa, aes(v1)) + 
+  geom_bar(stat="count") 
+```
+
+#### *geom_bar* con *stat = identity* agrupa por *x* ademas suma todos los casos
+#### requiere *aes(x, y)*
+```{r, echo=TRUE,  class.source='klippy'}
+ggplot(dfa, aes(v1, v2)) + 
+  geom_bar(stat="identity") 
+```
+
+#### por defecto *position* es *"stack"*
+```{r, echo=TRUE,  class.source='klippy'}
+ggplot(data2, aes(GRUPO_ETARIO, t, fill=GENERO)) + 
+  geom_bar(stat="identity", position = "stack") 
+```
+
+#### Con *position* = *"dodge"*
+```{r, echo=TRUE,  class.source='klippy'}
+ggplot(data2, aes(GRUPO_ETARIO, t, fill=GENERO)) + 
+  geom_bar(stat="identity", position = "dodge", colour = "grey") 
+# el el grafico de arriba, algunos tienen tres columnas otros dos (donde no hay casos GENERO = N)
+```
+
+#### preserve (anchos de columna)
+```{r, echo=TRUE,  class.source='klippy'}
+ggplot(data2, aes(GRUPO_ETARIO, t, fill=GENERO)) + 
+  geom_bar(stat="identity", position = position_dodge2(preserve = "single"), colour = "grey") 
+
+ggplot(data2, aes(GRUPO_ETARIO, t, fill=GENERO)) + 
+  geom_bar(stat="identity", position = position_dodge2(preserve = "total"), colour = "grey") 
+```
+
+#### Con *position* = *"fill"*
+```{r, echo=TRUE,  class.source='klippy'}
+ggplot(data2, aes(GRUPO_ETARIO, t, fill=GENERO)) + 
+  geom_bar(stat="identity", position = "fill", colour = "grey")
+```
+
+***
+***
+
+### [Ejercicios](clase02_ejercicios.html)
+
+***
+***
+***
+### Bibliografia:
+#### [R para Ciencia de Datos - Cap 5 Transformación de datos](https://es.r4ds.hadley.nz/transform.html#transform)
+#### [Cheat Sheet *dplyr*](https://dplyr.tidyverse.org/index.html#cheat-sheet)
+
+***
+
+[clase02.R](clase02.R)
+
+***
