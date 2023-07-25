@@ -100,8 +100,10 @@ Para algunas instalaciones de paquetes en Windows
   - [**lubridate**](https://lubridate.tidyverse.org/)
   - [**stringr**](https://stringr.tidyverse.org/)
 
+<!--
 #### sf :
 - [r-spatial.github.io/sf/](https://r-spatial.github.io/sf/)
+-->
 
 ***
 
@@ -195,6 +197,17 @@ typeof(2+1i)
 # abs(x)
 # sqrt(x)
 ```
+
+#### Puedo guardar datos y resultados en variables :
+
+```{r, echo=TRUE,  class.source='klippy'}
+numero <- 29
+division <- numero %/% 6
+resto <- numero %% 6
+division * 6 + resto
+```
+
+
 <!--/
 #### Podemos graficar una función
 
