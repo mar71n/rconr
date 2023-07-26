@@ -205,8 +205,22 @@ numero <- 29
 division <- numero %/% 6
 resto <- numero %% 6
 division * 6 + resto
+
+# Interpolacion
+
+n1 = 35000
+cv1 = 7.9
+
+n2 = 30000
+cv2 = 8.5
+
+n = 32500
+cv = cv1 + (n - n1) / (n2 - n1) * (cv2 - cv1)
+cv
+
 ```
 
+###### [Interpolación](https://es.wikipedia.org/wiki/Interpolaci%C3%B3n_lineal)
 
 <!--/
 #### Podemos graficar una función
@@ -305,6 +319,7 @@ vnumeros[c(TRUE, FALSE)]
 
 ```
 
+###### [Vectores y reciclado](https://cienciadedatos.github.io/r4ds/20-vectors.html#escalares-y-reglas-de-reciclado)
 
 #### Puedo hacer operaciones con los vectores, o pasarlos como argumento de funciones que así lo admitan:
 ```{r, echo=TRUE,  class.source='klippy'}
@@ -329,6 +344,15 @@ max(precios_enero)
 min(precios_enero)
 length(precios_enero)
 mean(precios_enero)
+```
+#### Tambien operaciones vectoriales
+```{r, echo=TRUE,  class.source='klippy'}
+# La versión vectorial de la interpolación:
+p1 <- c(35000, 7.9)
+p2 <- c(30000, 8.5)
+
+(p1 + (p2 - p1)/2)
+
 ```
 
 
@@ -527,15 +551,15 @@ comunas %>% select(COMUNAS, BARRIOS)
 
 Esto me descarga un zip que contiene:
 
-eah2021_bu_ampliada_calculo_cv.xls  *los CV*
+eah2021_bu_ampliada_calculo_cv.xls  **los CV**
 
-eah2021_bu_ampliada_diseño_de_registros.xls  *diseño de registro, hogares e individuales*
+eah2021_bu_ampliada_diseño_de_registros.xls  **diseño de registro, hogares e individuales**
 
-eah2021_bu_ampliada_hog.txt   *hogares , separado por ";"*
+eah2021_bu_ampliada_hog.txt   **hogares , separado por ";"**
 
-eah2021_bu_ampliada_ind.txt     *individuales, separado por ";"*
+eah2021_bu_ampliada_ind.txt     **individuales, separado por ";"**
 
-eah2021_bu_ampliada_totales_de_control.xls    *totales de control*
+eah2021_bu_ampliada_totales_de_control.xls    **totales de control**
 
 Notas_sobre_clasificadores_de_rama_de_actividad_economica_y_ocupacion.pdf
 
