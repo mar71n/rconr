@@ -208,14 +208,14 @@ division * 6 + resto
 
 # Interpolacion
 
-n1 = 35000
-cv1 = 7.9
+n1 <- 35000
+cv1 <- 7.9
 
-n2 = 30000
-cv2 = 8.5
+n2 <- 30000
+cv2 <- 8.5
 
-n = 32500
-cv = cv1 + (n - n1) / (n2 - n1) * (cv2 - cv1)
+n <- 32500
+cv <- cv1 + (n - n1) / (n2 - n1) * (cv2 - cv1)
 cv
 
 
@@ -572,16 +572,6 @@ comunas %>% select(COMUNAS, BARRIOS)
 #' [tabulados básicoa EAH2021](https://www.estadisticaciudad.gob.ar/eyc/?page_id=99454)
 #' 
 #' 
-## ---- echo=TRUE, class.source='klippy'----------------------------------------
-# barrios <- read.csv("https://cdn.buenosaires.gob.ar/datosabiertos/datasets/barrios/barrios.csv", encoding = "UTF-8")
-# download.file("https://cdn.buenosaires.gob.ar/datosabiertos/datasets/barrios/barrios.csv", "../datos/barrios.csv")
-barrios <- read.csv("../datos/barrios.csv", encoding = "UTF-8")
-
-
-
-#' 
-#' ![](../datos/eahcuadros/cuadro01.png){width='400px'}
-#' 
 ## -----------------------------------------------------------------------------
 # https://readr.tidyverse.org/
 library(readr)
@@ -596,6 +586,11 @@ ncol(eah2021_ind)
 # https://dplyr.tidyverse.org/
 library(dplyr)
 
+#' 
+#' ![](../datos/eahcuadros/cuadro01.png){width='400px'}
+#' 
+#' 
+## -----------------------------------------------------------------------------
 # tiene que coincidir con los 3.078.939 que dice eah2021_bu_ampliada_totales_de_control.xls
 eah2021_ind %>% count(sexo, wt=fexp) %>% summarise(tot = sum(n))
 eah2021_ind %>% count(sexo, wt=fexp) %>% mutate(porc = n / sum(n))
