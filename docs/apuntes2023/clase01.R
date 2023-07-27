@@ -202,7 +202,7 @@ division <- numero %/% 6
 resto <- numero %% 6
 division * 6 + resto
 
-# Interpolacion
+# Interpolacion lineal
 
 n1 <- 35000
 cv1 <- 7.9
@@ -216,7 +216,7 @@ cv
 
 
 #' 
-#' ###### [Interpolación](https://es.wikipedia.org/wiki/Interpolaci%C3%B3n_lineal)
+#' ###### [Interpolación lineal](https://es.wikipedia.org/wiki/Interpolaci%C3%B3n_lineal)
 #' 
 #' 
 #' ***
@@ -255,7 +255,7 @@ vnumeros[c(FALSE, TRUE, TRUE, FALSE, TRUE, FALSE, TRUE)]
 
 
 #' #### Tambien pordemos extraer los valores que cumplan alguna condición:
-#' #### La función [base::*which*](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/which) nos responde qué índices son verdaderos.
+#' 
 ## ---- echo=TRUE,  class.source='klippy'---------------------------------------
 # Al vectorizar, R evalúa la comparación elemento por elemento
 # vector booleano con TRUE donde el elemento es mayor que 4000, y FALSE en caso contrario.
@@ -264,6 +264,9 @@ vnumeros > 4000
 # elementos que cumplen la condición
 vnumeros[vnumeros > 4000] 
 
+#' 
+#' #### La función [base::*which*](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/which) nos responde qué índices son verdaderos.
+## ---- echo=TRUE,  class.source='klippy'---------------------------------------
 # índices de los elementos que cumplen la condición
 which(vnumeros > 4000)
 
@@ -285,7 +288,8 @@ vnumeros[c(TRUE, FALSE)]
 
 
 #' 
-#' ###### [Vectores y reciclado](https://cienciadedatos.github.io/r4ds/20-vectors.html#escalares-y-reglas-de-reciclado)
+#' ##### Del sitio web de la versión en español de “R for Data Science”, de Hadley Wickham y Garrett Grolemund:
+#' ###### [Escalares y reglas de reciclado](https://cienciadedatos.github.io/r4ds/20-vectors.html#escalares-y-reglas-de-reciclado)
 #' 
 #' #### Puedo hacer operaciones con los vectores, o pasarlos como argumento de funciones que así lo admitan:
 ## ---- echo=TRUE,  class.source='klippy'---------------------------------------
@@ -306,7 +310,7 @@ mean(precios_enero)
 
 #' #### Tambien operaciones vectoriales
 ## ---- echo=TRUE,  class.source='klippy'---------------------------------------
-# La versión vectorial de la interpolación:
+# La versión vectorial de la interpolación lineal:
 p1 <- c(35000, 7.9)
 p2 <- c(30000, 8.5)
 
@@ -513,11 +517,11 @@ comunas %>% select(COMUNAS, BARRIOS)
 #' 
 #' eah2021_bu_ampliada_calculo_cv.xls  **los CV**
 #' 
-#' eah2021_bu_ampliada_diseño_de_registros.xls  **diseño de registro, hogares e individuales**
+#' eah2021_bu_ampliada_diseño_de_registros.xls  **diseño de registro hogares e individuales**
 #' 
-#' eah2021_bu_ampliada_hog.txt   **hogares , separado por ";"**
+#' eah2021_bu_ampliada_hog.txt   **hogares separado por ";"**
 #' 
-#' eah2021_bu_ampliada_ind.txt     **individuales, separado por ";"**
+#' eah2021_bu_ampliada_ind.txt     **individuales separado por ";"**
 #' 
 #' eah2021_bu_ampliada_totales_de_control.xls    **totales de control**
 #' 
@@ -536,7 +540,7 @@ comunas %>% select(COMUNAS, BARRIOS)
 #' 
 #' #### Crear un proyecto.
 #' 
-#' ##### Del sitio web de la versión en español de “R for Data Science”, de Hadley Wickham y Garrett Grolemund:
+#' ###### Del sitio web de la versión en español de “R for Data Science”, de Hadley Wickham y Garrett Grolemund:
 #' 
 #' [Flujo de trabajo: proyectos](https://cienciadedatos.github.io/r4ds/08-workflow-projects.html)
 #' 

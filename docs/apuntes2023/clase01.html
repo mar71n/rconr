@@ -724,7 +724,7 @@ division &lt;- numero %/% 6
 resto &lt;- numero %% 6
 division * 6 + resto</code></pre>
 <pre><code>## [1] 29</code></pre>
-<pre class="r klippy"><code># Interpolacion
+<pre class="r klippy"><code># Interpolacion lineal
 
 n1 &lt;- 35000
 cv1 &lt;- 7.9
@@ -736,8 +736,9 @@ n &lt;- 32500
 cv &lt;- cv1 + (n - n1) / (n2 - n1) * (cv2 - cv1)
 cv</code></pre>
 <pre><code>## [1] 8.2</code></pre>
-<div id="interpolación" class="section level6">
-<h6><a href="https://es.wikipedia.org/wiki/Interpolaci%C3%B3n_lineal">Interpolación</a></h6>
+<div id="interpolación-lineal" class="section level6">
+<h6><a href="https://es.wikipedia.org/wiki/Interpolaci%C3%B3n_lineal">Interpolación
+lineal</a></h6>
 <hr />
 <hr />
 </div>
@@ -780,10 +781,6 @@ vnumeros[c(FALSE, TRUE, TRUE, FALSE, TRUE, FALSE, TRUE)]</code></pre>
 <div id="tambien-pordemos-extraer-los-valores-que-cumplan-alguna-condición" class="section level4">
 <h4>Tambien pordemos extraer los valores que cumplan alguna
 condición:</h4>
-</div>
-<div id="la-función-basewhich-nos-responde-qué-índices-son-verdaderos." class="section level4">
-<h4>La función <a href="https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/which">base::<em>which</em></a>
-nos responde qué índices son verdaderos.</h4>
 <pre class="r klippy"><code># Al vectorizar, R evalúa la comparación elemento por elemento
 # vector booleano con TRUE donde el elemento es mayor que 4000, y FALSE en caso contrario.
 vnumeros &gt; 4000</code></pre>
@@ -791,6 +788,10 @@ vnumeros &gt; 4000</code></pre>
 <pre class="r klippy"><code># elementos que cumplen la condición
 vnumeros[vnumeros &gt; 4000] </code></pre>
 <pre><code>## [1] 4750 7300 4701 5200</code></pre>
+</div>
+<div id="la-función-basewhich-nos-responde-qué-índices-son-verdaderos." class="section level4">
+<h4>La función <a href="https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/which">base::<em>which</em></a>
+nos responde qué índices son verdaderos.</h4>
 <pre class="r klippy"><code># índices de los elementos que cumplen la condición
 which(vnumeros &gt; 4000)</code></pre>
 <pre><code>## [1] 2 3 5 7</code></pre>
@@ -810,9 +811,13 @@ sort(vnumeros)</code></pre>
 <pre class="r klippy"><code>#[1] 1500 7300 4701 5200
 
 # que pasa aca? reciclado</code></pre>
-<div id="vectores-y-reciclado" class="section level6">
-<h6><a href="https://cienciadedatos.github.io/r4ds/20-vectors.html#escalares-y-reglas-de-reciclado">Vectores
-y reciclado</a></h6>
+<div id="del-sitio-web-de-la-versión-en-español-de-r-for-data-science-de-hadley-wickham-y-garrett-grolemund" class="section level5">
+<h5>Del sitio web de la versión en español de “R for Data Science”, de
+Hadley Wickham y Garrett Grolemund:</h5>
+<div id="escalares-y-reglas-de-reciclado" class="section level6">
+<h6><a href="https://cienciadedatos.github.io/r4ds/20-vectors.html#escalares-y-reglas-de-reciclado">Escalares
+y reglas de reciclado</a></h6>
+</div>
 </div>
 </div>
 <div id="puedo-hacer-operaciones-con-los-vectores-o-pasarlos-como-argumento-de-funciones-que-así-lo-admitan" class="section level4">
@@ -838,7 +843,7 @@ total_marzo &lt;- sum(precios_marzo)</code></pre>
 </div>
 <div id="tambien-operaciones-vectoriales" class="section level4">
 <h4>Tambien operaciones vectoriales</h4>
-<pre class="r klippy"><code># La versión vectorial de la interpolación:
+<pre class="r klippy"><code># La versión vectorial de la interpolación lineal:
 p1 &lt;- c(35000, 7.9)
 p2 &lt;- c(30000, 8.5)
 
@@ -1351,10 +1356,10 @@ EAH2021</a></p>
 <p>Esto me descarga un zip que contiene:</p>
 <p>eah2021_bu_ampliada_calculo_cv.xls <strong>los CV</strong></p>
 <p>eah2021_bu_ampliada_diseño_de_registros.xls <strong>diseño de
-registro, hogares e individuales</strong></p>
-<p>eah2021_bu_ampliada_hog.txt <strong>hogares , separado por
+registro hogares e individuales</strong></p>
+<p>eah2021_bu_ampliada_hog.txt <strong>hogares separado por
 “;”</strong></p>
-<p>eah2021_bu_ampliada_ind.txt <strong>individuales, separado por
+<p>eah2021_bu_ampliada_ind.txt <strong>individuales separado por
 “;”</strong></p>
 <p>eah2021_bu_ampliada_totales_de_control.xls <strong>totales de
 control</strong></p>
@@ -1371,9 +1376,9 @@ básicoa EAH2021</a></p>
 </div>
 <div id="crear-un-proyecto." class="section level4">
 <h4>Crear un proyecto.</h4>
-<div id="del-sitio-web-de-la-versión-en-español-de-r-for-data-science-de-hadley-wickham-y-garrett-grolemund" class="section level5">
-<h5>Del sitio web de la versión en español de “R for Data Science”, de
-Hadley Wickham y Garrett Grolemund:</h5>
+<div id="del-sitio-web-de-la-versión-en-español-de-r-for-data-science-de-hadley-wickham-y-garrett-grolemund-1" class="section level6">
+<h6>Del sitio web de la versión en español de “R for Data Science”, de
+Hadley Wickham y Garrett Grolemund:</h6>
 <p><a href="https://cienciadedatos.github.io/r4ds/08-workflow-projects.html">Flujo
 de trabajo: proyectos</a></p>
 <p>Para facilitar el seguimiento del curso, creemos un proyecto. En la
