@@ -531,6 +531,34 @@ comunas %>% select(COMUNAS, BARRIOS)
 #' 
 #' [tabulados básicoa EAH2021](https://www.estadisticaciudad.gob.ar/eyc/?page_id=99454)
 #' 
+#' ***
+#' ***
+#' 
+#' #### Crear un proyecto.
+#' 
+#' ##### Del sitio web de la versión en español de “R for Data Science”, de Hadley Wickham y Garrett Grolemund:
+#' 
+#' [Flujo de trabajo: proyectos](https://cienciadedatos.github.io/r4ds/08-workflow-projects.html)
+#' 
+#' Para facilitar el seguimiento del curso, creemos un proyecto.
+#' En la carpeta del proyect, creamos tres carpetas:
+#' fuentes, datos, docs (si luego precisamos más podemos ir agregando)
+#' 
+#' ![](./figuras/arbolproyecto.png){width='400px'}
+#' 
+#' *fuentes* : aqui pondremos nuestro código R.
+#' Se puede descargar esta primera clase en [clase01.R](clase01.R)
+#' 
+#' ![](./figuras/arbolfuentes.png){width='400px'}
+#' 
+#' *datos*: Aca iran los datos que iremos descargando.
+#' Entre otros, acá descargaremos y descomprimiremos **eah2021_bu_ampliada.zip** 
+#' 
+#' ![](./figuras/arboldatos.png){width='400px'}
+#' 
+#' ***
+#' ***
+#' 
 #' 
 ## -----------------------------------------------------------------------------
 # https://readr.tidyverse.org/
@@ -547,7 +575,7 @@ ncol(eah2021_ind)
 library(dplyr)
 
 #' 
-#' ![](./datos/eahcuadros/cuadro01.png){width='400px'}
+#' ![](./figuras/cuadro01.png){width='400px'}
 #' 
 #' 
 ## -----------------------------------------------------------------------------
