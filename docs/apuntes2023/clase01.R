@@ -100,10 +100,6 @@ klippy::klippy('')
 #'   - [**lubridate**](https://lubridate.tidyverse.org/)
 #'   - [**stringr**](https://stringr.tidyverse.org/)
 #' 
-#' <!--
-#' #### sf :
-#' - [r-spatial.github.io/sf/](https://r-spatial.github.io/sf/)
-#' -->
 #' 
 #' ***
 #' 
@@ -222,36 +218,6 @@ cv
 #' 
 #' ###### [Interpolación](https://es.wikipedia.org/wiki/Interpolaci%C3%B3n_lineal)
 #' 
-#' <!--/
-#' #### Podemos graficar una función
-#' 
-## ---- echo=TRUE,  class.source='klippy'---------------------------------------
-plot(x <- seq(0, 2*pi, 0.2), sin(x), type = "l")
-
-#' 
-#' #### Puedo usar variables :
-#' 
-## ---- echo=TRUE,  class.source='klippy'---------------------------------------
-precio_anterior = 85.23
-precio_actual = 99.0
-diferencia = precio_actual - precio_anterior
-# La suma y la resta son peligrosas, porque cuando hay involucrados números de diferentes órdenes de magnitud, los dígitos del más pequeño se pierden
-# Que % aumento ? (del precio inicial)
-diferencia / precio_anterior * 100
-((precio_actual / precio_anterior) - 1) * 100
-
-#' #### Lo puedo poner en una funcion : 
-#' 
-## ---- echo=TRUE,  class.source='klippy'---------------------------------------
-# esta es la definición de la función
-aumento <- function(x, y){
-  ((y / x) - 1) * 100
-}
-
-# acá llamo a la función y obtengo el resultado
-aumento(precio_anterior, precio_actual)
-
-#' /-->
 #' 
 #' ***
 #' ***
@@ -330,14 +296,7 @@ precios_marzo <- c(110, 650, 21000, 45)
 total_enero <- sum(precios_enero)
 total_marzo <- sum(precios_marzo)
 
-#' <!--/
-#' aumento(total_enero, total_marzo)
 #' 
-#' precios_marzo - precios_enero
-#' 
-#' aumento(precios_enero, precios_marzo)
-#' ```
-#' /-->
 #' #### Hay disponibles muchas funciones
 ## ---- echo=TRUE,  class.source='klippy'---------------------------------------
 max(precios_enero)
@@ -463,17 +422,18 @@ sapply(lt, mean)
 #' 
 ## ---- echo=TRUE, class.source='klippy'----------------------------------------
 
-# barrios <- read.csv("https://cdn.buenosaires.gob.ar/datosabiertos/datasets/barrios/barrios.csv", encoding = "UTF-8")
-# download.file("https://cdn.buenosaires.gob.ar/datosabiertos/datasets/barrios/barrios.csv", "../datos/barrios.csv")
-barrios <- read.csv("../datos/barrios.csv", encoding = "UTF-8")
+# barrios <- read.csv2("https://cdn.buenosaires.gob.ar/datosabiertos/datasets/ministerio-de-educacion/barrios/barrios.csv", encoding = "UTF-8", dec = ".")
+# download.file("https://cdn.buenosaires.gob.ar/datosabiertos/datasets/ministerio-de-educacion/barrios/barrios.csv", "./datos/barrios.csv")
+barrios <- read.csv2("./datos/barrios.csv", encoding = "UTF-8", dec = ".")
+
 
 # poblacion <- read.csv("https://cdn.buenosaires.gob.ar/datosabiertos/datasets/barrios/caba_pob_barrios_2010.csv", encoding = "UTF-8")
-# download.file("https://cdn.buenosaires.gob.ar/datosabiertos/datasets/barrios/caba_pob_barrios_2010.csv", "../datos/caba_pob_barrios_2010.csv")
-poblacion <- read.csv("../datos/caba_pob_barrios_2010.csv", encoding = "UTF-8")
+# download.file("https://cdn.buenosaires.gob.ar/datosabiertos/datasets/barrios/caba_pob_barrios_2010.csv", "./datos/caba_pob_barrios_2010.csv")
+poblacion <- read.csv("./datos/caba_pob_barrios_2010.csv", encoding = "UTF-8")
 
 # comunas <- read.csv("https://cdn.buenosaires.gob.ar/datosabiertos/datasets/comunas/comunas.csv", encoding = "UTF-8")
-# download.file("https://cdn.buenosaires.gob.ar/datosabiertos/datasets/comunas/comunas.csv", "../datos/comunas.csv")
-comunas <- read.csv("../datos/comunas.csv", encoding = "UTF-8")
+# download.file("https://cdn.buenosaires.gob.ar/datosabiertos/datasets/comunas/comunas.csv", "./datos/comunas.csv")
+comunas <- read.csv("./datos/comunas.csv", encoding = "UTF-8")
 
 names(barrios)
 
@@ -496,9 +456,9 @@ names(barrios)
 #' 
 #' #### [dplyr::select](https://dplyr.tidyverse.org/reference/select.html)
 ## ---- echo=TRUE,  class.source='klippy'---------------------------------------
-select(barrios, barrio, comuna)
+select(barrios, BARRIO, COMUNA)
 
-barrios %>% select(barrio, comuna)
+barrios %>% select(BARRIO, COMUNA)
 
 barrios %>% select(!WKT)
 
@@ -512,16 +472,16 @@ barrios %>% select(!WKT)
 # head() nos muestra los primeros elementos de un objeto
 
 head(
-  barrios$area
+  barrios$AREA
 )
 
 head(
-  barrios[c("barrio", "comuna")]
+  barrios[c("BARRIO", "COMUNA")]
 )
 
 # con el %>% resulta más claro
 
-barrios[c("barrio", "comuna")] %>% head
+barrios[c("BARRIO", "COMUNA")] %>% head
 
 barrios[c(2,3)] %>% head
 
@@ -576,7 +536,7 @@ comunas %>% select(COMUNAS, BARRIOS)
 # https://readr.tidyverse.org/
 library(readr)
 
-eah2021_ind <- read_csv2("../datos/eah2021_bu_ampliada/eah2021_bu_ampliada_ind.txt")
+eah2021_ind <- read_csv2("./datos/eah2021_bu_ampliada/eah2021_bu_ampliada_ind.txt")
 
 head(eah2021_ind)
 # tiene que coincidir con los 12868 que dice eah2021_bu_ampliada_totales_de_control.xls
@@ -587,7 +547,7 @@ ncol(eah2021_ind)
 library(dplyr)
 
 #' 
-#' ![](../datos/eahcuadros/cuadro01.png){width='400px'}
+#' ![](./datos/eahcuadros/cuadro01.png){width='400px'}
 #' 
 #' 
 ## -----------------------------------------------------------------------------
@@ -609,7 +569,7 @@ eah2021_ind %>% group_by(comuna) %>%  count( sexo, wt=fexp) %>% mutate(porc = n 
 
 library(readxl)
 # install.packages("readxl")  # also installing the dependencies ‘rematch’, ‘cellranger’
-p01 <- read_excel("../datos/eahcuadros/P01.xlsx", sheet = "2021")
+p01 <- read_excel("./datos/eahcuadros/P01.xlsx", sheet = "2021")
 
 names(p01)
 
@@ -650,50 +610,15 @@ library(ggplot2)
 #' 
 ## ---- echo=TRUE,  class.source='klippy'---------------------------------------
 ggplot(barrios) +
-  geom_bar(aes(x = barrio, weight = area)) +
+  geom_bar(aes(x = BARRIO, weight = AREA)) +
              coord_flip()
 
-ggplot(barrios %>% select(barrio, area)) +
-  geom_bar(aes(x = reorder(barrio, area), weight = area)) +
+ggplot(barrios %>% select(BARRIO, AREA)) +
+  geom_bar(aes(x = reorder(BARRIO, AREA), weight = AREA)) +
   coord_flip()
 
 #' 
 #' 
-#' <!--
-#' #### Instalar y usar *sf* puede requerir más trabajo que los otros paquetes que vimos.
-## ---- echo=TRUE,  class.source='klippy'---------------------------------------
-# install.packages("sf")
-library(sf)
-
-#' 
-## ---- echo=TRUE,  class.source='klippy'---------------------------------------
-barrios2 <- st_read("../datos/barrios.csv")
-
-#' 
-#' ### Como *comuna* es del tipo *caracter* lo ordena alfabeticamente... 
-## ---- echo=TRUE,  class.source='klippy'---------------------------------------
-ggplot(barrios2) + 
-  geom_sf(aes(fill=comuna))
-
-#' 
-#' ### Si lo ponemos *numérico* lo ordena mejor, pero lo mustra como una variable continua, no *categórica* que es lo que corresponde.
-## ---- echo=TRUE,  class.source='klippy'---------------------------------------
-barrios2$comuna <- as.numeric(barrios2$comuna)
-
-ggplot(barrios2) + 
-  geom_sf(aes(fill=comuna))
-
-#' 
-#' ### Para estos casos, variables categóricas, lo correcto es usar un tipo de R especial.
-#' ### Los *factores*
-## ---- echo=TRUE,  class.source='klippy'---------------------------------------
-barrios2$comuna <- factor(barrios2$comuna, levels = c("1", "2", "3", "4", "5", "6", "7", "8","9","10","11","12","13","14","15"))
-
-ggplot(barrios2) + 
-  geom_sf(aes(fill=comuna))
-
-#' 
-#' -->
 #' 
 #' 
 #' 
