@@ -265,7 +265,7 @@ vnumeros > 4000
 vnumeros[vnumeros > 4000] 
 
 #' 
-#' #### La función [base::*which*](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/which) nos responde qué índices son verdaderos.
+#' #### La función [base::*which*](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/which) nos devuelve un vector con los indices que son verdaderos.
 ## ---- echo=TRUE,  class.source='klippy'---------------------------------------
 # índices de los elementos que cumplen la condición
 which(vnumeros > 4000)
@@ -324,7 +324,11 @@ p2 <- c(30000, 8.5)
 #' 
 #' ### Matrices
 #' #### Las matrices, igual que los vectores,  solo pueden contener valores de un mismo tipo. Todos numericos, o todos caracteres, etc.
+#' 
 ## ---- echo=TRUE,  class.source='klippy'---------------------------------------
+# Puedo tener un vector con todos los valores
+# con *ncol = 2* le estoy diciendo que arme dos columnas
+# y con *byrow = TRUE* le estoy diciendo que los datos vienen x fila
 matriz <- matrix(c(18, 8.10, 20, 9, 21,	9.45, 22,	9.90, 23,	10.35), ncol = 2, byrow = TRUE )
 
 matriz
@@ -339,47 +343,90 @@ matriz[3,]
 matriz[3,1]
 
 # Las filas desde la 2 a la 4
-matriz[2:4,]
+matriz
+
+# o puedo tener , por ejemplo las columnas, y pegarlas
+# Tomemos la tabla **eah2021_bu_ampliada_totales_de_control.xls**
+
+# Las columnas son:
+comunas <- 1:15
+viviendas <- c(448, 371, 381, 479, 331, 333, 357, 454, 311, 255, 289, 296, 329, 381, 307)
+hogares <- c(451, 371, 390, 483, 333, 334, 363, 454, 311, 255, 289, 298, 331, 382, 310)
+poblacion <- c(1130, 728, 863, 1295, 704, 715, 976, 1403, 874, 609, 713, 702, 687, 739, 730)
+viviendasexp <- c(100065, 85751, 89318, 83369, 91698, 94368, 90286, 54011, 63826, 66492, 84745, 93949, 119411, 129172, 87674)
+hogaresexp <- c(100565, 85751, 91079, 84384, 92230, 94662, 91544, 54011, 63826, 66492, 84745, 94513, 119893, 129431, 88191)
+poblacionexp <- c(257249, 149352, 193467, 240420, 187689, 185655, 242203, 229540, 171452, 170694, 190112, 215014, 236469, 227141, 182482)
+
+# podemos armar dos tablas
+# Una con los totales de la base
+# con *ncol = 4* le estoy diciendo que arme cuatro columnas
+# y con *byrow = FALSE* le estoy diciendo que los datos vienen x columna
+totalesbase <- matrix(c(comunas, viviendas, hogares, poblacion), byrow = FALSE, ncol = 4)
+totalesbase
+
+# Y otra con los totales expandidos
+totalesexp <- matrix(c(comunas, viviendasexp, hogaresexp, poblacionexp), byrow = FALSE, ncol = 4)
+totalesexp
+
 
 #' 
 #' #### Puedo ponerle nombre a las dimensiones de una matriz:
 ## ---- echo=TRUE,  class.source='klippy'---------------------------------------
-# https://www.argentina.gob.ar/redsube/tarifas-de-transporte-publico-amba-2021
+str(totalesexp)
 
-matriz_colectivo <- matrix(
-  filas <- c(18, 8.10, 20, 9, 21,	9.45, 22,	9.90, 23,	10.35),
-  nrow = 5, byrow = TRUE,
-  dimnames = list(c("0 a 3 km", "3 a 6 km", "6 a 12 km", "12 a 27 km", "más de 27 km"),
-                  c("Tarifa"	,"Con tarifa social"))
-)
+attributes(totalesexp)
 
-matriz_colectivo
+# dimnames es una lista de 2 elementos. El primero los nombres de las filas, el segundo de las columnas
+attr(totalesexp, "dimnames") <- list(NULL, c("Comuna","Viviendas","Hogares","Poblacion"))
 
-#' 
-#' #### Puedo hacer operaciones, por ejemplo multiplicar por un escalar:
-#' ##### En este ejemplo estaría calculando un incremento de 40% sobre toda la matriz
-## ---- echo=TRUE,  class.source='klippy'---------------------------------------
-matriz_colectivo * 1.4
+attributes(totalesexp)
+
+totalesexp
+
 
 #' 
-#' #### Puedo invocar una dimensión, en este caso una columna, por su nombre:
-## ---- echo=TRUE,  class.source='klippy'---------------------------------------
-matriz_colectivo[,"Tarifa"] * 1.4
-
 #' 
-#' ### También podemos multiplicarla por otra matriz, elemento a elemento
+#' #### Puedo invocar las dimenciones por su nombre:
 ## ---- echo=TRUE,  class.source='klippy'---------------------------------------
-aumentos <- matrix(c(rep(1.4,5), rep(1,5)), nrow = 5, byrow = FALSE)
+# todas las filas de Poblacion
+totalesexp[,'Poblacion']
 
-aumentos
+# la fila 10, de Poblacion
+totalesexp[10, 'Poblacion']
 
-matriz_colectivo * aumentos
+# Sobre las dimenciones puedo poner condiciones, ordenar, etc
+# llamandolas tanto por su numero de orden como por su nombre
+
+## Agrupamiento de comunas contiguas y de características similares. 
+## La zona Norte está conformada por las comunas 2, 13 y 14; 
+## la zona Centro, por las comunas 1, 3, 5, 6, 7, 11, 12 y 15; 
+## la zona Sur, por las comunas 4, 8, 9 y 10
+
+zonanorte <- c(2, 13, 14)
+
+totalesexp[zonanorte, 'Poblacion']
+
+sum(totalesexp[zonanorte, 'Poblacion'])
+
+zonasur <- c(1, 3, 5, 6, 7, 11, 12, 15)
+
+totalesexp[zonasur, 'Poblacion']
+
+sum(totalesexp[zonasur, 'Poblacion'])
+
+totalesexp[totalesexp[,'Poblacion'] < 180000 , 'Poblacion']
+
+totalesexp[totalesexp[,'Poblacion'] < 180000 , c('Comuna', 'Poblacion')]
+
 
 #' 
 #' #### Ordenar la matriz según alguna de sus dimensiones
 ## ---- echo=TRUE,  class.source='klippy'---------------------------------------
-decreciente <- order(matriz_colectivo[,1], decreasing = TRUE)
-matriz_colectivo[decreciente, ]
+totalesexp[ order(totalesexp[,'Poblacion']), ]
+
+totalesexp[ order(totalesexp[,'Poblacion'], decreasing = TRUE), ]
+
+totalesexp[ order(totalesexp[,4], decreasing = TRUE), ][zonasur,]
 
 #' 
 #' ***
@@ -408,7 +455,7 @@ l1[[7]][[2]]
 
 l1[[7]][[2]][1]
 
-lt <- list(t = matriz_colectivo[,1], ts = matriz_colectivo[,2])
+lt <- list(tv = totalesexp[,2], tp = totalesexp[,4])
 
 sapply(lt, mean)
 
