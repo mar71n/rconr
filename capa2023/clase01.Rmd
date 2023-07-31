@@ -597,13 +597,17 @@ fuentes, datos, docs (si luego precisamos más podemos ir agregando)
 
 ![](./figuras/arbolproyecto.png){width='400px'}
 
+
+
 *fuentes* : aqui pondremos nuestro código R.
 Se puede descargar esta primera clase en [clase01.R](clase01.R)
 
 ![](./figuras/arbolfuentes.png){width='400px'}
 
-*datos*: Aca iran los datos que iremos descargando.
-Entre otros, acá descargaremos y descomprimiremos **eah2021_bu_ampliada.zip** 
+
+
+*datos*: Aca ponemos los datos que iremos descargando.
+Entre otros, acá descargamos y descomprimimos **eah2021_bu_ampliada.zip** 
 
 ![](./figuras/arboldatos.png){width='400px'}
 
@@ -622,6 +626,11 @@ head(eah2021_ind)
 nrow(eah2021_ind)
 ncol(eah2021_ind)
 
+# dimnames es una lista de 2 elementos. El primero los nombres de las filas, el segundo de las columnas
+attr(totalesbase, "dimnames") <- list(NULL, c("Comuna","Viviendas","Hogares","Poblacion"))
+
+sum(totalesbase[,'Poblacion'])
+
 # https://dplyr.tidyverse.org/
 library(dplyr)
 ```
@@ -632,6 +641,9 @@ library(dplyr)
 ```{r}
 # tiene que coincidir con los 3.078.939 que dice eah2021_bu_ampliada_totales_de_control.xls
 eah2021_ind %>% count(sexo, wt=fexp) %>% summarise(tot = sum(n))
+
+sum(totalesexp[,'Poblacion'])
+
 eah2021_ind %>% count(sexo, wt=fexp) %>% mutate(porc = n / sum(n))
 
 eah2021_ind %>% count(comuna, sexo, wt=fexp)
@@ -645,7 +657,11 @@ eah2021_ind %>% group_by(comuna) %>%  count( sexo, wt=fexp) %>% mutate(porc = n 
 library(tidyr)
 eah2021_ind %>% group_by(comuna) %>%  count( sexo, wt=fexp) %>% mutate(porc = n / sum(n)) %>%
   pivot_wider(names_from = sexo, values_from = c(n, porc))
+```
 
+***
+
+```{r}
 library(readxl)
 # install.packages("readxl")  # also installing the dependencies ‘rematch’, ‘cellranger’
 p01 <- read_excel("./datos/eahcuadros/P01.xlsx", sheet = "2021")
@@ -674,7 +690,7 @@ mp01[, "Varon"]
 mp01["Total",]
 
 marginSums(mp01,1)
-cbind(mp01, total = marginSums(mp01,1))
+cbind(total = marginSums(mp01,1), mp01)
 
 ```
 
@@ -688,13 +704,16 @@ library(ggplot2)
 ```
 
 ```{r, echo=TRUE,  class.source='klippy'}
-ggplot(barrios) +
-  geom_bar(aes(x = BARRIO, weight = AREA)) +
-             coord_flip()
+xcomuna_totsexo <- eah2021_ind %>% group_by(comuna) %>%  count( sexo, wt=fexp)
 
-ggplot(barrios %>% select(BARRIO, AREA)) +
-  geom_bar(aes(x = reorder(BARRIO, AREA), weight = AREA)) +
-  coord_flip()
+xcomuna_totsexo
+
+ggplot(xcomuna_totsexo, aes(comuna, n, fill=sexo)) + 
+  geom_bar(stat="identity", colour = "grey")
+
+ggplot(xcomuna_totsexo, aes(comuna, n, fill=sexo)) + 
+  geom_bar(stat="identity", position = "fill", colour = "grey")
+
 ```
 
 
