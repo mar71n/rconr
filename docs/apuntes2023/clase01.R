@@ -740,6 +740,11 @@ ggplot(xcomuna_totsexo, aes(comuna, n, fill=sexo)) +
 #' 
 #' ### Bibliografia:
 #' #### [Cheat Sheet *dplyr*](https://dplyr.tidyverse.org/index.html#cheat-sheet)
+#' #### [Ciencia de Datos y Políticas Públicas](https://datosgcba.github.io/ciencia-de-datos-politicas-publicas/docs/)
+#' #### [Ciencia de Datos para Gente Sociable](https://bitsandbricks.github.io/ciencia_de_datos_gente_sociable/)
+#' #### [Introducción a R para Ciencias Sociales. Aplicación practica en la EPH](https://diegokoz.github.io/R_EPH_bookdown/index.html)
+#' #### [R Para Ciencia de Datos](https://cienciadedatos.github.io/r4ds/)
+#' 
 #' 
 #' ***
 #' 

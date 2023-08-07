@@ -457,23 +457,17 @@ overflow-y: auto;
 border: 1px solid #ddd;
 border-radius: 4px;
 }
-.tabset-dropdown > .nav-tabs > li.active:before {
-content: "";
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+content: "\e259";
 font-family: 'Glyphicons Halflings';
 display: inline-block;
 padding: 10px;
 border-right: 1px solid #ddd;
 }
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-content: "";
-border: none;
-}
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-content: "";
+content: "\e258";
 font-family: 'Glyphicons Halflings';
-display: inline-block;
-padding: 10px;
-border-right: 1px solid #ddd;
+border: none;
 }
 .tabset-dropdown > .nav-tabs > li.active {
 display: block;
@@ -527,7 +521,6 @@ display: none;
 <h3>01)</h3>
 <div id="séa-el-set-de-datos-barrios" class="section level4">
 <h4>Séa el set de datos “barrios”:</h4>
-<pre class="r klippy"><code>barrios &lt;- read.csv(&quot;https://cdn.buenosaires.gob.ar/datosabiertos/datasets/barrios/barrios.csv&quot;, encoding = &quot;UTF-8&quot;)</code></pre>
 </div>
 <div id="donde-area-es-el-área-de-cada-barrio-medido-en-m2." class="section level4">
 <h4>Donde “area” es el área de cada barrio medido en m2.</h4>
@@ -582,129 +575,25 @@ barrios[barrios$area &gt; areapromedio, &quot;barrio&quot;]</code></pre>
 </div>
 <div id="section-5" class="section level3">
 <h3>06)</h3>
-<div id="recordemos-el-ejemplo-de-la-matriz-de-tarifas" class="section level4">
-<h4>Recordemos el ejemplo de la matriz de tarifas</h4>
-<pre class="r klippy"><code># https://www.argentina.gob.ar/redsube/tarifas-de-transporte-publico-amba-2021
-
-matriz_colectivo &lt;- matrix(
-  filas &lt;- c(18, 8.10, 20, 9, 21,   9.45, 22,   9.90, 23,   10.35),
-  nrow = 5, byrow = TRUE,
-  dimnames = list(c(&quot;0 a 3 km&quot;, &quot;3 a 6 km&quot;, &quot;6 a 12 km&quot;, &quot;12 a 27 km&quot;, &quot;más de 27 km&quot;),
-                  c(&quot;Tarifa&quot;    ,&quot;Con tarifa social&quot;))
-)
-
-matriz_colectivo</code></pre>
-<pre><code>##              Tarifa Con tarifa social
-## 0 a 3 km         18              8.10
-## 3 a 6 km         20              9.00
-## 6 a 12 km        21              9.45
-## 12 a 27 km       22              9.90
-## más de 27 km     23             10.35</code></pre>
-<pre class="r klippy"><code>matriz_colectivo_a &lt;- matriz_colectivo * 1.4</code></pre>
+<div id="siguiendo-los-pasos-que-usamos-para-totalesbase-y-totalesexp." class="section level4">
+<h4>Siguiendo los pasos que usamos para totalesbase y totalesexp.</h4>
 </div>
-<div id="y-la-función-que-calcula-aumentos-porcentuales" class="section level4">
-<h4>y la función que calcula aumentos porcentuales</h4>
-<pre class="r klippy"><code>aumento &lt;- function(x, y){
-  ((y / x) - 1) * 100
-}</code></pre>
+<div id="generar-la-matriz-para" class="section level4">
+<h4>Generar la matriz para:</h4>
+<div id="a-eah-2021-función-generalizada-de-variancia-para-totales-de-población" class="section level5">
+<h5>a) EAH 2021: Función generalizada de variancia para totales de
+población</h5>
 </div>
-<div id="veamos-que-pasa-al-aplicarla-a-las-dos-matrices-la-actual-y-la-aumentada-x-1.4" class="section level4">
-<h4>Veamos que pasa al aplicarla a las dos matrices, la actual y la
-aumentada x 1.4</h4>
-<pre class="r klippy"><code>aumento(matriz_colectivo, matriz_colectivo_a)</code></pre>
-<pre><code>##              Tarifa Con tarifa social
-## 0 a 3 km         40                40
-## 3 a 6 km         40                40
-## 6 a 12 km        40                40
-## 12 a 27 km       40                40
-## más de 27 km     40                40</code></pre>
-</div>
-<div id="sigue-funcionando." class="section level4">
-<h4>Sigue funcionando.</h4>
-<hr />
-</div>
-<div id="con-la-misma-metodología-exploremos-la-diferencia-porcentual-entre-los-límites-de-los-estratos-en-las-lineas-de-pobreza-mayo-2022-y-abril-2022" class="section level4">
-<h4>con la misma metodología exploremos la diferencia porcentual entre
-los límites de los  estratos en las lineas de pobreza mayo 2022 y abril
-2022:</h4>
-<ul>
-<li><a href="https://www.estadisticaciudad.gob.ar/eyc/wp-content/uploads/2022/06/ir_2022_1664.pdf">ir_2022_1664.pdf</a></li>
-<li><a href="https://www.estadisticaciudad.gob.ar/eyc/wp-content/uploads/2022/05/ir_2022_1655.pdf">ir_2022_1655.pdf</a></li>
-</ul>
-</div>
-<div id="hay-que-copiar-los-datos-del-cuadro-3-de-cada-publicación-armar-cendas-matrices-y-calcular-la-variación-porcentual-celda-a-celda" class="section level4">
-<h4>Hay que copiar los datos del cuadro 3 de cada publicación, armar
-cendas matrices y calcular la variación porcentual celda a celda</h4>
+<div id="b-eah-2021-función-generalizada-de-variancia-para-totales-de-hogares" class="section level5">
+<h5>b) EAH 2021: Función generalizada de variancia para totales de
+hogares</h5>
+<div id="ver-eah2021_bu_ampliada_calculo_cv.xls-descomprimido-en-base-usuaria" class="section level6">
+<h6>Ver eah2021_bu_ampliada_calculo_cv.xls (descomprimido en base
+usuaria)</h6>
 <hr />
 <hr />
-<pre class="r klippy"><code>library(dplyr)</code></pre>
-<pre><code>## 
-## Attaching package: &#39;dplyr&#39;</code></pre>
-<pre><code>## The following objects are masked from &#39;package:stats&#39;:
-## 
-##     filter, lag</code></pre>
-<pre><code>## The following objects are masked from &#39;package:base&#39;:
-## 
-##     intersect, setdiff, setequal, union</code></pre>
-<pre class="r klippy"><code>library(tibble)
-
-## Mayo
-niveles &lt;- c(&quot;En situación de indigencia&quot;, &quot;En situación de pobreza no indigente&quot;, 
-             &quot;No pobres vulnerables&quot;, &quot;Sector medio frágil&quot;, 
-             &quot;Sector medio -&#39;clase media&#39;&quot;, &quot;Sectores acomodados&quot;)
-
-columnas &lt;- c(&quot;Min&quot;, &quot;Max&quot;)
-
-valores &lt;- c(0.00, 54380.23, 54380.24, 99653.24, 99653.25, 123052.91, 123052.92, 153816.14, 153816.15, 492211.67, 492211.68, Inf)
-
-matriz_estratos05 &lt;- matrix(valores, ncol = 2, byrow = TRUE,
-                         dimnames = list(niveles, columnas))
-matriz_estratos05</code></pre>
-<pre><code>##                                            Min       Max
-## En situación de indigencia                0.00  54380.23
-## En situación de pobreza no indigente  54380.24  99653.24
-## No pobres vulnerables                 99653.25 123052.91
-## Sector medio frágil                  123052.92 153816.14
-## Sector medio -&#39;clase media&#39;          153816.15 492211.67
-## Sectores acomodados                  492211.68       Inf</code></pre>
-<pre class="r klippy"><code>## Abril
-tibble_estratos04 &lt;- tribble(
- ~Estrato, ~Min, ~Max,
- #----------------------------|------|--------
- &quot;En situación de indigencia&quot;, 0.00, 52169.47,
- &quot;En situación de pobreza no indigente&quot;, 52169.48, 95268.15,
- &quot;No pobres vulnerables&quot;, 95268.16, 117708.64,
- &quot;Sector medio frágil&quot;, 117708.65, 147135.80,
- &quot;Sector medio-&#39;clase media&#39;&quot;, 147135.81, 470834.59,
- &quot;Sectores acomodados&quot;, 470834.60, Inf
-)
-
-matriz_estratos04 &lt;- matrix(c(tibble_estratos04[[&quot;Min&quot;]], tibble_estratos04[[&quot;Max&quot;]]), byrow = FALSE, ncol = 2)
-matriz_estratos04</code></pre>
-<pre><code>##           [,1]      [,2]
-## [1,]      0.00  52169.47
-## [2,]  52169.48  95268.15
-## [3,]  95268.16 117708.64
-## [4,] 117708.65 147135.80
-## [5,] 147135.81 470834.59
-## [6,] 470834.60       Inf</code></pre>
-<pre class="r klippy"><code>dimnames(matriz_estratos04) &lt;- list(tibble_estratos04[[&quot;Estrato&quot;]], c(&quot;Min&quot;,&quot;Max&quot;))
-matriz_estratos04</code></pre>
-<pre><code>##                                            Min       Max
-## En situación de indigencia                0.00  52169.47
-## En situación de pobreza no indigente  52169.48  95268.15
-## No pobres vulnerables                 95268.16 117708.64
-## Sector medio frágil                  117708.65 147135.80
-## Sector medio-&#39;clase media&#39;           147135.81 470834.59
-## Sectores acomodados                  470834.60       Inf</code></pre>
-<pre class="r klippy"><code>aumento(matriz_estratos04, matriz_estratos05)</code></pre>
-<pre><code>##                                           Min      Max
-## En situación de indigencia                NaN 4.237651
-## En situación de pobreza no indigente 4.237650 4.602892
-## No pobres vulnerables                4.602891 4.540253
-## Sector medio frágil                  4.540253 4.540255
-## Sector medio -&#39;clase media&#39;          4.540254 4.540253
-## Sectores acomodados                  4.540253      NaN</code></pre>
+</div>
+</div>
 </div>
 </div>
 
