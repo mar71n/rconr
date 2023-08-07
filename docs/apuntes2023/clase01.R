@@ -22,7 +22,7 @@ klippy::klippy('')
 #' dataframe, tibles
 #' ```
 #' 
-#' Una versión actualizada de este material en : [clase01](https://mar71n.github.io/rconr/clase01.html)
+#' Una versión actualizada de este material en : [clase01](https://mar71n.github.io/rconr/apuntes2023/clase01.html)
 #' 
 #' ***
 #' 
@@ -704,6 +704,15 @@ library(ggplot2)
 
 #' 
 ## ---- echo=TRUE,  class.source='klippy'---------------------------------------
+ggplot(eah2021_ind, aes(sexo)) +
+  geom_bar()
+
+ggplot(eah2021_ind %>% count(sexo, wt = fexp), aes(sexo, n)) +
+  geom_bar(stat="identity")
+
+ggplot(eah2021_ind %>% count(sexo, wt = fexp), aes(sexo, n, fill=sexo)) +
+  geom_bar(stat="identity")
+
 xcomuna_totsexo <- eah2021_ind %>% group_by(comuna) %>%  count( sexo, wt=fexp)
 
 xcomuna_totsexo
