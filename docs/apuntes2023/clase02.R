@@ -178,7 +178,7 @@ eah2021_ind %>% group_by(sexo) %>% summarise(n = sum(fexp))
 #' ***
 #' 
 #' #### Seleccionar columnas de interes, agregar columnas
-#' ##### *select()* y 
+#' ##### [select()](https://dplyr.tidyverse.org/reference/select.html) y 
 #' ##### [mutate()](https://dplyr.tidyverse.org/reference/mutate.html)
 #'  - ##### Crear, modificar y eliminar columnas.
 #'    ##### **mutate()** agrega nuevas variables y conserva las existentes; **transmute()** agrega nuevas variables y elimina las existentes. Las nuevas variables sobrescriben las variables existentes del mismo nombre. Las variables se pueden eliminar estableciendo su valor en NULL
@@ -194,7 +194,9 @@ eah2021_ind %>%
 
 #' 
 #' #### Filtrar y ordenar
-#' ##### *filter()* y [*arrange()*](https://dplyr.tidyverse.org/reference/arrange.html)
+#' ##### [filter()](https://dplyr.tidyverse.org/reference/filter.html) y
+#' ##### [arrange()](https://dplyr.tidyverse.org/reference/arrange.html)
+#' 
 #' - ##### **arrange()** ordena las filas de un data frame por los valores de las columnas seleccionadas.
 #'   ##### A diferencia de otros verbos dplyr, arrange() ignora en gran medida la agrupación; debe mencionar explícitamente las variables de agrupación (o usar .by_group = TRUE) para agruparlas. Las funciones se evaluan una vez para todos los datos, no por grupo.
 #'   ##### Devuelve  un data frame del mismo tipo que los datos de entrada.

@@ -1,0 +1,60 @@
+---
+title: "Ejercicios propuestos - Clase 02"
+output: html_document
+#date: '2023-07-12'
+knit: (function(inputFile, encoding) {
+  out_dir <- '../docs/apuntes2023';
+  rmarkdown::render(inputFile,
+                    encoding="UTF-8",
+                    output_file=file.path(dirname(inputFile), out_dir, 'clase02_ejercicios.html')) })
+---
+
+```{r klippy, echo=FALSE, include=TRUE}
+klippy::klippy('')
+```
+
+***
+
+#### Los mismos ejercicios de la clase 1, pero con dplyr:
+```{r, echo=TRUE,  class.source='klippy'}
+library(dplyr)
+```
+
+
+
+### 01)
+#### Séa el set de datos "barrios":
+```{r, echo=TRUE,  class.source='klippy'}
+barrios <- read.csv2("https://cdn.buenosaires.gob.ar/datosabiertos/datasets/ministerio-de-educacion/barrios/barrios.csv", encoding = "UTF-8", dec = ".")
+```
+#### Donde "area" es el área de cada barrio medido en m2.
+
+#### cual es la superficie de CABA ? 
+```{r, echo=FALSE,  class.source='klippy'}
+dplyr::count(barrios, wt = AREA, name = "Area Total")
+```
+
+### 2) que superficie tiene el barrio más pequeño ?
+```{r, echo=TRUE,  class.source='klippy'}
+min(barrios$AREA)
+```
+
+### 03) y en Km2 ?
+```{r, echo=TRUE,  class.source='klippy'}
+barrios %>% mutate(areaKm = AREA / (1000 * 1000)) %>% count(wt = areaKm, name = "Area CABA (Km2)")
+barrios %>% mutate(areaKm = AREA / (1000 * 1000)) %>% select(areaKm) %>% min()
+```
+
+### 04) cual es el barrio con más superficie ?
+```{r, echo=TRUE,  class.source='klippy'}
+maximo <- max(barrios$AREA)
+
+barrios %>% filter(AREA == maximo) %>% select(BARRIO, AREA)
+```
+
+### 05) que barrios tienen mayor superficie que la superficie promedio.
+```{r, echo=TRUE,  class.source='klippy'}
+areapromedio <- mean(barrios$AREA)
+
+barrios %>% filter(AREA > areapromedio) %>% select(BARRIO, AREA)
+```
