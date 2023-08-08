@@ -162,19 +162,6 @@ eah2021_ind %>% group_by(sexo) %>% summarise(n = sum(fexp))
 
 #' 
 #' ***
-#' 
-#' #### Que pasa con las fechas ?
-#' ##### Para esto cargamos la libreria [*lubridate*](https://lubridate.tidyverse.org/)
-## ---- echo=TRUE,  class.source='klippy'---------------------------------------
-#head(vacunas$FECHA_ADMINISTRACION)
-
-#max(vacunas$FECHA_ADMINISTRACION)
-
-#dmy_hms(head(vacunas$FECHA_ADMINISTRACION))
-
-#max(dmy_hms(vacunas$FECHA_ADMINISTRACION))
-
-#' 
 #' ***
 #' 
 #' #### Seleccionar columnas de interes, agregar columnas
@@ -323,5 +310,7 @@ ggplot(dfa, aes(v1, v2)) +
 #' ***
 #' 
 #' [clase02.R](clase02.R)
+#' 
+#' [cuadro01.R](cuadro01.R)
 #' 
 #' ***
