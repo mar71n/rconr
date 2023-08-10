@@ -329,7 +329,7 @@ ggplot(dfa, aes(v1, v2)) +
 ***
 ***
 ### Bibliografia:
-#### [R para Ciencia de Datos - Cap 5 Transformación de datos](https://es.r4ds.hadley.nz/transform.html#transform)
+#### [R para Ciencia de Datos - Cap 5 Transformación de datos](https://es.r4ds.hadley.nz/05-transform.html)
 #### [Cheat Sheet *dplyr*](https://dplyr.tidyverse.org/index.html#cheat-sheet)
 
 ***
