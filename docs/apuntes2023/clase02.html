@@ -977,6 +977,7 @@ estos:</h4>
 ##  3rd Qu.:    0   3rd Qu.: 329.0  
 ##  Max.   :99999   Max.   :1614.0</code></pre>
 </div>
+<div style="background-color: #f2dede !important;">
 <div id="filtros" class="section level4">
 <h4>Filtros</h4>
 </div>
@@ -1042,6 +1043,8 @@ para construir las condiciones:</h4>
 <li><h5 id="between-near">between(), near()</h5></li>
 </ul></li>
 </ul>
+</div>
+</div>
 <pre class="r klippy"><code>eah2021_hog[eah2021_hog$v12 == 4,]</code></pre>
 <pre><code>## # A tibble: 4 × 117
 ##      id nhogar comuna dominio  v2_2    v4   v12    h1    h2    h3 h36_1 h36_1x
@@ -1094,7 +1097,8 @@ para construir las condiciones:</h4>
 ## #   t30 &lt;dbl&gt;, sem_hs &lt;chr&gt;, t33 &lt;dbl&gt;, t34 &lt;dbl&gt;, t35 &lt;dbl&gt;, t37_cod_2 &lt;dbl&gt;,
 ## #   t37_coda_2 &lt;dbl&gt;, t38 &lt;dbl&gt;, t39 &lt;dbl&gt;, t40a &lt;dbl&gt;, t40b &lt;dbl&gt;, …</code></pre>
 <hr />
-</div>
+<div style="background-color: #f2dede !important;">
+<hr />
 <div id="frecuencias" class="section level4">
 <h4>Frecuencias</h4>
 <div id="con-basetable" class="section level5">
@@ -1161,6 +1165,7 @@ n = n() a n = sum(wt).</p>
 ##   &lt;dbl&gt;   &lt;dbl&gt;
 ## 1     1 1447532
 ## 2     2 1631407</code></pre>
+<p><strong>count()</strong> es una forma corta de hacer esto:</p>
 <pre class="r klippy"><code>eah2021_ind %&gt;% group_by(sexo) %&gt;% summarise(n = sum(fexp))</code></pre>
 <pre><code>## # A tibble: 2 × 2
 ##    sexo       n
@@ -1169,9 +1174,10 @@ n = n() a n = sum(wt).</p>
 ## 2     2 1631407</code></pre></li>
 </ul>
 <hr />
-<hr />
 </div>
-<div id="seleccionar-columnas-de-interes-agregar-columnas" class="section level4">
+</div>
+<hr />
+<div id="seleccionar-columnas-de-interes-agregar-columnas" class="section level4" style="background-color: #f2dede !important;">
 <h4>Seleccionar columnas de interes, agregar columnas</h4>
 <div id="select-y" class="section level5">
 <h5><a href="https://dplyr.tidyverse.org/reference/select.html">select()</a>
@@ -1182,13 +1188,13 @@ y</h5>
 <ul>
 <li><h5 id="crear-modificar-y-eliminar-columnas.">Crear, modificar y
 eliminar columnas.</h5>
-<h5 id="mutate-agrega-nuevas-variables-y-conserva-las-existentes-transmute-agrega-nuevas-variables-y-elimina-las-existentes.-las-nuevas-variables-sobrescriben-las-variables-existentes-del-mismo-nombre.-las-variables-se-pueden-eliminar-estableciendo-su-valor-en-null"><strong>mutate()</strong>
-agrega nuevas variables y conserva las existentes;
-<strong>transmute()</strong> agrega nuevas variables y elimina las
-existentes. Las nuevas variables sobrescriben las variables existentes
-del mismo nombre. Las variables se pueden eliminar estableciendo su
-valor en NULL</h5></li>
+<h5 id="mutate-agrega-nuevas-variables-y-conserva-las-existentes-las-nuevas-variables-sobrescriben-las-variables-existentes-del-mismo-nombre.-las-variables-se-pueden-eliminar-estableciendo-su-valor-en-null"><strong>mutate()</strong>
+agrega nuevas variables y conserva las existentes; Las nuevas variables
+sobrescriben las variables existentes del mismo nombre. Las variables se
+pueden eliminar estableciendo su valor en NULL</h5></li>
 </ul>
+</div>
+</div>
 <pre class="r klippy"><code>eah2021_ind %&gt;% select(sexo, edad, estado)</code></pre>
 <pre><code>## # A tibble: 12,868 × 3
 ##     sexo  edad estado
@@ -1239,9 +1245,7 @@ valor en NULL</h5></li>
 ##  9     2    33 Inactivo  
 ## 10     1    10 Inactivo  
 ## # ℹ 12,858 more rows</code></pre>
-</div>
-</div>
-<div id="filtrar-y-ordenar" class="section level4">
+<div id="filtrar-y-ordenar" class="section level4" style="background-color: #f2dede !important;">
 <h4>Filtrar y ordenar</h4>
 <div id="filter-y" class="section level5">
 <h5><a href="https://dplyr.tidyverse.org/reference/filter.html">filter()</a>
@@ -1345,9 +1349,11 @@ x[order(x$B),]</code></pre>
 ## 4 b     u         2
 ## 5 c     &lt;NA&gt;      3</code></pre></li>
 </ul>
-<hr />
-<hr />
 </div>
+</div>
+<hr />
+<hr />
+<div style="background-color: #f2dede !important;">
 <div id="options-nos-permite-ver-y-configurar-opciones-globales-de-r." class="section level5">
 <h5><a href="https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/options"><em>options(…)</em></a>
 nos permite ver y configurar opciones globales de R.</h5>
@@ -1363,12 +1369,12 @@ la notación fija a menos que sea más que dígitos scipen más anchos.</h5>
 </div>
 <div id="por-defecto-es-cero." class="section level5">
 <h5>Por defecto es cero.</h5>
+</div>
+</div>
 <pre class="r klippy"><code># guardo el valor actual
 actual &lt;- options(&quot;scipen&quot;)
 # indico que use notación fija a menos que sean mas de 10 digitos:
 options(scipen=10)</code></pre>
-</div>
-</div>
 <div id="sín-notación-cientifica-y-factor-comun-en-aes" class="section level4">
 <h4>Sín notación cientifica y “factor comun” en aes(…)</h4>
 <pre class="r klippy"><code># vuelvo a poner el valor anterior.

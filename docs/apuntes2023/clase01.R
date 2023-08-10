@@ -25,7 +25,7 @@ klippy::klippy('')
 #' Una versión actualizada de este material en : [clase01](https://mar71n.github.io/rconr/apuntes2023/clase01.html)
 #' 
 #' ***
-#' 
+#' <div style="background-color: #f2dede !important;">
 #' ## Instalar:
 #' 
 #' ### Página principal de R:
@@ -105,6 +105,8 @@ klippy::klippy('')
 #' 
 #' #### Con este link se puede crear un R-notebook en Google Drive, que nos vá a servir para seguir la mayoría de los ejemplos que encontramos en la web:
 #' #### [colab.to/r](https://colab.to/r)
+#' 
+#' </div>
 #' 
 #' ## Variables y tipos, importar algunos datos:
 #' 
@@ -555,6 +557,8 @@ comunas %>% select(COMUNAS, BARRIOS)
 #' ***
 #' ***
 #' 
+#' <div style="background-color: #f2dede !important;">
+#' 
 #' ### EAH
 #' #### Link de acceso a Base usuarios EAH2021:
 #' 
@@ -581,10 +585,10 @@ comunas %>% select(COMUNAS, BARRIOS)
 #' #### Links de acceso a todos los tabulados básicoa EAH2021
 #' 
 #' [tabulados básicoa EAH2021](https://www.estadisticaciudad.gob.ar/eyc/?page_id=99454)
-#' 
+#' </div>
 #' ***
 #' ***
-#' 
+#' <div style="background-color: #f2dede !important;">
 #' #### Crear un proyecto.
 #' 
 #' ###### Del sitio web de la versión en español de “R for Data Science”, de Hadley Wickham y Garrett Grolemund:
@@ -610,7 +614,7 @@ comunas %>% select(COMUNAS, BARRIOS)
 #' Entre otros, acá descargamos y descomprimimos **eah2021_bu_ampliada.zip** 
 #' 
 #' ![](./figuras/arboldatos.png){width='400px'}
-#' 
+#' </div>
 #' ***
 #' ***
 #' 

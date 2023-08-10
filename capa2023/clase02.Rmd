@@ -54,6 +54,8 @@ head(eah2021_ind)
 summary(eah2021_ind)
 ```
 
+<div style="background-color: #f2dede !important;">
+
 #### Filtros
 #### con [*\[*](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/Extract)
 #### o con [*dplyr::filter*](https://dplyr.tidyverse.org/reference/filter.html)
@@ -91,6 +93,8 @@ x[x$B == "t",]
   - ##### is.na()
   - ##### between(), near()
 
+</div>
+
 ```{r, echo=TRUE,  class.source='klippy'}
 eah2021_hog[eah2021_hog$v12 == 4,]
 
@@ -101,6 +105,9 @@ eah2021_ind %>% filter(between(edad, 30, 35))
 
 ```
 
+***
+
+<div style="background-color: #f2dede !important;">
 
 ***
 
@@ -157,18 +164,29 @@ eah2021_ind %>% group_by(sexo) %>% summarise(n = n())
 
     ```{r, echo=TRUE,  class.source='klippy'}
 eah2021_ind %>% count(sexo, wt = fexp)
-    
+```
+
+  **count()** es una forma corta de hacer esto:
+
+    ```{r, echo=TRUE,  class.source='klippy'}
 eah2021_ind %>% group_by(sexo) %>% summarise(n = sum(fexp))
 ```
 
 ***
+
+</div>
+
 ***
+
+<div style="background-color: #f2dede !important;">
 
 #### Seleccionar columnas de interes, agregar columnas
 ##### [select()](https://dplyr.tidyverse.org/reference/select.html) y 
 ##### [mutate()](https://dplyr.tidyverse.org/reference/mutate.html)
  - ##### Crear, modificar y eliminar columnas.
-   ##### **mutate()** agrega nuevas variables y conserva las existentes; **transmute()** agrega nuevas variables y elimina las existentes. Las nuevas variables sobrescriben las variables existentes del mismo nombre. Las variables se pueden eliminar estableciendo su valor en NULL
+   ##### **mutate()** agrega nuevas variables y conserva las existentes; Las nuevas variables sobrescriben las variables existentes del mismo nombre. Las variables se pueden eliminar estableciendo su valor en NULL
+
+</div>
 
 ```{r, echo=TRUE,  class.source='klippy'}
 eah2021_ind %>% select(sexo, edad, estado)
@@ -179,6 +197,8 @@ eah2021_ind %>%
   mutate(estado = factor(estado, levels= c(1:3), labels=c("Ocupado","Desocupado","Inactivo"))) %>%
   select(sexo, edad, estado)
 ```
+
+<div style="background-color: #f2dede !important;">
 
 #### Filtrar y ordenar
 ##### [filter()](https://dplyr.tidyverse.org/reference/filter.html) y
@@ -225,14 +245,19 @@ arrange(x, B)
 x[order(x$B),]
 ```
 
+</div>
+
 ***
 
 ***
+
+<div style="background-color: #f2dede !important;">
 
 ##### [*options(...)*](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/options) nos permite ver y configurar opciones globales de R.
 ##### Entre ellas, ***scipen***, con la que podemos controlar cuando usar notación cientifica.
 ##### _*scipen*_: Los valores positivos sesgan hacia la notación fija y los negativos hacia la notación científica: se preferirá la notación fija a menos que sea más que dígitos scipen más anchos.
 ##### Por defecto es cero.
+</div>
 ```{r, echo=TRUE,  class.source='klippy'}
 # guardo el valor actual
 actual <- options("scipen")
