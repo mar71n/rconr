@@ -337,4 +337,6 @@ ggplot(dfa, aes(v1, v2)) +
 
 [cuadro01.R](cuadro01.R)
 
+[crear-cuadro-01.R](crear-cuadro-01.R)
+
 ***

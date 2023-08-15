@@ -200,9 +200,8 @@ eah2021_ind %>%
 #' 
 #' <div style="background-color: #f2dede !important;">
 #' 
-#' #### Filtrar y ordenar
-#' ##### [filter()](https://dplyr.tidyverse.org/reference/filter.html) y
-#' ##### [arrange()](https://dplyr.tidyverse.org/reference/arrange.html)
+#' #### Ordenar
+#' ##### [dplyr::arrange()](https://dplyr.tidyverse.org/reference/arrange.html)
 #' 
 #' - ##### **arrange()** ordena las filas de un data frame por los valores de las columnas seleccionadas.
 #'   ##### A diferencia de otros verbos dplyr, arrange() ignora en gran medida la agrupación; debe mencionar explícitamente las variables de agrupación (o usar .by_group = TRUE) para agruparlas. Las funciones se evaluan una vez para todos los datos, no por grupo.
@@ -337,5 +336,7 @@ ggplot(dfa, aes(v1, v2)) +
 #' [clase02.R](clase02.R)
 #' 
 #' [cuadro01.R](cuadro01.R)
+#' 
+#' [crear-cuadro-01.R](crear-cuadro-01.R)
 #' 
 #' ***

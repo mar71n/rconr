@@ -33,6 +33,7 @@ library(sf)
 #' 
 #' ***
 #' 
+#' 
 #' ### Datasets
 #' #### Establecimientos Educativos
 ## ---- echo=TRUE,  class.source='klippy'---------------------------------------
@@ -326,6 +327,71 @@ ggplot(establecimientosCada1000SF) +
 #' 
 #' </div>
 #' 
+#' #### [geom_text](https://ggplot2.tidyverse.org/reference/geom_text.html)
+#' #### [labs](https://ggplot2.tidyverse.org/reference/labs.html)
+## ---- echo=TRUE,  class.source='klippy'---------------------------------------
+library(forcats)
+eah2021_ind <- read_csv2("./datos/eah2021_bu_ampliada/eah2021_bu_ampliada_ind.txt")
+
+pobxgrupoxcomuna <- eah2021_ind %>% arrange(edad) %>% mutate(rango = case_when( edad <= 9 ~ 'Hasta 9',
+                                                           edad <= 19 ~ '10 - 19',
+                                                           edad <= 29 ~ '20 - 29',
+                                                           edad <= 39 ~ '30 - 39',
+                                                           edad <= 49 ~ '40 - 49',
+                                                           edad <= 59 ~ '50 - 59',
+                                                           edad <= 69 ~ '60 - 69',
+                                                           edad >= 70 ~ '70 y mas',)) %>%
+  mutate(rango = as_factor(rango)) %>%
+  mutate(comuna = as_factor(comuna)) %>%
+  group_by(comuna) %>%
+  count(rango, wt = fexp) %>% 
+  mutate(tot = sum(n), porc = n / sum(n)) %>% arrange(comuna, rango)
+
+
+ggplot(pobxgrupoxcomuna, aes(comuna, n, fill=rango)) + 
+  geom_bar(stat="identity", position = "stack", colour = "grey") +
+  geom_text(aes(label= round(n / 1000, 1)), vjust= -0.5, color="black", size=3, position = position_stack(vjust = 0.5)) +
+  labs(
+    x = "Comuna", 
+    y = "Total por Grupo Etareo (en miles)", 
+    fill = "Grupo",
+    title = "Distribución de la población por grupos de edad según comuna.",
+    subtitle = "Ciudad de Buenos Aires. Año 2021",
+    caption = "Fuente: www.databuenosaires.gob.ar"
+  )
+
+# guardo el valor actual
+actual <- options("scipen")
+# indico que use notación fija a menos que sean mas de 10 digitos:
+options(scipen=10)
+ggplot(pobxgrupoxcomuna, aes(comuna, n, fill=rango)) + 
+  geom_bar(stat="identity", position = "stack", colour = "grey") +
+  geom_text(aes(label= round(n / 1000, 1)), vjust= -0.5, color="black", size=3, position = position_stack(vjust = 0.5)) +
+  labs(
+    x = "Comuna", 
+    y = "Total por Grupo Etareo (en miles)", 
+    fill = "Grupo",
+    title = "Distribución de la población por grupos de edad según comuna.",
+    subtitle = "Ciudad de Buenos Aires. Año 2021",
+    caption = "Fuente: www.databuenosaires.gob.ar"
+  )
+# vuelvo a poner el valor anterior.
+options(scipen=actual[[1]])
+
+ggplot(pobxgrupoxcomuna, aes(comuna, porc, fill=rango)) + 
+  geom_bar(stat="identity", position = "fill", colour = "grey") +
+  geom_text(aes(label= round(porc*100, 1)), vjust= -0.5, color="black", size=3, position = position_fill(vjust = 0.5)) +
+  labs(
+    x = "Comuna", 
+    y = "% Grupo de edad", 
+    fill = "Comuna",
+    title = "Distribución porcentual de la población por grupos de edad según comuna.",
+    subtitle = "Ciudad de Buenos Aires. Año 2021",
+    caption = "Fuente: www.databuenosaires.gob.ar"
+  )
+
+#' 
+#' 
 ## ---- echo=TRUE,  class.source='klippy'---------------------------------------
 # https://data.buenosaires.gob.ar/dataset/plan-de-vacunacion-covid-19
 # vacunas <- read_csv("https://cdn.buenosaires.gob.ar/datosabiertos/datasets/salud/plan-de-vacunacion-covid-19/dataset_total_vacunas.csv")
@@ -463,5 +529,7 @@ datos
 #' ***
 #' 
 #' [clase03.R](clase03.R)
+#' [cuadro02.R](cuadro02.R)
+#' [crear-cuadro-02.R](crear-cuadro-02.R)
 #' 
 #' ***
