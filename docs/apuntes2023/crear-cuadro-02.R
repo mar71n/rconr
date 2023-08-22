@@ -1,6 +1,8 @@
 library(dplyr)
 library(readr)
 library(tidyr)
+library(forcats)
+
 
 # #############################################################
 # Cargar individuales y controlar totales
@@ -30,11 +32,33 @@ porgruposedad <- eah2021_ind %>% arrange(edad) %>%
 
 porgruposedad_porc <- porgruposedad %>%  pivot_wider(id_cols = comuna, names_from = rango, values_from = porc)
 
-porgruposedad %>%  pivot_wider(id_cols = comuna, names_from = rango, values_from = c(porc, n))
+#porgruposedad %>%  pivot_wider(id_cols = comuna, names_from = rango, values_from = c(porc, n))
 
 porgruposedad_tot <- porgruposedad %>%  pivot_wider(id_cols = comuna, names_from = rango, values_from = c(n))
 
-for (tn in porgruposedad_tot[14,2:9]){
-  print(tn)
-  print(traercv(tn, 14))
-}
+mp01Br <- porgruposedad_tot %>% mutate(cv_hasta9 = traercv(`Hasta 9`, comuna)) %>%
+  mutate(cv_hasta19 = traercv(`10 - 19`, comuna)) %>%
+  mutate(cv_hasta29 = traercv(`20 - 29`, comuna)) %>%
+  mutate(cv_hasta39 = traercv(`30 - 39`, comuna)) %>%
+  mutate(cv_hasta49 = traercv(`40 - 49`, comuna)) %>%
+  mutate(cv_hasta59 = traercv(`50 - 59`, comuna)) %>%
+  mutate(cv_hasta69 = traercv(`60 - 69`, comuna)) %>%
+  mutate(cv_70ymas = traercv(`70 y mas`, comuna)) %>%
+  full_join(porgruposedad_porc, by = c('comuna')) %>%
+  select(`Hasta 9.y`, cv_hasta9, `10 - 19.y`, cv_hasta19, `20 - 29.y`, cv_hasta29, `30 - 39.y`, cv_hasta39,
+         `40 - 49.y`, cv_hasta49, `50 - 59.y`, cv_hasta59, `60 - 69.y`, cv_hasta69, `70 y mas.y`, cv_70ymas)
+
+
+# con kableExtra #############################
+library(kableExtra)
+
+cuadro02kbl <- kbl(mp01Br) %>%
+  kable_paper("striped", full_width = F) %>%
+  add_header_above(c(" " = 1, "Grupo de edad" = 16))
+  
+
+cuadro02kbl
+
+save_kable(cuadro02kbl, file = "resultados/cuadro02_kbl.html")
+
+

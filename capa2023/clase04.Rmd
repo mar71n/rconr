@@ -1,0 +1,473 @@
+---
+title: "Clase 04"
+output: html_document
+#date: '2023-07-12'
+knit: (function(inputFile, encoding) {
+  out_dir <- '../docs/apuntes2023';
+  rmarkdown::render(inputFile,
+                    encoding="UTF-8",
+                    output_file=file.path(dirname(inputFile), out_dir, 'clase04.html'));
+  knitr::purl("clase04.Rmd", documentation = 2L, output = "../docs/apuntes2023/clase04.R")  })
+---
+
+```
+Más gráficos , tabulados , fechas
+fill, position, geom_boxplot, coord_flip, geom_abline
+tabulados:
+gt, kableExtra, dt, plotly
+fechas:
+lubridate
+```
+
+```{r, echo=TRUE,  class.source='klippy'}
+library(dplyr)
+library(readr)
+library(lubridate)
+library(ggplot2)
+library(kableExtra)
+```
+
+<div style="background-color: #f2dede !important;">
+
+### Fechas en todos los formatos...
+
+#### [*lubridate*](https://lubridate.tidyverse.org/)
+
+```{r, echo=TRUE,  class.source='klippy'}
+dmy("28FEB2021")
+dmy("28/02/2021")
+dmy("29/02/2021")
+dmy("29/02/2020")
+
+dmy_hms("28FEB2021:15:15:20")
+```
+
+#### *date-time* , *date* , *time*
+#### 
+```{r, echo=TRUE,  class.source='klippy'}
+now()
+
+today()
+
+as_date(dmy_hms("28FEB2021:15:15:20"))
+```
+
+</div>
+
+***
+
+#### Dataset de vacunas:
+
+```{r, echo=TRUE,  class.source='klippy'}
+# https://data.buenosaires.gob.ar/dataset/plan-de-vacunacion-covid-19
+vacunas <- read_csv("https://cdn.buenosaires.gob.ar/datosabiertos/datasets/salud/plan-de-vacunacion-covid-19/dataset_total_vacunas.csv")
+# download.file("https://cdn.buenosaires.gob.ar/datosabiertos/datasets/salud/plan-de-vacunacion-covid-19/dataset_total_vacunas.csv", "datos/dataset_total_vacunas.csv")
+#vacunas <- read_csv("datos/dataset_total_vacunas.csv")
+```
+
+#### 0 en los valor NA de DOSIS_3
+```{r, echo=TRUE,  class.source='klippy'}
+vacunas[is.na(vacunas$DOSIS_3), "DOSIS_3"] <- 0
+```
+
+#### Agrego la columna de *total* para cada registro
+```{r, echo=TRUE,  class.source='klippy'}
+vacunas <- vacunas %>% mutate(total = (DOSIS_1 + DOSIS_2 + DOSIS_3))
+```
+
+#### FECHA_ADMINISTRACION es un texto y tiene que ser una fecha.
+```{r, echo=TRUE,  class.source='klippy'}
+head(vacunas$FECHA_ADMINISTRACION)
+```
+
+#### FECHA_ADMINISTRACION con *lubridate*
+#### siempre uso el tipo más simple posible, en este caso **date** por sobre **date-time** ya que la hora no la preciso
+```{r, echo=TRUE,  class.source='klippy'}
+vacunas <- vacunas %>% mutate(FECHA_ADMINISTRACION = as_date(dmy_hms(FECHA_ADMINISTRACION)))
+```
+
+***
+
+### Por día, por mes ...
+
+#### *total* por día
+```{r, echo=TRUE,  class.source='klippy'}
+vacunas %>% count(FECHA_ADMINISTRACION, wt = total, name = "total")
+```
+
+#### *total* por *día*
+#### **geom_line**
+```{r, echo=TRUE,  class.source='klippy'}
+vacunas %>% count(FECHA_ADMINISTRACION, wt = total, name = "total") %>%
+  ggplot(aes(FECHA_ADMINISTRACION, total)) +
+  geom_line()
+```
+
+#### *total* por *día*
+#### **geom_line**
+#### **geom_smooth**
+```{r, echo=TRUE,  class.source='klippy'}
+vacunas %>% count(FECHA_ADMINISTRACION, wt = total, name = "total") %>%
+  ggplot(aes(FECHA_ADMINISTRACION, total)) +
+  geom_line() +
+  geom_smooth(method = "gam")
+```
+
+#### *total* por *día*
+#### **geom_line** 
+#### **colour**
+```{r, echo=TRUE,  class.source='klippy'}
+vacunas %>% mutate(annio = year(FECHA_ADMINISTRACION)) %>% 
+  count(FECHA_ADMINISTRACION, annio, wt = total, name = "total") %>%
+  ggplot(aes(FECHA_ADMINISTRACION, total, colour = factor(annio))) +
+  geom_line()
+```
+
+#### *total* por *semana*
+#### **count**
+```{r, echo=TRUE,  class.source='klippy'}
+vacunas %>% mutate(semana = floor_date(FECHA_ADMINISTRACION, "week")) %>%
+  count(semana, wt = total, name = "TOTAL") %>%
+  ggplot(aes(semana, TOTAL)) +
+    geom_line()
+```
+
+#### *total* por *semana*
+#### **group_by**
+```{r, echo=TRUE,  class.source='klippy'}
+vacunas %>% mutate(semana = floor_date(FECHA_ADMINISTRACION, "week")) %>%
+  group_by(semana) %>%
+  summarise(TOTAL = sum(total)) %>%
+  ggplot(aes(semana, TOTAL)) +
+  geom_line()
+```
+
+#### *total* por *mes*
+#### **geom_line**
+```{r, echo=TRUE,  class.source='klippy'}
+vacunas %>% mutate(mes = floor_date(FECHA_ADMINISTRACION, "month")) %>%
+  count(mes, wt = total, name = "TOTAL") %>%
+  ggplot(aes(mes, TOTAL)) +
+  geom_line()
+```
+
+#### *total* por *mes*
+#### **geom_bar**
+```{r, echo=TRUE,  class.source='klippy'}
+vacunas %>% mutate(mes = floor_date(FECHA_ADMINISTRACION, "month")) %>%
+  count(mes, wt = total, name = "TOTAL") %>%
+  ggplot(aes(mes, TOTAL)) +
+  geom_bar(stat = "identity")
+```
+
+***
+***
+
+<div style="background-color: #f2dede !important;">
+
+### Grabar data frames
+#### [familia **readr::write_\*()**](https://readr.tidyverse.org/reference/write_delim.html)
+ - ##### Guarda un data frame en un archivo de texto donde las columnas son delimitadas por un caracter, por ejemplo "**,**" ó "**;**"
+   ##### Las funciones **write_\*()** agregan mejoras a las del tipo *write.csv()*. En primer lugar son más rápidas.
+   ##### **delim** = el delimitador
+     - #####        en write_delim es " "
+     - #####        en write_csv es ","
+     - #####        en write_csv2 es ";"
+
+   ##### **append** = Si es FALSE, sobre escribe cualquier archivo existente. Si es TRUE, agrega los registros al final.
+   #####              En ambos casos, si el archivo no existe lo crea.
+
+   ##### **col_names** = Si es FALSE no se agregan los nombres de columna en la primera fila, si es TRUE sí se agregan.
+   ##### El valor tiene que ser lo contrario de lo que se pase en append.
+
+   ##### **quote** = En que casos entrecomillar los valores.
+     - #####             'needed' : solo si es necesario ( cuando el valor incluye comillas, el delimitador o saltos de linea)
+     - #####             'all' : entrecomillar todas las columnas
+     - #####             'none' : ninguno
+
+   ##### **escape** = El tipo de escape a usar cuando hay comillas en los datos.
+     - #####         'double' : ""
+     - #####         'backslash' : \\
+     - #####         'none' : ninguno
+
+</div>
+
+***
+
+### Guardar gráficos
+#### [**ggsave**](https://ggplot2.tidyverse.org/reference/ggsave.html)
+
+### Rscript
+```
+>R.home() \bin\
+C:\Program Files\R\R-4.2.1\bin\Rscript.exe
+```
+
+### Un script que descarga los datos y graba los gráficos
+
+#### *crear_graficos.R* :
+```
+library(dplyr)
+library(lubridate)
+library(readr)
+library(ggplot2)
+
+vacunas <- read_csv("https://cdn.buenosaires.gob.ar/datosabiertos/datasets/salud/plan-de-vacunacion-covid-19/dataset_total_vacunas.csv")
+
+vacunas[which(is.na(vacunas$DOSIS_3)), "DOSIS_3"] <- 0
+
+# Agrego la columna de *total* para cada registro
+vacunas <- vacunas %>% mutate(total = (DOSIS_1 + DOSIS_2 + DOSIS_3))
+
+# FECHA_ADMINISTRACION con *lubridate*
+# siempre uso el tipo más simple posible, en este caso **date** por sobre **date-time** ya que la hora no la preciso
+vacunasXdia <- vacunas %>% 
+  mutate(FECHA_ADMINISTRACION = as_date(dmy_hms(FECHA_ADMINISTRACION))) %>% 
+  mutate(annio = year(FECHA_ADMINISTRACION)) %>% 
+  count(FECHA_ADMINISTRACION, annio, wt = total, name = "total")
+
+# calculo vacunas x año
+vacunasXannio <- vacunasXdia %>% count(annio, wt = total)
+# grabo en un archivo delimitado por ","
+write_csv(vacunasXannio, "vacunasXannio.csv")
+
+p1 <- vacunasXdia  %>%
+  ggplot(aes(FECHA_ADMINISTRACION, total, colour = factor(annio))) +
+  geom_line()
+
+ggsave(filename =  "vacunas300.png", plot = p1, device = "png", dpi = 300)
+
+ggsave(filename =  "vacunas200.png", plot = p1, device = "png", dpi = 200)
+
+ggsave(filename =  "vacunas100.png", plot = p1, device = "png", dpi = 100)
+```
+
+***
+***
+
+### Para presentación de tablas:
+
+#### [*GT*](https://gt.rstudio.com/)
+
+#### [*kableExtra*](https://haozhu233.github.io/kableExtra/)
+
+#### [RDocumentation *kableExtra*](https://www.rdocumentation.org/packages/kableExtra/versions/1.3.4)
+
+### *GT*
+```{r, echo=TRUE,  class.source='klippy'}
+
+library(gt)
+
+t1 <- vacunas %>% count(GENERO, wt = total, name = "APLICADAS") %>%
+  gt() %>% 
+  tab_header(
+    title = "Vacunas por género",
+  ) %>%
+  tab_source_note("Fuente : www.databuenosaires.gob.ar")
+
+t1
+```
+
+### *kableExtra*
+```{r, echo=TRUE,  class.source='klippy'}
+library(kableExtra)
+
+t2 <- vacunas %>% count(GENERO, wt = total, name = "APLICADAS") %>%
+  kbl(caption = "Vacunas por género", center = TRUE) %>%
+  kable_styling(bootstrap_options = "striped", full_width = F) %>%
+  footnote(general_title = "Notas", c("Fuente: www.databuenosaires.gob.ar")) 
+
+t2
+```
+
+***
+***
+
+```{r, echo=TRUE,  class.source='klippy'}
+library(stringr)
+```
+
+<div style="background-color: #f2dede !important;">
+
+### [**stringr**](https://stringr.tidyverse.org/)
+- #### las funciones comienzan con str_ y reciben un vector de strings como primer argumento
+  - ##### Cotidianamente las usaremos para detectar coincidencias:
+    ```{r, echo=TRUE,  class.source='klippy'}
+    library(stringr)
+    
+    barrios <- read.csv2("https://cdn.buenosaires.gob.ar/datosabiertos/datasets/ministerio-de-educacion/barrios/barrios.csv", encoding = "UTF-8", dec = ".")
+    
+    barrios %>% filter(str_detect(BARRIO, "VILLA")) %>% select(BARRIO)
+    
+    # En una primera búsqueda sera deseable que ignore mayúsculas o minúsculas (ignore case)
+    barrios %>% filter(str_detect(BARRIO, "(?i)Villa")) %>% select(BARRIO)
+    
+    ```
+    
+    ```{r, echo=TRUE,  class.source='klippy'}
+str_length("Cuso R")
+
+x <- c("why", "video", "cross", "extra", "deal", "authority")
+
+str_view_all(x, "[aeiou]")
+```
+- #### str_detect
+    ```{r, echo=TRUE,  class.source='klippy'}
+# verdadero si hay alguna coincidencia, false en caso contrario
+str_detect(x, "[aeiou]")
+```
+- #### str_count
+    ```{r, echo=TRUE,  class.source='klippy'}
+# cuenta la cantidad de coincidencias
+str_count(x, "[aeiou]")
+```
+- #### str_subset
+    ```{r, echo=TRUE,  class.source='klippy'}
+# extrae los componentes que tienen coincidencias
+str_subset(x, "[aeiou]")
+```
+- #### str_locate
+    ```{r, echo=TRUE,  class.source='klippy'}
+# la posición de la coincidencias
+str_locate(x, "[aeiou]")
+```
+- #### str_replace
+    ```{r, echo=TRUE,  class.source='klippy'}
+str_replace(x, "[aeiou]", "?")
+```
+- #### str_extract
+    ```{r, echo=TRUE,  class.source='klippy'}
+# extrae el texto que coincide
+str_view(x, "r[aeiou]")
+str_extract(x, "r[aeiou]")
+str_locate(x, "r[aeiou]")
+```
+</div>
+
+- #### Otros ejemplos:
+    ```{r, echo=TRUE,  class.source='klippy'}
+x <- c("PALERMO", "BALVANERA", "Barracas", "San Telmo", "CABALLITO", "PARQUE PATRICIOS")
+str_view_all(x, "[aeiou]")
+str_view_all(x, "(?i)[aeiou]")
+str_view_all(x, "^B")
+str_view_all(x, "[Oo]$")
+str_subset(x, "[Oo]$")
+str_subset(x, " ")
+
+str_to_lower(x)
+str_to_upper(x)
+str_to_title(x)
+str_to_sentence(x)
+```
+
+#### la variable VACUNA
+```{r, echo=TRUE,  class.source='klippy'}
+vacunas %>% count(VACUNA) 
+
+vacunas %>% count(VACUNA) %>% .$VACUNA 
+
+strvacunas <- vacunas %>% count(VACUNA) %>% .$VACUNA 
+```
+
+#### Donde diga "Coronavirus"
+```{r, echo=TRUE,  class.source='klippy'}
+# Ver las coincidencias con el patron de búsqueda , útil para afinar la búsqueda.
+str_view_all(strvacunas, "Coronavirus")
+
+# Filtrar por un patron de búsqueda
+strvacunas[str_which(strvacunas, "Coronavirus")]
+
+# Extraer las coincidencias con el patron de búsqueda
+str_extract(strvacunas, "Coronavirus")
+
+```
+
+#### Ahora usemos patrones de búsqueda más generales
+#### Un dígito seguido de dos caracteres de letras
+```{r, echo=TRUE,  class.source='klippy'}
+# Vemos si las ocurrencias son las que esperamos.
+str_view_all(strvacunas, "\\d\\w\\w")
+
+# Podemos filtrar
+strvacunas[str_which(strvacunas, "\\d\\w\\w")]
+
+# También podemos extraer
+str_extract(strvacunas, "\\d\\w\\w")
+
+```
+
+#### Extraer todas las ocurrencias
+```{r, echo=TRUE,  class.source='klippy'}
+str_extract_all(strvacunas, "\\d\\w\\w")
+```
+
+#### Uno o más letras entre paréntesis
+```{r, echo=TRUE,  class.source='klippy'}
+str_view_all(strvacunas, "\\(\\w+\\)")
+
+str_extract_all(strvacunas, "\\(\\w+\\)")
+```
+
+#### Uno o más, letras en mayúscula, entre paréntesis
+```{r, echo=TRUE,  class.source='klippy'}
+str_view_all(strvacunas, "\\([:upper:]+\\)")
+
+str_extract_all(strvacunas, "\\([:upper:]+\\)")
+```
+
+#### 4 o más, letras en mayúscula, juntas.
+```{r, echo=TRUE,  class.source='klippy'}
+str_view_all(strvacunas, "[:upper:]{4,}")
+
+str_extract_all(strvacunas, "[:upper:]{4,}")
+```
+
+#### 
+
+#### Finalmente, lo que queriamos hacer es extraer para cada registro de vacuna un nombre de vacuna.
+#### Uno o más caracteres entre A y Z, ó "AstraZeneca ó ...
+#### Luego le saco los paréntesis
+#### Y termino pasando todo a mayusculas.
+```{r, echo=TRUE,  class.source='klippy'}
+vacunas %>% count(VACUNA) %>% .$VACUNA  %>%
+str_extract(pattern =  "\\([A-Z]+\\)|AstraZeneca|Sinopharm|Moderna|Sputnik") %>%
+  str_replace_all("\\(|\\)", "") %>% 
+  str_to_upper()
+```
+
+#### Asignando en una nueva variable  
+```{r, echo=TRUE,  class.source='klippy'}
+vacunas$VAC <-  vacunas$VACUNA %>%
+  str_extract( pattern =  "\\([A-Z]+\\)|AstraZeneca|Sinopharm|Moderna|Sputnik") %>%
+  str_replace_all("\\(|\\)", "") %>% str_to_upper()
+```
+
+#### con **mutate**
+```{r, echo=TRUE,  class.source='klippy'}
+vacunas %>% mutate(VAC = VACUNA %>%
+                     str_extract( pattern =  "\\([A-Z]+\\)|AstraZeneca|Sinopharm|Moderna|Sputnik") %>%
+                     str_replace_all("\\(|\\)", "") %>% str_to_upper()) %>%
+                  select(FECHA_ADMINISTRACION, GRUPO_ETARIO, GENERO, VAC, total)
+```
+
+#### Ahora se muestra mejor la variabla
+```{r, echo=TRUE,  class.source='klippy'}
+vacunas %>% count(VAC, wt = total, name = "DOSIS")
+```
+
+***
+***
+
+### Bibliografia:
+#### [R para Ciencia de Datos - Cap 16 Fechas y horas](https://es.r4ds.hadley.nz/16-datetimes.html)
+####  [R para Ciencia de Datos - Cap 14 Cadenas de caracteres](https://es.r4ds.hadley.nz/14-strings.html)
+
+***
+
+[clase04.R](clase04.R)
+
+[leer_cvs.R](leer_cvs.R)
+
+[crear-cuadro-02.R](crear-cuadro-02.R)
+
+***
