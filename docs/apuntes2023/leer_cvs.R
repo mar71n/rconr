@@ -20,18 +20,33 @@ FGV_Poblacion_Comunas %>% filter(Total == fila) %>% select(as.character(comuna))
 
 FGV_Poblacion_Comunas[FGV_Poblacion_Comunas$Total == fila, as.character(comuna)][[1]]
 
-traercv <- function(total, comuna){
-  #total = 120001
-  #comuna = 5
+traercv <- function(n, comuna){
+  #n = 5000
+  #comuna = 6
   # El máximo de los totales menores o iguales al pedido
-  #fila <- max(FGV_Poblacion_Comunas[FGV_Poblacion_Comunas$Total <= total, "Total"])
-  fila <- FGV_Poblacion_Comunas %>% filter(Total <= total) %>% select(Total) %>% max()
+  fila <- FGV_Poblacion_Comunas %>% filter(Total <= n) %>% select(Total) %>% max()
   retcv <- FGV_Poblacion_Comunas[FGV_Poblacion_Comunas$Total == fila, as.character(comuna)][[1]]
-  retcv <- case_when(retcv >= 0.1 ~ 'a',
-                     retcv >= 0.2 ~ 'b',
+  retcv <- case_when(retcv >= 0.2 ~ 'b',
+                     retcv >= 0.1 ~ 'a',
                      .default = '')
   return(retcv)
 }
+
+traercv(20000, 1)
+
+traercv(2500, 8)
+
+traercv(5000, 5)
+
+traercv(6000, 5)
+
+
+traercv(13500, 2)
+
+
+abc <- 7
+
+abc
 
 
 traercv(117000, 5)

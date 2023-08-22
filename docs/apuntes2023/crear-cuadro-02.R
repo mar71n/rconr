@@ -45,7 +45,7 @@ mp01Br <- porgruposedad_tot %>% mutate(cv_hasta9 = traercv(`Hasta 9`, comuna)) %
   mutate(cv_hasta69 = traercv(`60 - 69`, comuna)) %>%
   mutate(cv_70ymas = traercv(`70 y mas`, comuna)) %>%
   full_join(porgruposedad_porc, by = c('comuna')) %>%
-  select(`Hasta 9.y`, cv_hasta9, `10 - 19.y`, cv_hasta19, `20 - 29.y`, cv_hasta29, `30 - 39.y`, cv_hasta39,
+  select(`Hasta 9` = `Hasta 9.y`, cv_hasta9, `10 - 19.y`, cv_hasta19, `20 - 29.y`, cv_hasta29, `30 - 39.y`, cv_hasta39,
          `40 - 49.y`, cv_hasta49, `50 - 59.y`, cv_hasta59, `60 - 69.y`, cv_hasta69, `70 y mas.y`, cv_70ymas)
 
 
