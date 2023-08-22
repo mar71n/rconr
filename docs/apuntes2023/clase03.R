@@ -20,7 +20,7 @@ klippy::klippy('')
 #' ggplot, geom_point, facet_grid, geom_bar, stat_count, stat_summary
 #' ```
 #' 
-#' Una versión actualizada de este material en : [clase03](https://mar71n.github.io/rconr/clase03.html)
+#' Una versión actualizada de este material en : [clase03](https://mar71n.github.io/rconr/apuntes2023/clase03.html)
 #' 
 #' ***
 #' 
@@ -529,7 +529,9 @@ datos
 #' ***
 #' 
 #' [clase03.R](clase03.R)
+#' 
 #' [cuadro02.R](cuadro02.R)
+#' 
 #' [crear-cuadro-02.R](crear-cuadro-02.R)
 #' 
 #' ***

@@ -19,6 +19,10 @@
 #' lubridate
 #' ```
 #' 
+#' Una versión actualizada de este material en : [clase04](https://mar71n.github.io/rconr/apuntes2023/clase04.html)
+#' 
+#' ***
+#' 
 ## ---- echo=TRUE,  class.source='klippy'---------------------------------------
 library(dplyr)
 library(readr)
