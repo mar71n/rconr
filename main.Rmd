@@ -1,7 +1,7 @@
 ---
 title: "Main"
 author: "Rampo"
-date: '2022-05-19'
+date: '2025-08-24'
 knit: (function(inputFile, encoding) {
       out_dir <- 'docs';
       rmarkdown::render(inputFile,
@@ -9,6 +9,8 @@ knit: (function(inputFile, encoding) {
                         output_file=file.path(dirname(inputFile), out_dir, 'index.html')) })
 output: html_document
 ---
+
+[Apuntes 2025](apuntes2025/apuntes.html)
 
 [Apuntes 2023](apuntes2023/apuntes.html)
 
