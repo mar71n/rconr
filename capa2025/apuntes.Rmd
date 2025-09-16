@@ -1,5 +1,5 @@
 ---
-title: "Datos, estadísticas, tabulados y gráficos con R."
+title: "Gestión de datos en R: herramientas y ejemplos para el trabajo con datos dentro de los equipos de IDECBA"
 #author: "mar71n"
 #date: "24 de agosto de 2025"
 knit: (function(inputFile, encoding) {
@@ -11,29 +11,28 @@ output: html_document
 ---
 ## Nivel 1
 
-[Clase 1:](clase01.html)
-Instalación, ayuda, búsquedas:
-R, CRAN, R-seek, RStudio, install.packages, library
-Variables y tipos, importar datos:
-vectores, matrices, factores, list, asignación
-dataframe, tibles
+[Clase 1:]() <!-- // (clase01.html) -->
+Introducción al Ecosistema R. 
+Instalación de R, RStudio y paquetes (install.packages, library).
+Recursos de ayuda (CRAN, R-Seek).
+Cómo interpreta R los datos, Estructuras más comunes de nuestros datos. Consumiendo resultados. Creando resultados
+Vectores, matrices, listas, factores.
+Importación de datos y data frames.
+EAH: estructura, cuadros básicos, read_excel
 
-[Clase 2:](clase02.html)
-Tibles, filtrar y agrupar:
-dplyr, filter, arrange, select, mutate,
-summarise, group_by, ungroup,
+[Clase 2:]() <!-- // (clase02.html) -->
+Manipulación de datos con dplyr (filter, select, mutate, group_by).
+Gráficos básicos con ggplot2 (geom_bar). aes, stat,  position
+EAH: estructura, cuadros básicos, read_excel
 
-[Clase 3:](clase03.html)
-Tibles join, gráficos :
-inner_join, left_join, right_join, full_join, semi_join, anti_join
+
+[Clase 3:]() <!-- // (clase03.html) -->
+Combinar tablas con *_join.
+inner_join, left_join, right_join, full_join, semi_join, anti_join 
 ggplot, geom_point, facet_grid, geom_bar, stat_count, stat_summary
 
-[Clase 4:](clase04.html)
-Más gráficos , tabulados , fechas
-fill, position, geom_boxplot, coord_flip, geom_abline
-tabulados:
-gt, kableExtra, dt, plotly
-fechas:
-lubridate
+[Clase 4:]() <!-- // (clase04.html) -->
+Manejo de textos (stringr) y fechas (lubridate).
+Gráficos para mostrar resultados: coord_flip, geom_smooth
 
 
