@@ -50,14 +50,8 @@ En redes que usan un proxy para conectarse a internet: [configurar proxy](clase0
 ### Rtools :
 Para algunas instalaciones de paquetes en Windows
 
-- para R4.3:
-[https://cran.r-project.org/bin/windows/Rtools/rtools43/rtools.html](https://cran.r-project.org/bin/windows/Rtools/rtools43/rtools.html)
+[https://cran.r-project.org/bin/windows/Rtools/](https://cran.r-project.org/bin/windows/Rtools/)
 
-- para R4.2:
-[https://cran.r-project.org/bin/windows/Rtools/rtools42/rtools.html](https://cran.r-project.org/bin/windows/Rtools/rtools42/rtools.html)
-
-- para R3.6 o menos :
-[https://cran.r-project.org/bin/windows/Rtools/history.html](https://cran.r-project.org/bin/windows/Rtools/history.html)
 
 ### Rstudio :
 - [posit.co](https://posit.co/products/open-source/rstudio/)
@@ -104,7 +98,7 @@ Para algunas instalaciones de paquetes en Windows
 ***
 
 #### Con este link se puede crear un R-notebook en Google Drive, que nos vá a servir para seguir la mayoría de los ejemplos que encontramos en la web:
-#### [colab.to/r](https://colab.to/r)
+#### [Google Colab](https://colab.research.google.com)
 
 </div>
 
@@ -560,7 +554,7 @@ comunas %>% select(BARRIOS, COMUNAS)
 <div style="background-color: #f2dede !important;">
 
 ### EAH
-#### Link de acceso a Base usuarios EAH2021:
+#### Link de acceso a Base usuarios EAH2024:
 
 [Usuarios EAH2024](https://www.estadisticaciudad.gob.ar/eyc/bases-usuarios/?operativo=114304)
 
@@ -587,7 +581,7 @@ t_rama_2.txt  **codificación de la rama**
 
 #### Links de acceso a todos los tabulados básicoa EAH2025
 
-[tabulados básicoa EAH2025](https://www.estadisticaciudad.gob.ar/eyc/tabulados-basicos/?operativo=114304)
+[tabulados básicoa EAH2024](https://www.estadisticaciudad.gob.ar/eyc/tabulados-basicos/?operativo=114304)
 
 </div>
 ***

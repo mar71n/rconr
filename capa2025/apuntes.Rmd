@@ -11,7 +11,7 @@ output: html_document
 ---
 ## Nivel 1
 
-[Clase 1:]() <!-- // (clase01.html) -->
+[Clase 1:](clase01.html)
 Introducción al Ecosistema R. 
 Instalación de R, RStudio y paquetes (install.packages, library).
 Recursos de ayuda (CRAN, R-Seek).

@@ -1,0 +1,70 @@
+---
+title: "Configurar proxy"
+output: html_document
+knit: (function(inputFile, encoding) {
+  out_dir <- '../docs/apuntes2025';
+  rmarkdown::render(inputFile,
+                    encoding="UTF-8",
+                    output_file=file.path(dirname(inputFile), out_dir, 'clase01_proxy.html')) })
+---
+
+```{r klippy, echo=FALSE, include=TRUE}
+#klippy::klippy('')
+```
+
+***
+
+### Variables de entorno
+
+#### Para indicar a R que configuración de **proxy** usar al conectarse a internet
+#### tenemos que setear las variables de entorno **HTTP_PROXY** y **HTTPS_PROXY**
+#### Por ejemplo con los comandos:
+```
+Sys.setenv(HTTP_PROXY="http://proxy.host:1234/")
+Sys.setenv(HTTPS_PROXY="http://proxy.host:1234/")
+```
+
+### Guardar la configuracion
+
+#### Para que la configuración sea persistente podemos incluirla en el archivo *Rprofile.site*
+#### Usamos el que está en la carpeta **etc** de **R.home()**
+#### La función **R.home()** nos devuelve la carpeta donde está instalado el R en nuestra máquina.
+
+
+#### Agregamos al final de **Rprofile.site**:
+
+```
+Sys.setenv(HTTP_PROXY="http://proxy.host:1234/")
+Sys.setenv(HTTPS_PROXY="http://proxy.host:1234/")
+```
+
+***
+## Rprofile.site
+
+### En windows :
+```
+> R.home()
+[1] "C:/PROGRA~1/R/R-42~1.1"
+```
+
+#### Entonces el *Rprofile.site* que editamos es:
+```
+C:/PROGRA~1/R/R-42~1.1/etc/Rprofile.site
+```
+
+#### Si no existe lo podemos crear
+
+***
+
+### En linux :
+```
+> R.home()
+# [1] "/usr/lib/R"
+```
+
+#### Entonces el Rprofile.site que editamos es:
+```
+/usr/lib/R/etc/Rprofile.site
+```
+
+***

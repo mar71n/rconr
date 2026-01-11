@@ -1,0 +1,33 @@
+---
+title: "Upgrade R"
+output: html_document
+knit: (function(inputFile, encoding) {
+  out_dir <- '../docs/apuntes2025';
+  rmarkdown::render(inputFile,
+                    encoding="UTF-8",
+                    output_file=file.path(dirname(inputFile), out_dir, 'upgrade.html')) })
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Traducido de [CRAN desistalar, actualizar](http://mirror.fcaglp.unlp.edu.ar/CRAN/bin/windows/base/rw-FAQ.R-4.5.2.html#What_0027s-the-best-way-to-upgrade_003f-1)
+
+#### 2.7 ¿Cómo desinstalo R?
+
+Normalmente puede hacer esto desde el grupo **'Programas y características' en el Panel de control**. Si no aparece allí, ejecute unins000.exe en el directorio de instalación de nivel superior. En versiones recientes de Windows, es posible que se le solicite que confirme que desea ejecutar un programa de un editor "desconocido" o "no identificado".
+
+Desinstalar R solo elimina los archivos de la instalación inicial, **no (por ejemplo) los paquetes que haya instalado o actualizado en su biblioteca personal.**
+
+Si todo lo demás falla, puede eliminar todo el directorio en el que se instaló R.
+
+#### 2.8 ¿Cuál es la mejor manera de actualizar?
+
+Eso es cuestión de gustos. Para la mayoría de las personas, lo mejor que puede hacer es desinstalar R (consulte la Q anterior), instalar la nueva versión y luego hay dos opciones de qué hacer con la biblioteca.
+
+El más simple pero que requiere más recursos es instalar todos los paquetes requeridos nuevamente con la nueva versión de R y luego eliminar la biblioteca anterior una vez que ya no la necesite, p. para referencia. A veces, esto es necesario cuando hay un cambio en R que hace que los paquetes instalados sean incompatibles, como cuando se actualiza de R 4.1 a R 4.2 (los paquetes instalados con código nativo/DLL son incompatibles). Además, la instalación de paquetes puede ser muy rápida cuando se distribuyen en forma binaria (por ejemplo, desde CRAN o Bioconductor).
+
+Una opción recomendada anteriormente era copiar los paquetes instalados en la carpeta de la biblioteca en la nueva instalación, ejecutar update.packages (checkBuilt=TRUE, ask=FALSE) en la nueva R y luego eliminar todo lo que quede de la instalación anterior. Las diferentes versiones de R se instalan deliberadamente en carpetas paralelas para que pueda conservar las versiones anteriores si lo desea. **Esto a menudo funcionaría, pero no, p. ej. al actualizar de R 4.1 a R 4.2**, en ese caso se podría hacer esto solo para paquetes sin código nativo/DLL.
+
+Para aquellos con una biblioteca personal (carpeta R\win-library\x.y de su directorio ${LOCALAPPDATA} en R desde 4.2.0, o de su directorio de inicio con versiones anteriores de R), también deberán actualizarlo cuando el cambios en la versión menor de R (por ejemplo, de 4.0.2 a 4.1.0). Una forma sencilla de hacerlo es copiar (digamos) R\win-library\4.0 a R\win-library\4.1 antes de ejecutar update.packages(checkBuilt=TRUE, ask=FALSE).
