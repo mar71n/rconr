@@ -554,24 +554,23 @@ comunas %>% select(BARRIOS, COMUNAS)
 <div style="background-color: #f2dede !important;">
 
 ### EAH
-#### Link de acceso a Base usuarios EAH2024:
+#### Link de acceso a Base usuarios EAH202:
 
-[Usuarios EAH2024](https://www.estadisticaciudad.gob.ar/eyc/bases-usuarios/?operativo=114304)
+[Usuarios EAH2025](https://www.estadisticaciudad.gob.ar/eyc/bases-usuarios/?operativo=114304)
 
-https://www.estadisticaciudad.gob.ar/eyc/wp-content/uploads/2025/07/eah2024_bu_ampliada.zip
+https://www.estadisticaciudad.gob.ar/eyc/wp-content/uploads/2026/04/eah25_bu_ampliada.rar
 
-Esto me descarga un zip que contiene:
+Esto me descarga un archivo comprimido que contiene:
 
+eah2025_bu_ampliada_calculo_cv.xls  **los CV**
 
-eah2024_bu_ampliada_calculo_cv.xls  **los CV**
+eah2025_bu_ampliada_diseño_de_registros.xls  **diseño de registro hogares e individuales**
 
-eah2024_bu_ampliada_diseño_de_registros.xls  **diseño de registro hogares e individuales**
+eah2025_bu_ampliada_hog.txt   **hogares separado por ";"**
 
-eah2024_bu_ampliada_hog.txt   **hogares separado por ";"**
+eah2025_bu_ampliada_ind.txt     **individuales separado por ";"**
 
-eah2024_bu_ampliada_ind.txt     **individuales separado por ";"**
-
-eah2024_bu_ampliada_totales_de_control.xls    **totales de control**
+eah2025_bu_ampliada_totales_de_control.xls    **totales de control**
 
 Notas_sobre_clasificadores_de_rama_de_actividad_economica_y_ocupacion.pdf
 
@@ -581,7 +580,7 @@ t_rama_2.txt  **codificación de la rama**
 
 #### Links de acceso a todos los tabulados básicoa EAH2025
 
-[tabulados básicoa EAH2024](https://www.estadisticaciudad.gob.ar/eyc/tabulados-basicos/?operativo=114304)
+[tabulados básicoa EAH2025](https://www.estadisticaciudad.gob.ar/eyc/tabulados-basicos/?operativo=114304)
 
 </div>
 ***
@@ -609,7 +608,7 @@ Se puede descargar esta primera clase en [clase01.R](clase01.R)
 
 
 *datos*: Aca ponemos los datos que iremos descargando.
-Entre otros, acá descargamos y descomprimimos **eah2021_bu_ampliada.zip** 
+Entre otros, acá descargamos y descomprimimos **eah2025_bu_ampliada.rar** 
 
 ![](./figuras/arboldatos.png){width='400px'}
 
