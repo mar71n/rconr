@@ -1,9 +1,9 @@
 ---
 title: "Gestión de datos en R: herramientas y ejemplos para el trabajo con datos dentro de los equipos de IDECBA"
 #author: "mar71n"
-#date: "24 de agosto de 2025"
+#date: "24 de agosto de 2026"
 knit: (function(inputFile, encoding) {
-  out_dir <- '../docs/apuntes2025';
+  out_dir <- '../docs/apuntes2026';
   rmarkdown::render(inputFile,
                     encoding="UTF-8",
                     output_file=file.path(dirname(inputFile), out_dir, 'apuntes.html')) })
