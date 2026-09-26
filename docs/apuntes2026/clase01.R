@@ -52,12 +52,16 @@
 #' 
 #' [https://cran.r-project.org/bin/windows/Rtools/](https://cran.r-project.org/bin/windows/Rtools/)
 #' 
+#' ***
 #' 
 #' ### Rstudio :
 #' - [posit.co](https://posit.co/products/open-source/rstudio/)
 #' - [posit.co/downloads](https://posit.co/downloads/)
 #' 
 #' ##### RStudio se conviertio en **Posit** en Octubre de 2022. [**posit.co**](https://posit.co/)
+#' 
+#' ##### Posit Cloud. Rstudio en el navegador. Sín instalaciones.
+#' - [posit.co/products/enterprise/cloud](https://posit.co/products/enterprise/cloud)
 #' 
 #' ***
 #' 
@@ -97,8 +101,15 @@
 #' 
 #' ***
 #' 
-#' #### Con este link se puede crear un R-notebook en Google Drive, que nos vá a servir para seguir la mayoría de los ejemplos que encontramos en la web:
-#' #### [Google Colab](https://colab.research.google.com)
+#' #### Crear un R-notebook en Google Drive, que nos vá a servir para seguir la mayoría de los ejemplos que encontramos en la web:
+#' #### [colab.research.google.com](https://colab.research.google.com)
+#' ##### Y seleccionar:
+#' - *Nuevo*
+#'   - *Entorno de ejecución*
+#'     - *Cambiar tipo de entorno de ejecución*
+#'       - y en *Tipo de entorno de ejecución* seleccionamos **R**
+#' 
+#' ***
 #' 
 #' </div>
 #' 
@@ -209,7 +220,7 @@ barrios %>% select(!geometry)
 # head() nos muestra los primeros elementos de un objeto
 
 head(
-  barrios$AREA
+  barrios$area_metro
 )
 
 head(
