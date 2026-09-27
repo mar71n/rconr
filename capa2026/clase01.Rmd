@@ -170,16 +170,24 @@ Para algunas instalaciones de paquetes en Windows
 
 # barrios <- read.csv("https://cdn.buenosaires.gob.ar/datosabiertos/datasets/ministerio-de-educacion/barrios/barrios.csv", encoding = "UTF-8", dec = ".")
 # download.file("https://cdn.buenosaires.gob.ar/datosabiertos/datasets/ministerio-de-educacion/barrios/barrios.csv", "../docs/apuntes2026/datos/barrios.csv")
-barrios <- read.csv("./datos/barrios.csv", encoding = "UTF-8", dec = ".")
+
+library(readr)
+
+#barrios <- read.csv("./datos/barrios.csv", encoding = "UTF-8", dec = ".")
+# read_csv espera que el delimitador sea "," como es el caso en barrios.csv
+barrios <- read_csv("./datos/barrios.csv")
 
 
 # poblacion <- read.csv("https://cdn.buenosaires.gob.ar/datosabiertos/datasets/barrios/caba_pob_barrios_2010.csv", encoding = "UTF-8")
 # download.file("https://cdn.buenosaires.gob.ar/datosabiertos/datasets/barrios/caba_pob_barrios_2010.csv", "../docs/apuntes2026/datos/caba_pob_barrios_2010.csv")
-poblacion <- read.csv("./datos/caba_pob_barrios_2010.csv", encoding = "UTF-8")
+
+#poblacion <- read.csv("./datos/caba_pob_barrios_2010.csv", encoding = "UTF-8")
+poblacion <- read_csv("./datos/caba_pob_barrios_2010.csv")
 
 # comunas <- read.csv("https://cdn.buenosaires.gob.ar/datosabiertos/datasets/comunas/comunas.csv", encoding = "UTF-8")
 # download.file("https://cdn.buenosaires.gob.ar/datosabiertos/datasets/comunas/comunas.csv", "../docs/apuntes2025/datos/comunas.csv")
-comunas <- read.csv("./datos/comunas.csv", encoding = "UTF-8")
+
+comunas <- read_csv("./datos/comunas.csv")
 
 names(barrios)
 
@@ -215,6 +223,8 @@ barrios %>% select(!geometry)
 [*$*](https://stat.ethz.ch/R-manual/R-devel/library/base/html/Extract.html) ó
 [*\[*](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/Extract) para seleccionar columnas
 
+El operador [ ] (corchete simple) Siempre devuelve un subconjunto del mismo tipo que el original.
+
 ```{r, echo=TRUE,  class.source='klippy'}
 
 # head() nos muestra los primeros elementos de un objeto
@@ -222,6 +232,8 @@ barrios %>% select(!geometry)
 head(
   barrios$area_metro
 )
+
+# barrios[c("nombre", "comuna")] es un subconjunto de barrios.
 
 head(
   barrios[c("nombre", "comuna")]
@@ -325,10 +337,11 @@ Entre otros, acá descargamos y descomprimimos **eah2025_bu_ampliada.zip**
 # https://readr.tidyverse.org/
 library(readr)
 
+# usamos read_csv2 porque el delimitador del archivo es ";"
 eah2025_ind <- read_csv2("./datos/eah2025_bu_ampliada/eah2025_bu_ampliada_ind.txt")
 
 head(eah2025_ind)
-# tiene que coincidir con los 12868 que dice eah2021_bu_ampliada_totales_de_control.xls
+# tiene que coincidir con los 12.457 que dice eah2021_bu_ampliada_totales_de_control.xls
 nrow(eah2025_ind)
 ncol(eah2025_ind)
 
@@ -336,11 +349,12 @@ ncol(eah2025_ind)
 library(dplyr)
 ```
 
-![](./figuras/cuadro01.png){width='400px'}
+![](./figuras/cuadro01.png){width='300px'}
 
 
 ```{r}
-# tiene que coincidir con los 3.078.939 que dice eah2021_bu_ampliada_totales_de_control.xls
+library(dplyr)
+# tiene que coincidir con los 3.086.714 que dice eah2021_bu_ampliada_totales_de_control.xls
 eah2025_ind %>% count(sexo, wt=fexp) %>% summarise(tot = sum(n))
 
 eah2025_ind %>% count(sexo, wt=fexp) %>% mutate(porc = n / sum(n))
@@ -371,29 +385,29 @@ head(p01)
 
 # https://cienciadedatos.github.io/r4ds/20-vectors.html
 
+# El operador [[ ]] (corchete doble) Extrae el contenido interno del elemento. Solo funciona con un único índice.
+
 p01[[1]][3:18]
 
-as.numeric(p01[[3]][3:18])
-as.numeric(p01[[4]][3:18])
+comuna <- p01[[1]][3:18]
+varon <- as.numeric(p01[[3]][3:18])
+mujer <- as.numeric(p01[[4]][3:18])
 
-mp01 <- matrix(c(as.numeric(p01[[3]][3:18]), as.numeric(p01[[4]][3:18])), ncol = 2,
-       dimnames = list(p01[[1]][3:18], c("Varon","Mujer")))
+#mp01 <- matrix(c(as.numeric(p01[[3]][3:18]), as.numeric(p01[[4]][3:18])), ncol = 2,
+#       dimnames = list(p01[[1]][3:18], c("Varon","Mujer")))
+
+mp01 <- tibble(Comuna = comuna, Varon = varon, Mujer = mujer, 
+               Total = varon + mujer)
 
 str(mp01)
 
 mp01
 
-mp01[12,]
-mp01["11",]
-mp01[, "Varon"]
-mp01["Total",]
-
-marginSums(mp01,1)
-cbind(total = marginSums(mp01,1), mp01)
-
 ```
 
-
+***
+***
+***
 
 ##### Para crear gráficos con *ggplot* hay que instalar el paquete con *install.package()*, por única vez.
 ##### Luego hay que cargarlo con *library()* la primera vez que lo queremos usar en una sesión.
