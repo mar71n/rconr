@@ -866,7 +866,8 @@ names(comunas)</code></pre>
 <h4>Link de acceso a Base usuarios EAH202:</h4>
 <p><a href="https://www.estadisticaciudad.gob.ar/eyc/bases-usuarios/?operativo=114304">Usuarios
 EAH2025</a></p>
-<p><a href="https://www.estadisticaciudad.gob.ar/eyc/wp-content/uploads/2026/04/eah2025_bu_ampliada.zip" class="uri">https://www.estadisticaciudad.gob.ar/eyc/wp-content/uploads/2026/04/eah2025_bu_ampliada.zip</a></p>
+<p><a href="https://www.estadisticaciudad.gob.ar/eyc/tabulados-basicos/?operativo=114304">Tabulados
+básicos</a></p>
 <p>Esto me descarga un archivo comprimido que contiene:</p>
 <p>eah2025_bu_ampliada_calculo_cv.xls <strong>los CV</strong></p>
 <p>eah2025_bu_ampliada_diseño_de_registros.xls <strong>diseño de
@@ -1021,13 +1022,13 @@ eah2025_ind %&gt;% group_by(comuna) %&gt;%  count( sexo, wt=fexp) %&gt;% mutate(
 <hr />
 <pre class="r"><code>library(readxl)
 # install.packages(&quot;readxl&quot;)  # also installing the dependencies ‘rematch’, ‘cellranger’
-p01 &lt;- read_excel(&quot;./datos/eahcuadros/P01.xlsx&quot;, sheet = &quot;2024&quot;)</code></pre>
+p01 &lt;- read_excel(&quot;./datos/eahcuadros/P01.xlsx&quot;, sheet = &quot;2025&quot;)</code></pre>
 <pre><code>## New names:
 ## • `` -&gt; `...2`
 ## • `` -&gt; `...3`
 ## • `` -&gt; `...4`</code></pre>
 <pre class="r"><code>names(p01)</code></pre>
-<pre><code>## [1] &quot;Distribución porcentual de la población por sexo según comuna. Ciudad de Buenos Aires. Año 2024&quot;
+<pre><code>## [1] &quot;Distribución porcentual de la población por sexo según comuna. Ciudad de Buenos Aires. Año 2025&quot;
 ## [2] &quot;...2&quot;                                                                                           
 ## [3] &quot;...3&quot;                                                                                           
 ## [4] &quot;...4&quot;</code></pre>
@@ -1035,88 +1036,88 @@ p01 &lt;- read_excel(&quot;./datos/eahcuadros/P01.xlsx&quot;, sheet = &quot;2024
 <pre><code>## # A tibble: 6 × 4
 ##   Distribución porcentual de la población por sexo según com…¹ ...2  ...3  ...4 
 ##   &lt;chr&gt;                                                        &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;
-## 1 Comuna                                                       Total Sexo  &lt;NA&gt; 
-## 2 &lt;NA&gt;                                                         &lt;NA&gt;  Varón Mujer
-## 3 Total                                                        100   47.1… 52.8…
-## 4 1                                                            100   50.3… 49.6…
-## 5 2                                                            100   44.5… 55.4…
-## 6 3                                                            100   47.3… 52.6…
+## 1 Comuna                                                       Sexo  &lt;NA&gt;  &lt;NA&gt; 
+## 2 &lt;NA&gt;                                                         Total Varón Mujer
+## 3 Total                                                        100   47.2  52.8 
+## 4 1                                                            100   50.4  49.6 
+## 5 2                                                            100   44.6  55.4 
+## 6 3                                                            100   47.4  52.6 
 ## # ℹ abbreviated name:
-## #   ¹​`Distribución porcentual de la población por sexo según comuna. Ciudad de Buenos Aires. Año 2024`</code></pre>
+## #   ¹​`Distribución porcentual de la población por sexo según comuna. Ciudad de Buenos Aires. Año 2025`</code></pre>
 <pre class="r"><code># https://cienciadedatos.github.io/r4ds/20-vectors.html
 
 p01[[1]][3:18]</code></pre>
 <pre><code>##  [1] &quot;Total&quot; &quot;1&quot;     &quot;2&quot;     &quot;3&quot;     &quot;4&quot;     &quot;5&quot;     &quot;6&quot;     &quot;7&quot;     &quot;8&quot;    
 ## [10] &quot;9&quot;     &quot;10&quot;    &quot;11&quot;    &quot;12&quot;    &quot;13&quot;    &quot;14&quot;    &quot;15&quot;</code></pre>
 <pre class="r"><code>as.numeric(p01[[3]][3:18])</code></pre>
-<pre><code>##  [1] 47.14667 50.30876 44.58305 47.38282 48.11588 46.17373 45.87754 47.33223
-##  [9] 48.31911 48.55798 47.02037 47.25028 46.92314 45.77205 45.30046 46.82148</code></pre>
+<pre><code>##  [1] 47.2 50.4 44.6 47.4 48.2 46.2 45.9 47.4 48.4 48.6 47.0 47.3 47.0 45.8 45.3
+## [16] 46.8</code></pre>
 <pre class="r"><code>as.numeric(p01[[4]][3:18])</code></pre>
-<pre><code>##  [1] 52.85333 49.69124 55.41695 52.61718 51.88412 53.82627 54.12246 52.66777
-##  [9] 51.68089 51.44202 52.97963 52.74972 53.07686 54.22795 54.69954 53.17852</code></pre>
+<pre><code>##  [1] 52.8 49.6 55.4 52.6 51.8 53.8 54.1 52.6 51.6 51.4 53.0 52.7 53.0 54.2 54.7
+## [16] 53.2</code></pre>
 <pre class="r"><code>mp01 &lt;- matrix(c(as.numeric(p01[[3]][3:18]), as.numeric(p01[[4]][3:18])), ncol = 2,
        dimnames = list(p01[[1]][3:18], c(&quot;Varon&quot;,&quot;Mujer&quot;)))
 
 str(mp01)</code></pre>
-<pre><code>##  num [1:16, 1:2] 47.1 50.3 44.6 47.4 48.1 ...
+<pre><code>##  num [1:16, 1:2] 47.2 50.4 44.6 47.4 48.2 46.2 45.9 47.4 48.4 48.6 ...
 ##  - attr(*, &quot;dimnames&quot;)=List of 2
 ##   ..$ : chr [1:16] &quot;Total&quot; &quot;1&quot; &quot;2&quot; &quot;3&quot; ...
 ##   ..$ : chr [1:2] &quot;Varon&quot; &quot;Mujer&quot;</code></pre>
 <pre class="r"><code>mp01</code></pre>
-<pre><code>##          Varon    Mujer
-## Total 47.14667 52.85333
-## 1     50.30876 49.69124
-## 2     44.58305 55.41695
-## 3     47.38282 52.61718
-## 4     48.11588 51.88412
-## 5     46.17373 53.82627
-## 6     45.87754 54.12246
-## 7     47.33223 52.66777
-## 8     48.31911 51.68089
-## 9     48.55798 51.44202
-## 10    47.02037 52.97963
-## 11    47.25028 52.74972
-## 12    46.92314 53.07686
-## 13    45.77205 54.22795
-## 14    45.30046 54.69954
-## 15    46.82148 53.17852</code></pre>
+<pre><code>##       Varon Mujer
+## Total  47.2  52.8
+## 1      50.4  49.6
+## 2      44.6  55.4
+## 3      47.4  52.6
+## 4      48.2  51.8
+## 5      46.2  53.8
+## 6      45.9  54.1
+## 7      47.4  52.6
+## 8      48.4  51.6
+## 9      48.6  51.4
+## 10     47.0  53.0
+## 11     47.3  52.7
+## 12     47.0  53.0
+## 13     45.8  54.2
+## 14     45.3  54.7
+## 15     46.8  53.2</code></pre>
 <pre class="r"><code>mp01[12,]</code></pre>
-<pre><code>##    Varon    Mujer 
-## 47.25028 52.74972</code></pre>
+<pre><code>## Varon Mujer 
+##  47.3  52.7</code></pre>
 <pre class="r"><code>mp01[&quot;11&quot;,]</code></pre>
-<pre><code>##    Varon    Mujer 
-## 47.25028 52.74972</code></pre>
+<pre><code>## Varon Mujer 
+##  47.3  52.7</code></pre>
 <pre class="r"><code>mp01[, &quot;Varon&quot;]</code></pre>
-<pre><code>##    Total        1        2        3        4        5        6        7 
-## 47.14667 50.30876 44.58305 47.38282 48.11588 46.17373 45.87754 47.33223 
-##        8        9       10       11       12       13       14       15 
-## 48.31911 48.55798 47.02037 47.25028 46.92314 45.77205 45.30046 46.82148</code></pre>
+<pre><code>## Total     1     2     3     4     5     6     7     8     9    10    11    12 
+##  47.2  50.4  44.6  47.4  48.2  46.2  45.9  47.4  48.4  48.6  47.0  47.3  47.0 
+##    13    14    15 
+##  45.8  45.3  46.8</code></pre>
 <pre class="r"><code>mp01[&quot;Total&quot;,]</code></pre>
-<pre><code>##    Varon    Mujer 
-## 47.14667 52.85333</code></pre>
+<pre><code>## Varon Mujer 
+##  47.2  52.8</code></pre>
 <pre class="r"><code>marginSums(mp01,1)</code></pre>
 <pre><code>## Total     1     2     3     4     5     6     7     8     9    10    11    12 
 ##   100   100   100   100   100   100   100   100   100   100   100   100   100 
 ##    13    14    15 
 ##   100   100   100</code></pre>
 <pre class="r"><code>cbind(total = marginSums(mp01,1), mp01)</code></pre>
-<pre><code>##       total    Varon    Mujer
-## Total   100 47.14667 52.85333
-## 1       100 50.30876 49.69124
-## 2       100 44.58305 55.41695
-## 3       100 47.38282 52.61718
-## 4       100 48.11588 51.88412
-## 5       100 46.17373 53.82627
-## 6       100 45.87754 54.12246
-## 7       100 47.33223 52.66777
-## 8       100 48.31911 51.68089
-## 9       100 48.55798 51.44202
-## 10      100 47.02037 52.97963
-## 11      100 47.25028 52.74972
-## 12      100 46.92314 53.07686
-## 13      100 45.77205 54.22795
-## 14      100 45.30046 54.69954
-## 15      100 46.82148 53.17852</code></pre>
+<pre><code>##       total Varon Mujer
+## Total   100  47.2  52.8
+## 1       100  50.4  49.6
+## 2       100  44.6  55.4
+## 3       100  47.4  52.6
+## 4       100  48.2  51.8
+## 5       100  46.2  53.8
+## 6       100  45.9  54.1
+## 7       100  47.4  52.6
+## 8       100  48.4  51.6
+## 9       100  48.6  51.4
+## 10      100  47.0  53.0
+## 11      100  47.3  52.7
+## 12      100  47.0  53.0
+## 13      100  45.8  54.2
+## 14      100  45.3  54.7
+## 15      100  46.8  53.2</code></pre>
 <div id="para-crear-gráficos-con-ggplot-hay-que-instalar-el-paquete-con-install.package-por-única-vez." class="section level5">
 <h5>Para crear gráficos con <em>ggplot</em> hay que instalar el paquete
 con <em>install.package()</em>, por única vez.</h5>

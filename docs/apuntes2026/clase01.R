@@ -255,11 +255,14 @@ comunas %>% select(BARRIOS, COMUNAS)
 #' <div style="background-color: #f2dede !important;">
 #' 
 #' ### EAH
+#' 
+#' 
+#' 
 #' #### Link de acceso a Base usuarios EAH202:
 #' 
 #' [Usuarios EAH2025](https://www.estadisticaciudad.gob.ar/eyc/bases-usuarios/?operativo=114304)
 #' 
-#' https://www.estadisticaciudad.gob.ar/eyc/wp-content/uploads/2026/04/eah2025_bu_ampliada.zip
+#' [Tabulados básicos](https://www.estadisticaciudad.gob.ar/eyc/tabulados-basicos/?operativo=114304)
 #' 
 #' Esto me descarga un archivo comprimido que contiene:
 #' 
@@ -360,7 +363,7 @@ eah2025_ind %>% group_by(comuna) %>%  count( sexo, wt=fexp) %>% mutate(porc = n 
 ## -----------------------------------------------------------------------------
 library(readxl)
 # install.packages("readxl")  # also installing the dependencies ‘rematch’, ‘cellranger’
-p01 <- read_excel("./datos/eahcuadros/P01.xlsx", sheet = "2024")
+p01 <- read_excel("./datos/eahcuadros/P01.xlsx", sheet = "2025")
 
 names(p01)
 
