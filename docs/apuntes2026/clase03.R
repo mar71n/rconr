@@ -1,0 +1,278 @@
+#' ---
+#' title: "Clase 03"
+#' output: html_document
+#' #date: '2026-09-28'
+#' knit: (function(inputFile, encoding) {
+#'   out_dir <- '../docs/apuntes2026';
+#'   rmarkdown::render(inputFile,
+#'                     encoding="UTF-8",
+#'                     output_file=file.path(dirname(inputFile), out_dir, 'clase03.html'));
+#'   knitr::purl("clase03.Rmd", documentation = 2L, output = "../docs/apuntes2026/clase03.R")  })
+#' ---
+#' 
+## ----klippy, echo=FALSE, include=TRUE-----------------------------------------
+#klippy::klippy('')
+
+#' 
+#' ```
+#' Tibles join, gráficos :
+#' inner_join, left_join, right_join, full_join, semi_join, anti_join
+#' ggplot, geom_point, facet_grid, geom_bar, stat_count, stat_summary
+#' ```
+#' 
+#' Una versión actualizada de este material en : [clase03](https://mar71n.github.io/rconr/apuntes2023/clase03.html)
+#' 
+#' ***
+#' 
+## ----echo=TRUE----------------------------------------------------------------
+library(dplyr)
+library(readr)
+library(ggplot2)
+
+#' 
+#' ***
+#' 
+#' 
+#' 
+#' <div style="background-color: #f2dede !important;">
+#' 
+#' 
+#' - #### [Operaciones de conjuntos](https://dplyr.tidyverse.org/articles/two-table.html#set-operations)
+## ----echo=TRUE,  class.source='klippy'----------------------------------------
+library(dplyr)
+## Operaciones de conjuntos
+
+# números pares <= 30
+pares <- seq(0,30, by=2)
+pares
+
+# múltiplos de tres <= 30
+tres <- seq(0, 30, by=3)
+tres
+
+#' ##### *intersect*
+## ----echo=TRUE,  class.source='klippy'----------------------------------------
+
+# numeros pares y múltiplos de tres
+# la intersección de los dos vectores, pensados como conjuntos
+intersect(pares, tres)
+
+#' ##### *union*
+## ----echo=TRUE,  class.source='klippy'----------------------------------------
+# numeros pares ó múltiplos de tres
+# la unión, sin repetir, de los dos vectores pensados como conjuntos
+union(pares, tres)
+
+#' ##### *setdiff*
+## ----echo=TRUE,  class.source='klippy'----------------------------------------
+# pares que no son múltiplo de tres
+setdiff(pares, tres)
+
+# múltiplos de tres que no son pares
+setdiff(tres, pares)
+
+#' ***
+#' 
+#' </div>
+#' 
+#' 
+#' 
+#' <div style="background-color: #f2dede !important;">
+#' 
+#' - #### [Uniones de transformación](https://dplyr.tidyverse.org/reference/mutate-joins.html)
+## ----echo=TRUE,  class.source='klippy'----------------------------------------
+### Uniones
+
+x <- tribble(
+  ~A, ~B, ~C,
+  #--|--|---
+  "a", "t", 1,
+  "b", "u", 2,
+  "c", "v", 3
+)
+
+x
+
+y <- tribble( ~A, ~B, ~D, "a", "t", 3, "b", "u", 2, "d", "w", 1)
+
+y
+
+## Uniones de transformación
+# Agregan columnas de y a x. Según haya coincidencias en las claves de unión.
+
+#' - ##### *inner_join*
+## ----echo=TRUE,  class.source='klippy'----------------------------------------
+# Solo las filas donde las claves coinciden
+inner_join(x, y)
+
+#' - ##### *left_join*
+## ----echo=TRUE,  class.source='klippy'----------------------------------------
+# todas las filas de x
+left_join(x, y)
+
+#' - ##### *right_join*
+## ----echo=TRUE,  class.source='klippy'----------------------------------------
+# todas las filas de y
+right_join(x, y)
+
+#' - ##### *full_join*
+## ----echo=TRUE,  class.source='klippy'----------------------------------------
+# todas las observaciones que están en x o en y
+full_join(x, y)
+
+#' ***
+#' 
+#' </div>
+#' 
+#' 
+#' 
+#' <div style="background-color: #f2dede !important;">
+#' 
+#' - #### [Uniones de filtro](https://dplyr.tidyverse.org/reference/filter-joins.html)
+## ----echo=TRUE,  class.source='klippy'----------------------------------------
+## Uniones de filtro
+
+x <- tribble( ~A, ~B, ~C, "a", "t", 1, "b", "u", 2, "c", "v", 3)
+
+x
+
+y <- tribble( ~A, ~B, ~D, "a", "t", 3, "b", "u", 2, "d", "w", 1)
+
+y
+
+#'  - ##### *semi_join*
+## ----echo=TRUE,  class.source='klippy'----------------------------------------
+# todas las observaciones de x que tienen una pareja en y
+# es un sub conjunto de x
+semi_join(x, y)
+# todas las observaciones de y que tienen una pareja en x
+# es un sub conjunto de y
+semi_join(y, x)
+
+#'  - ##### *anti_join*
+## ----echo=TRUE,  class.source='klippy'----------------------------------------
+# todas las observaciones de x que NO tienen una pareja en y
+# es un sub conjunto de x
+anti_join(x, y)
+# todas las observaciones de y que NO tienen una pareja en x
+# es un sub conjunto de y
+anti_join(x, y)
+
+#' ***
+#' 
+#' </div>
+#' 
+#' 
+#' ***
+#' ***
+#' ***
+#' 
+#' <div style="background-color: #f2dede !important;">
+#' 
+#' ### ggplot()
+#' #### __Completando los gráficos__
+#' 
+#' ##### [¿Qué es la gramática de los gráficos?](https://ggplot2-book.org/introduction.html#what-is-the-grammar-of-graphics)
+#' ##### Un gráfico esta compuesto por los **datos** que vamos a graficar.
+#' ##### Y por **mapping**: la definición de cómo las variables de esos datos son mostrados
+#' ##### __Hay 5 componentes de mapping__:
+#' - ##### Layer : colección de elementos geométricos y estadísticas. 
+#'   + ##### geom : puntos, líneas, polígonos
+#'   + ##### stats : conteo, ajuste de un modelo lineal, etc 
+#' - ##### Scales : Asigna los valores en el espacio de datos al espacio estético.
+#' ##### Incluye el color, relleno, tamaño. También leyendas y ejes
+#' - ##### Coord : Sistema de coordenadas. Por lo general cartesianas, pero puede ser polares
+#' ##### proyecciones geográficas, etc
+#' - ##### Facet : especifica cómo dividir y mostrar subconjuntos de datos
+#' - ##### Theme : controla puntos más finos, tamaño de fuente, color de fondo  
+#' 
+#' ##### [Uso básico](https://ggplot2-book.org/getting-started.html#basic-use)
+#' ##### __Tres componentes claves__:
+#' - ##### data
+#' - ##### aesthetic mappings
+#' - ##### al menos un layer, creado con geom
+#' 
+#' 
+#' </div>
+#' 
+#' #### [geom_text](https://ggplot2.tidyverse.org/reference/geom_text.html)
+#' #### [labs](https://ggplot2.tidyverse.org/reference/labs.html)
+## ----echo=TRUE,  class.source='klippy'----------------------------------------
+library(forcats)
+eah2025_ind <- read_csv2("./datos/eah2025_bu_ampliada/eah2025_bu_ampliada_ind.txt")
+
+pobxgrupoxcomuna <- eah2025_ind %>% arrange(edad) %>% mutate(rango = case_when( edad <= 9 ~ 'Hasta 9',
+                                                           edad <= 19 ~ '10 - 19',
+                                                           edad <= 29 ~ '20 - 29',
+                                                           edad <= 39 ~ '30 - 39',
+                                                           edad <= 49 ~ '40 - 49',
+                                                           edad <= 59 ~ '50 - 59',
+                                                           edad <= 69 ~ '60 - 69',
+                                                           edad >= 70 ~ '70 y mas',)) %>%
+  mutate(rango = as_factor(rango)) %>%
+  mutate(comuna = as_factor(comuna)) %>%
+  group_by(comuna) %>%
+  count(rango, wt = fexp) %>% 
+  mutate(tot = sum(n), porc = n / sum(n)) %>% arrange(comuna, rango)
+
+
+ggplot(pobxgrupoxcomuna, aes(comuna, n, fill=rango)) + 
+  geom_bar(stat="identity", position = "stack", colour = "grey") +
+  geom_text(aes(label= round(n / 1000, 1)), vjust= -0.5, color="black", size=3, position = position_stack(vjust = 0.5)) +
+  labs(
+    x = "Comuna", 
+    y = "Total por Grupo Etareo (en miles)", 
+    fill = "Grupo",
+    title = "Distribución de la población por grupos de edad según comuna.",
+    subtitle = "Ciudad de Buenos Aires. Año 2025",
+    caption = "Fuente: www.databuenosaires.gob.ar"
+  )
+
+# guardo el valor actual
+actual <- options("scipen")
+# indico que use notación fija a menos que sean mas de 10 digitos:
+options(scipen=10)
+ggplot(pobxgrupoxcomuna, aes(comuna, n, fill=rango)) + 
+  geom_bar(stat="identity", position = "stack", colour = "grey") +
+  geom_text(aes(label= round(n / 1000, 1)), vjust= -0.5, color="black", size=3, position = position_stack(vjust = 0.5)) +
+  labs(
+    x = "Comuna", 
+    y = "Total por Grupo Etareo (en miles)", 
+    fill = "Grupo",
+    title = "Distribución de la población por grupos de edad según comuna.",
+    subtitle = "Ciudad de Buenos Aires. Año 2025",
+    caption = "Fuente: www.databuenosaires.gob.ar"
+  )
+# vuelvo a poner el valor anterior.
+options(scipen=actual[[1]])
+
+ggplot(pobxgrupoxcomuna, aes(comuna, porc, fill=rango)) + 
+  geom_bar(stat="identity", position = "fill", colour = "grey") +
+  geom_text(aes(label= round(porc*100, 1)), vjust= -0.5, color="black", size=3, position = position_fill(vjust = 0.5)) +
+  labs(
+    x = "Comuna", 
+    y = "% Grupo de edad", 
+    fill = "Comuna",
+    title = "Distribución porcentual de la población por grupos de edad según comuna.",
+    subtitle = "Ciudad de Buenos Aires. Año 2025",
+    caption = "Fuente: www.databuenosaires.gob.ar"
+  )
+
+#' 
+#' 
+#' ***
+#' ***
+#' ### Bibliografia:
+#' #### [R para Ciencia de Datos - Cap 13 Datos relacionales](https://es.r4ds.hadley.nz/13-relational-data.html)
+#' #### [R para Ciencia de Datos - Cap 28 Comunicar con gráficos](https://es.r4ds.hadley.nz/28-communicate-plots.html)
+#' #### [Elegant Graphics for Data Analysis](https://ggplot2-book.org)
+#' 
+#' ***
+#' 
+#' [clase03.R](clase03.R)
+#' 
+#' [cuadro02.R](cuadro02.R)
+#' 
+#' [crear-cuadro-02.R](crear-cuadro-02.R)
+#' 
+#' ***

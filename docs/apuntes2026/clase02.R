@@ -1,0 +1,342 @@
+#' ---
+#' title: "Clase 02"
+#' output: html_document
+#' #date: '2026-09-28'
+#' knit: (function(inputFile, encoding) {
+#'   out_dir <- '../docs/apuntes2026';
+#'   rmarkdown::render(inputFile,
+#'                     encoding="UTF-8",
+#'                     output_file=file.path(dirname(inputFile), out_dir, 'clase02.html'));
+#'   knitr::purl("clase02.Rmd", documentation = 2L, output = "../docs/apuntes2026/clase02.R")  })
+#' ---
+#' 
+## ----klippy, echo=FALSE, include=TRUE-----------------------------------------
+#klippy::klippy('')
+
+#' 
+#' ```
+#' Tibles, filtrar y agrupar:
+#' dplyr, filter, arrange, select, mutate,
+#' summarise, group_by, ungroup,
+#' ```
+#' Una versión actualizada de este material en : [clase02](https://mar71n.github.io/rconr/apuntes2026/clase02.html)
+#' 
+#' ***
+#' 
+## ----echo=TRUE,  class.source='klippy'----------------------------------------
+#install.packages("dplyr")
+library(dplyr)
+#install.packages("readr")
+library(readr)
+#install.packages("lubridate")
+library(lubridate)
+#install.packages("ggplot2")
+library(ggplot2)
+
+#' 
+#' ***
+#' 
+#' ### Datasets
+#' #### Los individuales:
+## ----echo=TRUE,  class.source='klippy'----------------------------------------
+eah2025_ind <- read_csv2("./datos/eah2025_bu_ampliada/eah2025_bu_ampliada_ind.txt")
+
+eah2025_hog <- read_csv2("./datos/eah2025_bu_ampliada/eah2025_bu_ampliada_hog.txt")
+
+#' 
+#' #### Una primera mirada, según lo que esperemos, por lo general alguno de estos:
+#' #### [readr::spec](https://readr.tidyverse.org/reference/spec.html)
+## ----echo=TRUE,  class.source='klippy'----------------------------------------
+spec(eah2025_ind)
+
+head(eah2025_ind)
+
+summary(eah2025_ind)
+
+#' 
+#' <div style="background-color: #f2dede !important;">
+#' 
+#' #### Filtros
+#' #### con [*\[*](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/Extract)
+#' #### o con [*dplyr::filter*](https://dplyr.tidyverse.org/reference/filter.html)
+#'  - ##### Subconjunto de datos donde todas las condiciones son VERDADERAS.
+## ----echo=TRUE,  class.source='klippy'----------------------------------------
+x <- tribble(
+  ~A, ~B, ~C,
+  #--|--|---
+  "a", "t", 1,
+  "a", "b", 1,
+  "b", "u", 2,
+  "c", NA, 3,
+  "c", "b", 3
+)
+
+x
+
+# Las dos condiciones son VERDADERAS
+x %>% filter(A == "a", B == "b")
+
+# Equivalente a & (AND) con [
+x[x$A == "a" & x$B == "b",]
+
+# Si la condicion es NA, el registro es excluido por filter (cosa esperable), pero no por [
+x$B == "t"
+
+x %>% filter(B == "t")
+
+x[x$B == "t",]
+
+
+#' - #### Podemos usar para construir las condiciones:
+#'   - ##### ==, >, <, >= ...
+#'   - ##### &, |, !, xor()
+#'   - ##### is.na()
+#'   - ##### between(), near()
+#' 
+#' </div>
+#' 
+## ----echo=TRUE,  class.source='klippy'----------------------------------------
+eah2025_hog[eah2025_hog$v12 == 4,]
+
+eah2025_hog %>% filter(v12 == 4)
+
+
+eah2025_ind %>% filter(between(edad, 30, 35))
+
+
+#' 
+#' ***
+#' 
+#' <div style="background-color: #f2dede !important;">
+#' 
+#' ***
+#' 
+#' #### Frecuencias
+#' ##### Con [*base::table*](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/table)
+## ----echo=TRUE,  class.source='klippy'----------------------------------------
+table(eah2025_ind$sexo)
+
+table(eah2025_ind$comuna)
+
+#' 
+#' #### Al modo dplyr:
+#' - [summarise](https://dplyr.tidyverse.org/reference/summarise.html) Resume cada grupo en menos filas.
+#' 
+#'   El resultado es una (o más) filas para cada combinación de variables de agrupación; si no hay variables de agrupación, la salida tendrá una sola fila que resuma todas las observaciones en la entrada. Contendrá una columna para cada variable de agrupación y una columna para cada una de las estadísticas de resumen que haya especificado.
+#'   summarise() y summarize() son sinónimos.
+#' 
+#'  - Funciones útiles
+#' 
+#'    - Centro:  mean(), median()
+#' 
+#'    - Dispersión: sd(), IQR(), mad()
+#' 
+#'    - Rango: min(), max(), quantile()
+#' 
+#'    - Posición: first(), last(), nth()
+#' 
+#'    - Cuenta: n(), n_distinct()
+#' 
+#'    - Lógico: any(), all()
+#' 
+## ----echo=TRUE,  class.source='klippy'----------------------------------------
+eah2025_ind %>% count(sexo)
+
+eah2025_ind %>% group_by(sexo) %>% summarise(n = n())
+
+
+
+#' 
+#' 
+#' - [group_by](https://dplyr.tidyverse.org/reference/group_by.html)
+#' 
+#'   group_by() toma un tbl existente y lo convierte en un tbl agrupado donde las operaciones se realizan "por grupo". ungroup() elimina la agrupación.
+## ----echo=TRUE,  class.source='klippy'----------------------------------------
+#vacunas %>% group_by(GENERO) %>% summarise(mean(DOSIS_1))
+
+#' 
+#' - [count](https://dplyr.tidyverse.org/reference/count.html)
+#' 
+#'   *count()* le permite contar rápidamente los valores únicos de una o más variables: **df %>% count(a, b)** es aproximadamente *equivalente* a **df %>% group_by(a, b) %>% summarise(n = n() )**. 
+#'   *count()* está emparejado con tally(), un asistente de nivel inferior que es equivalente a df %>% summarise(n = n()). 
+#' 
+#'   Pasamos un **wt** para ponderar, cambiando el resumen de n = n() a n = sum(wt). 
+#' 
+## ----echo=TRUE,  class.source='klippy'----------------------------------------
+eah2025_ind %>% count(sexo, wt = fexp)
+
+#' 
+#'   **count()** es una forma corta de hacer esto:
+#' 
+## ----echo=TRUE,  class.source='klippy'----------------------------------------
+eah2025_ind %>% group_by(sexo) %>% summarise(n = sum(fexp))
+
+#' 
+#' ***
+#' 
+#' </div>
+#' 
+#' ***
+#' 
+#' <div style="background-color: #f2dede !important;">
+#' 
+#' #### Seleccionar columnas de interes, agregar columnas
+#' ##### [select()](https://dplyr.tidyverse.org/reference/select.html) y 
+#' ##### [mutate()](https://dplyr.tidyverse.org/reference/mutate.html)
+#'  - ##### Crear, modificar y eliminar columnas.
+#'    ##### **mutate()** agrega nuevas variables y conserva las existentes; Las nuevas variables sobrescriben las variables existentes del mismo nombre. Las variables se pueden eliminar estableciendo su valor en NULL
+#' 
+#' </div>
+#' 
+## ----echo=TRUE,  class.source='klippy'----------------------------------------
+eah2025_ind %>% select(sexo, edad, estado)
+
+eah2025_ind %>% select(starts_with("i"))
+
+eah2025_ind %>% 
+  mutate(estado = factor(estado, levels= c(1:3), labels=c("Ocupado","Desocupado","Inactivo"))) %>%
+  select(sexo, edad, estado)
+
+#' 
+#' <div style="background-color: #f2dede !important;">
+#' 
+#' #### Ordenar
+#' ##### [dplyr::arrange()](https://dplyr.tidyverse.org/reference/arrange.html)
+#' 
+#' - ##### **arrange()** ordena las filas de un data frame por los valores de las columnas seleccionadas.
+#'   ##### A diferencia de otros verbos dplyr, arrange() ignora en gran medida la agrupación; debe mencionar explícitamente las variables de agrupación (o usar .by_group = TRUE) para agruparlas. Las funciones se evaluan una vez para todos los datos, no por grupo.
+#'   ##### Devuelve  un data frame del mismo tipo que los datos de entrada.
+#' 
+## ----echo=TRUE,  class.source='klippy'----------------------------------------
+x <- tribble(
+  ~A, ~B, ~C,
+  #--|--|---
+  "a", "t", 1,
+  "c", NA, 3,
+  "b", "u", 2,
+  "a", "b", 1,
+  "c", "b", 3
+)
+
+x
+
+arrange(x, A)
+
+# Por ejemplo, las funciones de summarise se evaluan por grupo
+x %>% group_by(A) %>% summarise(sum(C))
+
+# arrange() no se evalua por grupo
+x %>% group_by(A, B) %>% arrange(A)
+
+# a menos que se indique con .by_group = TRUE
+x %>% group_by(A, B) %>% arrange(A, .by_group = TRUE)
+
+# La columna A ordenada
+sort(x$A)
+
+# sort() no incluye los registros con NA
+sort(x$B)
+
+# arrange() ordena al final los NA
+arrange(x, B)
+
+# Se comporta igual que base::order()
+x[order(x$B),]
+
+#' 
+#' </div>
+#' 
+#' ***
+#' 
+#' ***
+#' 
+#' <div style="background-color: #f2dede !important;">
+#' 
+#' ##### [*options(...)*](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/options) nos permite ver y configurar opciones globales de R.
+#' ##### Entre ellas, ***scipen***, con la que podemos controlar cuando usar notación cientifica.
+#' ##### _*scipen*_: Los valores positivos sesgan hacia la notación fija y los negativos hacia la notación científica: se preferirá la notación fija a menos que sea más que dígitos scipen más anchos.
+#' ##### Por defecto es cero.
+#' </div>
+## ----echo=TRUE,  class.source='klippy'----------------------------------------
+# guardo el valor actual
+actual <- options("scipen")
+# indico que use notación fija a menos que sean mas de 10 digitos:
+options(scipen=10)
+
+#' #### Sín notación cientifica y "factor comun" en aes(...)
+## ----echo=TRUE,  class.source='klippy'----------------------------------------
+
+# vuelvo a poner el valor anterior.
+options(scipen=actual[[1]])
+
+
+#' 
+#' ***
+#' 
+#' 
+#' ***
+#' ***
+#' 
+#' #### Un poco más de *ggplot*
+#' ##### *ggplot*, *aes*, *stat*, *position*, *facet*
+## ----echo=TRUE,  class.source='klippy'----------------------------------------
+dfa <- data.frame(v1 = c("a","b","c","a"), v2 = c(2,5,2,1))
+dfa
+
+#' #### *geom_bar* por defecto solo requiere *aes(x)* y hace un counteo. *stat ="count"*
+## ----echo=TRUE,  class.source='klippy'----------------------------------------
+ggplot(dfa, aes(v1)) + 
+  geom_bar() 
+
+#' 
+#' ##### El mismo gráfico con los valores por defecto explicitados:
+## ----echo=TRUE,  class.source='klippy'----------------------------------------
+ggplot(dfa, aes(v1)) + 
+  geom_bar(stat="count") 
+
+#' 
+#' #### *geom_bar* con *stat = identity* agrupa por *x* ademas suma todos los casos
+#' #### requiere *aes(x, y)*
+## ----echo=TRUE,  class.source='klippy'----------------------------------------
+ggplot(dfa, aes(v1, v2)) + 
+  geom_bar(stat="identity") 
+
+#' 
+#' #### por defecto *position* es *"stack"*
+## ----echo=TRUE,  class.source='klippy'----------------------------------------
+
+#' 
+#' #### Con *position* = *"dodge"*
+## ----echo=TRUE,  class.source='klippy'----------------------------------------
+# el el grafico de arriba, algunos tienen tres columnas otros dos (donde no hay casos GENERO = N)
+
+#' 
+#' #### preserve (anchos de columna)
+## ----echo=TRUE,  class.source='klippy'----------------------------------------
+
+#' 
+#' #### Con *position* = *"fill"*
+## ----echo=TRUE,  class.source='klippy'----------------------------------------
+
+#' 
+#' ***
+#' ***
+#' 
+#' ### [Ejercicios](clase02_ejercicios.html)
+#' 
+#' ***
+#' ***
+#' ***
+#' ### Bibliografia:
+#' #### [R para Ciencia de Datos - Cap 5 Transformación de datos](https://es.r4ds.hadley.nz/05-transform.html)
+#' #### [Cheat Sheet *dplyr*](https://dplyr.tidyverse.org/index.html#cheat-sheet)
+#' 
+#' ***
+#' 
+#' [clase02.R](clase02.R)
+#' 
+#' [cuadro01.R](cuadro01.R)
+#' 
+#' [crear-cuadro-01.R](crear-cuadro-01.R)
+#' 
+#' ***
