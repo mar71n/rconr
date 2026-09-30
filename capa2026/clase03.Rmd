@@ -262,6 +262,99 @@ ggplot(pobxgrupoxcomuna, aes(comuna, porc, fill=rango)) +
 
 ***
 ***
+***
+
+```{r, echo=TRUE,  class.source='klippy'}
+library(dplyr)
+library(readr)
+library(lubridate)
+library(ggplot2)
+library(kableExtra)
+```
+
+<div style="background-color: #f2dede !important;">
+
+### Fechas en todos los formatos...
+
+#### [*lubridate*](https://lubridate.tidyverse.org/)
+
+```{r, echo=TRUE,  class.source='klippy'}
+dmy("28FEB2021")
+dmy("28/02/2021")
+dmy("29/02/2021")
+dmy("29/02/2020")
+
+dmy_hms("28FEB2021:15:15:20")
+```
+
+#### *date-time* , *date* , *time*
+#### 
+```{r, echo=TRUE,  class.source='klippy'}
+now()
+
+today()
+
+as_date(dmy_hms("28FEB2021:15:15:20"))
+```
+
+</div>
+
+<div style="background-color: #f2dede !important;">
+
+### Grabar data frames
+#### [familia **readr::write_\*()**](https://readr.tidyverse.org/reference/write_delim.html)
+ - ##### Guarda un data frame en un archivo de texto donde las columnas son delimitadas por un caracter, por ejemplo "**,**" ó "**;**"
+   ##### Las funciones **write_\*()** agregan mejoras a las del tipo *write.csv()*. En primer lugar son más rápidas.
+   ##### **delim** = el delimitador
+     - #####        en write_delim es " "
+     - #####        en write_csv es ","
+     - #####        en write_csv2 es ";"
+
+   ##### **append** = Si es FALSE, sobre escribe cualquier archivo existente. Si es TRUE, agrega los registros al final.
+   #####              En ambos casos, si el archivo no existe lo crea.
+
+   ##### **col_names** = Si es FALSE no se agregan los nombres de columna en la primera fila, si es TRUE sí se agregan.
+   ##### El valor tiene que ser lo contrario de lo que se pase en append.
+
+   ##### **quote** = En que casos entrecomillar los valores.
+     - #####             'needed' : solo si es necesario ( cuando el valor incluye comillas, el delimitador o saltos de linea)
+     - #####             'all' : entrecomillar todas las columnas
+     - #####             'none' : ninguno
+
+   ##### **escape** = El tipo de escape a usar cuando hay comillas en los datos.
+     - #####         'double' : ""
+     - #####         'backslash' : \\
+     - #####         'none' : ninguno
+
+</div>
+
+***
+
+### Guardar gráficos
+#### [**ggsave**](https://ggplot2.tidyverse.org/reference/ggsave.html)
+
+### Rscript
+```
+>R.home() \bin\
+C:\Program Files\R\R-4.2.1\bin\Rscript.exe
+```
+
+### Un script que descarga los datos y graba los gráficos
+
+#### *crear_graficos.R* :
+```
+library(dplyr)
+library(lubridate)
+library(readr)
+library(ggplot2)`
+```
+
+
+
+
+
+***
+***
 ### Bibliografia:
 #### [R para Ciencia de Datos - Cap 13 Datos relacionales](https://es.r4ds.hadley.nz/13-relational-data.html)
 #### [R para Ciencia de Datos - Cap 28 Comunicar con gráficos](https://es.r4ds.hadley.nz/28-communicate-plots.html)

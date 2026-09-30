@@ -24,7 +24,7 @@
 #' 
 #' ***
 #' 
-## ----echo=TRUE----------------------------------------------------------------
+## ---- echo=TRUE---------------------------------------------------------------
 library(dplyr)
 library(readr)
 library(ggplot2)
@@ -38,7 +38,7 @@ library(ggplot2)
 #' 
 #' 
 #' - #### [Operaciones de conjuntos](https://dplyr.tidyverse.org/articles/two-table.html#set-operations)
-## ----echo=TRUE,  class.source='klippy'----------------------------------------
+## ---- echo=TRUE,  class.source='klippy'---------------------------------------
 library(dplyr)
 ## Operaciones de conjuntos
 
@@ -51,20 +51,20 @@ tres <- seq(0, 30, by=3)
 tres
 
 #' ##### *intersect*
-## ----echo=TRUE,  class.source='klippy'----------------------------------------
+## ---- echo=TRUE,  class.source='klippy'---------------------------------------
 
 # numeros pares y múltiplos de tres
 # la intersección de los dos vectores, pensados como conjuntos
 intersect(pares, tres)
 
 #' ##### *union*
-## ----echo=TRUE,  class.source='klippy'----------------------------------------
+## ---- echo=TRUE,  class.source='klippy'---------------------------------------
 # numeros pares ó múltiplos de tres
 # la unión, sin repetir, de los dos vectores pensados como conjuntos
 union(pares, tres)
 
 #' ##### *setdiff*
-## ----echo=TRUE,  class.source='klippy'----------------------------------------
+## ---- echo=TRUE,  class.source='klippy'---------------------------------------
 # pares que no son múltiplo de tres
 setdiff(pares, tres)
 
@@ -80,7 +80,7 @@ setdiff(tres, pares)
 #' <div style="background-color: #f2dede !important;">
 #' 
 #' - #### [Uniones de transformación](https://dplyr.tidyverse.org/reference/mutate-joins.html)
-## ----echo=TRUE,  class.source='klippy'----------------------------------------
+## ---- echo=TRUE,  class.source='klippy'---------------------------------------
 ### Uniones
 
 x <- tribble(
@@ -101,22 +101,22 @@ y
 # Agregan columnas de y a x. Según haya coincidencias en las claves de unión.
 
 #' - ##### *inner_join*
-## ----echo=TRUE,  class.source='klippy'----------------------------------------
+## ---- echo=TRUE,  class.source='klippy'---------------------------------------
 # Solo las filas donde las claves coinciden
 inner_join(x, y)
 
 #' - ##### *left_join*
-## ----echo=TRUE,  class.source='klippy'----------------------------------------
+## ---- echo=TRUE,  class.source='klippy'---------------------------------------
 # todas las filas de x
 left_join(x, y)
 
 #' - ##### *right_join*
-## ----echo=TRUE,  class.source='klippy'----------------------------------------
+## ---- echo=TRUE,  class.source='klippy'---------------------------------------
 # todas las filas de y
 right_join(x, y)
 
 #' - ##### *full_join*
-## ----echo=TRUE,  class.source='klippy'----------------------------------------
+## ---- echo=TRUE,  class.source='klippy'---------------------------------------
 # todas las observaciones que están en x o en y
 full_join(x, y)
 
@@ -129,7 +129,7 @@ full_join(x, y)
 #' <div style="background-color: #f2dede !important;">
 #' 
 #' - #### [Uniones de filtro](https://dplyr.tidyverse.org/reference/filter-joins.html)
-## ----echo=TRUE,  class.source='klippy'----------------------------------------
+## ---- echo=TRUE,  class.source='klippy'---------------------------------------
 ## Uniones de filtro
 
 x <- tribble( ~A, ~B, ~C, "a", "t", 1, "b", "u", 2, "c", "v", 3)
@@ -141,7 +141,7 @@ y <- tribble( ~A, ~B, ~D, "a", "t", 3, "b", "u", 2, "d", "w", 1)
 y
 
 #'  - ##### *semi_join*
-## ----echo=TRUE,  class.source='klippy'----------------------------------------
+## ---- echo=TRUE,  class.source='klippy'---------------------------------------
 # todas las observaciones de x que tienen una pareja en y
 # es un sub conjunto de x
 semi_join(x, y)
@@ -150,7 +150,7 @@ semi_join(x, y)
 semi_join(y, x)
 
 #'  - ##### *anti_join*
-## ----echo=TRUE,  class.source='klippy'----------------------------------------
+## ---- echo=TRUE,  class.source='klippy'---------------------------------------
 # todas las observaciones de x que NO tienen una pareja en y
 # es un sub conjunto de x
 anti_join(x, y)
@@ -197,7 +197,7 @@ anti_join(x, y)
 #' 
 #' #### [geom_text](https://ggplot2.tidyverse.org/reference/geom_text.html)
 #' #### [labs](https://ggplot2.tidyverse.org/reference/labs.html)
-## ----echo=TRUE,  class.source='klippy'----------------------------------------
+## ---- echo=TRUE,  class.source='klippy'---------------------------------------
 library(forcats)
 eah2025_ind <- read_csv2("./datos/eah2025_bu_ampliada/eah2025_bu_ampliada_ind.txt")
 
@@ -258,6 +258,99 @@ ggplot(pobxgrupoxcomuna, aes(comuna, porc, fill=rango)) +
     caption = "Fuente: www.databuenosaires.gob.ar"
   )
 
+#' 
+#' 
+#' ***
+#' ***
+#' ***
+#' 
+## ---- echo=TRUE,  class.source='klippy'---------------------------------------
+library(dplyr)
+library(readr)
+library(lubridate)
+library(ggplot2)
+library(kableExtra)
+
+#' 
+#' <div style="background-color: #f2dede !important;">
+#' 
+#' ### Fechas en todos los formatos...
+#' 
+#' #### [*lubridate*](https://lubridate.tidyverse.org/)
+#' 
+## ---- echo=TRUE,  class.source='klippy'---------------------------------------
+dmy("28FEB2021")
+dmy("28/02/2021")
+dmy("29/02/2021")
+dmy("29/02/2020")
+
+dmy_hms("28FEB2021:15:15:20")
+
+#' 
+#' #### *date-time* , *date* , *time*
+#' #### 
+## ---- echo=TRUE,  class.source='klippy'---------------------------------------
+now()
+
+today()
+
+as_date(dmy_hms("28FEB2021:15:15:20"))
+
+#' 
+#' </div>
+#' 
+#' <div style="background-color: #f2dede !important;">
+#' 
+#' ### Grabar data frames
+#' #### [familia **readr::write_\*()**](https://readr.tidyverse.org/reference/write_delim.html)
+#'  - ##### Guarda un data frame en un archivo de texto donde las columnas son delimitadas por un caracter, por ejemplo "**,**" ó "**;**"
+#'    ##### Las funciones **write_\*()** agregan mejoras a las del tipo *write.csv()*. En primer lugar son más rápidas.
+#'    ##### **delim** = el delimitador
+#'      - #####        en write_delim es " "
+#'      - #####        en write_csv es ","
+#'      - #####        en write_csv2 es ";"
+#' 
+#'    ##### **append** = Si es FALSE, sobre escribe cualquier archivo existente. Si es TRUE, agrega los registros al final.
+#'    #####              En ambos casos, si el archivo no existe lo crea.
+#' 
+#'    ##### **col_names** = Si es FALSE no se agregan los nombres de columna en la primera fila, si es TRUE sí se agregan.
+#'    ##### El valor tiene que ser lo contrario de lo que se pase en append.
+#' 
+#'    ##### **quote** = En que casos entrecomillar los valores.
+#'      - #####             'needed' : solo si es necesario ( cuando el valor incluye comillas, el delimitador o saltos de linea)
+#'      - #####             'all' : entrecomillar todas las columnas
+#'      - #####             'none' : ninguno
+#' 
+#'    ##### **escape** = El tipo de escape a usar cuando hay comillas en los datos.
+#'      - #####         'double' : ""
+#'      - #####         'backslash' : \\
+#'      - #####         'none' : ninguno
+#' 
+#' </div>
+#' 
+#' ***
+#' 
+#' ### Guardar gráficos
+#' #### [**ggsave**](https://ggplot2.tidyverse.org/reference/ggsave.html)
+#' 
+#' ### Rscript
+#' ```
+#' >R.home() \bin\
+#' C:\Program Files\R\R-4.2.1\bin\Rscript.exe
+#' ```
+#' 
+#' ### Un script que descarga los datos y graba los gráficos
+#' 
+#' #### *crear_graficos.R* :
+#' ```
+#' library(dplyr)
+#' library(lubridate)
+#' library(readr)
+#' library(ggplot2)`
+#' ```
+#' 
+#' 
+#' 
 #' 
 #' 
 #' ***
