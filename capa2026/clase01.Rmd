@@ -170,6 +170,15 @@ Para algunas instalaciones de paquetes en Windows
 ##### Posit Cloud. Rstudio en el navegador. Sín instalaciones.
 - [posit.co/products/enterprise/cloud](https://posit.co/products/enterprise/cloud)
 
+![](./figuras/posit_cloud_sign_up_free.png){width='25%'}
+
+![](./figuras/posit_cloud_plan_free.png){width='25%'}
+
+![](./figuras/posit_cloud_sign_up_plan_free.png){width='25%'}
+
+![](./figuras/posit_cloud_sign_up_plan_free_datos.png){width='25%'}
+
+
 ***
 
 ### Búsquedas y ayuda :

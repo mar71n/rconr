@@ -1,0 +1,13 @@
+#' ---
+#' title: "Clase 01 - Ejercicios"
+#' output: html_document
+#' #date: '2026-10-05'
+#' knit: (function(inputFile, encoding) {
+#'   out_dir <- '../docs/apuntes2026';
+#'   rmarkdown::render(inputFile,
+#'                     encoding="UTF-8",
+#'                     output_file=file.path(dirname(inputFile), out_dir, 'clase01_ejercicios.html'));
+#'   knitr::purl("clase01_ejercicios.Rmd", documentation = 2L, output = "../docs/apuntes2026/clase01_ejercicios.R")  })
+#' ---
+#' 
+#' ### Por ahora nada

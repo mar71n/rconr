@@ -12,7 +12,7 @@ knit: (function(inputFile, encoding) {
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-Traducido de [CRAN desistalar, actualizar](http://mirror.fcaglp.unlp.edu.ar/CRAN/bin/windows/base/rw-FAQ.R-4.5.2.html#What_0027s-the-best-way-to-upgrade_003f-1)
+Traducido de **CRAN desistalar, actualizar**
 
 #### 2.7 ¿Cómo desinstalo R?
 
