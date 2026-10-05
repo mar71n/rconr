@@ -1,6 +1,11 @@
 ---
 title: "Clase 01"
-output: html_document
+output:
+    html_document:
+    theme: readable
+    toc: true
+    toc_float: true
+    number_sections: false
 #date: '2026-09-01'
 knit: (function(inputFile, encoding) {
   out_dir <- '../docs/apuntes2026';
@@ -9,6 +14,108 @@ knit: (function(inputFile, encoding) {
                     output_file=file.path(dirname(inputFile), out_dir, 'clase01.html')); 
   knitr::purl("clase01.Rmd", documentation = 2L, output = "../docs/apuntes2026/clase01.R")  })
 ---
+
+
+<style>
+/* Estilos Institucionales IDECBA */
+:root {
+  --idecba-blue-dark: #003366;
+  --idecba-blue-light: #0080FF;
+  --idecba-bg-light: #F0F4F8;
+  --idecba-text: #222222;
+}
+
+body {
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  color: var(--idecba-text);
+}
+
+/* Encabezados y Títulos */
+h1.title {
+  color: var(--idecba-blue-dark);
+  font-weight: 800;
+  text-transform: uppercase;
+  border-bottom: 4px solid var(--idecba-blue-light);
+  padding-bottom: 10px;
+}
+
+h3.subtitle {
+  color: var(--idecba-blue-light);
+  font-weight: 600;
+  margin-top: -10px;
+  margin-bottom: 30px;
+}
+
+h1, h2 {
+  color: var(--idecba-blue-dark);
+  font-weight: 700;
+}
+
+h3, h4 {
+  color: var(--idecba-blue-light);
+  font-weight: 600;
+}
+
+/* Bloques Destacados Institucionales */
+.idecba-box {
+  background-color: var(--idecba-bg-light) !important;
+  border-left: 5px solid var(--idecba-blue-dark) !important;
+  padding: 18px 20px;
+  margin: 20px 0;
+  border-radius: 4px;
+}
+
+/* Tablas y Código */
+.table {
+  border-top: 2px solid var(--idecba-blue-dark);
+}
+
+th {
+  background-color: var(--idecba-blue-dark) !important;
+  color: white !important;
+}
+
+pre {
+  border-left: 4px solid var(--idecba-blue-light);
+  background-color: #f8f9fa;
+}
+
+/* Botones y Enlaces */
+a {
+  color: var(--idecba-blue-dark);
+  font-weight: 600;
+}
+
+a:hover {
+  color: var(--idecba-blue-light);
+  text-decoration: underline;
+}
+
+/* Encabezado Superior con Logo/Marca */
+.idecba-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--idecba-blue-dark);
+  color: white;
+  padding: 15px 25px;
+  border-radius: 6px;
+  margin-bottom: 25px;
+}
+
+.idecba-header h2 {
+  color: white !important;
+  margin: 0;
+  font-size: 1.5rem;
+}
+</style>
+
+
+
+![](./figuras/capa_idecba.png){width='100%'}
+
+
+
 
 ```{r klippy, echo=FALSE, include=TRUE}
 #klippy::klippy('')
@@ -462,5 +569,9 @@ ggplot(xcomuna_totsexo, aes(comuna, n, fill=sexo)) +
 ***
 
 [clase01.R](clase01.R)
+
+***
+
+![](./figuras/gracias_idecba.png){width='100%'}
 
 ***
