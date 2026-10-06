@@ -468,6 +468,9 @@ library(dplyr)
 ![](./figuras/cuadro01.png){width='300px'}
 
 
+[Cuadro 01 Colab](https://colab.research.google.com/drive/12gvYPH5pTGgMmpYnDWOP6m-Q95hFHvno?usp=sharing)
+
+
 ```{r}
 library(dplyr)
 # tiene que coincidir con los 3.086.714 que dice eah2021_bu_ampliada_totales_de_control.xls

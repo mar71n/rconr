@@ -232,7 +232,7 @@
 #' 
 #' #### Con _**?**item_ nos muestra ayuda sobre el _item_
 #' ##### Los ejemplos siguientes nos muestran en el panel de *Help* las funciones matemáticas disponibles con la librería estándar.
-## ---- eval=FALSE--------------------------------------------------------------
+## ----eval=FALSE---------------------------------------------------------------
 ## ?Arithmetic # Operadores aritméticos
 ## 
 ## # x + y
@@ -282,7 +282,7 @@
 #' 
 #' #### data.frame
 #' 
-## ---- echo=TRUE, class.source='klippy'----------------------------------------
+## ----echo=TRUE, class.source='klippy'-----------------------------------------
 
 # barrios <- read.csv("https://cdn.buenosaires.gob.ar/datosabiertos/datasets/ministerio-de-educacion/barrios/barrios.csv", encoding = "UTF-8", dec = ".")
 # download.file("https://cdn.buenosaires.gob.ar/datosabiertos/datasets/ministerio-de-educacion/barrios/barrios.csv", "../docs/apuntes2026/datos/barrios.csv")
@@ -318,7 +318,7 @@ summary(barrios)
 #' ##### [%>%](https://magrittr.tidyverse.org/reference/pipe.html)
 #' ###### **Estaremos usando paquetes que integran *tidyverse* y que se instalan al instalar este último.**
 #' ###### **Pero recomiendo ir instalando a medida que los usemos.**
-## ---- echo=TRUE,  class.source='klippy'---------------------------------------
+## ----echo=TRUE,  class.source='klippy'----------------------------------------
 # install.packages("dplyr")
 
 library(dplyr)
@@ -327,7 +327,7 @@ names(barrios)
 
 #' 
 #' #### [dplyr::select](https://dplyr.tidyverse.org/reference/select.html)
-## ---- echo=TRUE,  class.source='klippy'---------------------------------------
+## ----echo=TRUE,  class.source='klippy'----------------------------------------
 select(barrios, nombre, comuna)
 
 barrios %>% select(nombre, comuna)
@@ -341,7 +341,7 @@ barrios %>% select(!geometry)
 #' 
 #' El operador [ ] (corchete simple) Siempre devuelve un subconjunto del mismo tipo que el original.
 #' 
-## ---- echo=TRUE,  class.source='klippy'---------------------------------------
+## ----echo=TRUE,  class.source='klippy'----------------------------------------
 
 # head() nos muestra los primeros elementos de un objeto
 
@@ -364,7 +364,7 @@ barrios[c(2,3)] %>% head
 barrios[c(-1,-2,-7)] %>% head
 
 #' 
-## ---- echo=TRUE,  class.source='klippy'---------------------------------------
+## ----echo=TRUE,  class.source='klippy'----------------------------------------
 # names() nos muestra los nombres de columnas (u otros nombres definidos si los hubiera)
 names(comunas)
 
@@ -468,6 +468,9 @@ library(dplyr)
 #' ![](./figuras/cuadro01.png){width='300px'}
 #' 
 #' 
+#' [Cuadro 01 Colab](https://colab.research.google.com/drive/12gvYPH5pTGgMmpYnDWOP6m-Q95hFHvno?usp=sharing)
+#' 
+#' 
 ## -----------------------------------------------------------------------------
 library(dplyr)
 # tiene que coincidir con los 3.086.714 que dice eah2021_bu_ampliada_totales_de_control.xls
@@ -527,12 +530,12 @@ mp01
 #' 
 #' ##### Para crear gráficos con *ggplot* hay que instalar el paquete con *install.package()*, por única vez.
 #' ##### Luego hay que cargarlo con *library()* la primera vez que lo queremos usar en una sesión.
-## ---- echo=TRUE,  class.source='klippy'---------------------------------------
+## ----echo=TRUE,  class.source='klippy'----------------------------------------
 # install.packages("ggplot2")
 library(ggplot2)
 
 #' 
-## ---- echo=TRUE,  class.source='klippy'---------------------------------------
+## ----echo=TRUE,  class.source='klippy'----------------------------------------
 ggplot(eah2025_ind, aes(sexo)) +
   geom_bar()
 
