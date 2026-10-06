@@ -280,6 +280,8 @@
 #' 
 #' [Buenos Aires Data - Comunas](https://data.buenosaires.gob.ar/dataset/comunas)
 #' 
+#' [Colab barrios y comunas](https://colab.research.google.com/drive/1cuNQK9NYNV6qL5WNhhp7eEEbPvdVPid6?usp=sharing)
+#' 
 #' #### data.frame
 #' 
 ## ----echo=TRUE, class.source='klippy'-----------------------------------------
