@@ -5,7 +5,7 @@ knit: (function(inputFile, encoding) {
   out_dir <- '../docs/apuntes2026';
   rmarkdown::render(inputFile,
                     encoding="UTF-8",
-                    output_file=file.path(dirname(inputFile), out_dir, 'upgrade.html')) })
+                    output_file=file.path(dirname(inputFile), out_dir, 'upgrade.html')); })
 ---
 
 ```{r setup, include=FALSE}
