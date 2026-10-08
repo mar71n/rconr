@@ -108,6 +108,12 @@
 #'   margin: 0;
 #'   font-size: 1.5rem;
 #' }
+#' 
+#' .scroll-200 {
+#'   max-height: 200px;
+#'   overflow-y: auto;
+#'   background-color: #f8f9fa;
+#' }
 #' </style>
 #' 
 #' 
@@ -151,7 +157,7 @@ eah2025_hog <- read_csv2("./datos/eah2025_bu_ampliada/eah2025_bu_ampliada_hog.tx
 #' 
 #' #### Una primera mirada, según lo que esperemos, por lo general alguno de estos:
 #' #### [readr::spec](https://readr.tidyverse.org/reference/spec.html)
-## ---- echo=TRUE,  class.source='klippy'---------------------------------------
+## ---- echo=TRUE,  class.source='klippy', class.output='scroll-200'------------
 spec(eah2025_ind)
 
 head(eah2025_ind)

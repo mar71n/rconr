@@ -108,6 +108,12 @@ a:hover {
   margin: 0;
   font-size: 1.5rem;
 }
+
+.scroll-200 {
+  max-height: 200px;
+  overflow-y: auto;
+  background-color: #f8f9fa;
+}
 </style>
 
 
