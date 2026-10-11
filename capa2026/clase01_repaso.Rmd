@@ -1,0 +1,103 @@
+---
+title: "Clase 01 - Repaso"
+output: html_document
+#date: '2026-10-06'
+knit: (function(inputFile, encoding) {
+  out_dir <- '../docs/apuntes2026';
+  rmarkdown::render(inputFile,
+                    encoding="UTF-8",
+                    output_file=file.path(dirname(inputFile), out_dir, 'clase01_repaso.html'));
+  knitr::purl("clase01_repaso.Rmd", documentation = 2L, output = "../docs/apuntes2026/clase01_repaso.R")  })
+---
+
+
+## Repaso del primer encuentro.
+
+***
+***
+
+### 1. Librería estándar (Base R)
+
+#### Estos paquetes vienen incluidos con la instalación de R.
+
+#### INSTALACIÓN: No es necesario hacer esto.
+```{r, eval=FALSE}
+install.packages("base")
+```
+
+#### CARGA: Algunos se cargan automáticamente al abrir R (base, stats, utils, datasets).
+#### Puedes usar sus funciones directamente sin llamar a library().
+```{r, eval=FALSE}
+mean(c(1, 2, 3)) # Función del paquete 'base' / 'stats'
+```
+
+***
+
+### 2. Ecosistema Tidyverse (Paquetes externos)
+
+#### Conjunto de paquetes para ciencia de datos (como dplyr, readr, readxl).
+
+#### INSTALACIÓN: Se ejecuta una sola vez en tu consola.
+```{r, eval=FALSE}
+# install.packages("tidyverse")
+install.packages("dplyr")
+install.packages("readr")
+install.packages("readxl")
+install.packages("lubridate")
+```
+
+#### CARGA: Se debe incluir en tu script .R y ejecuta antes de intentar usar las funciones de cada paquete.
+```{r, eval=FALSE}
+library(dplyr) 
+```
+
+#### Con esto puedes usar funciones como *filter(), mutate()* (de dplyr)
+```{r, eval=FALSE}
+library(readr) 
+```
+#### Con esto puedes usar funciones como *read_csv()* (de readr).
+
+***
+
+#### El pipe **%>%**: Pertenece al paquete magrittr. Se carga automáticamente cuando ejecutas *library(tidyverse)* o *library(dplyr)* (ya que dplyr lo incluye/importa).
+
+#### El pipe nativo **|>**: No pertenece a ninguna librería externa. Es el pipe nativo de R introducido a partir de la versión 4.1.0. Forma parte de base R, por lo que viene incluido desde la instalaxión y no requiere cargar ningún paquete para usarse.
+
+***
+***
+
+### Datasets Barrios, Comunas
+
+#### **download.file()** pertenece al paquete utils, que forma parte de la librería estándar (Base R).
+#### No es necesarios *instalar* ni *cargar*.
+#### Si ya tenemos los archivos *barrios.csv* y *comunas.csv* (por ejemplo en Rstudio local en nuestra máquina o en Rstudio en la nube) tampoco hace falta volver a ejecutar esta descarga.
+#### En una R-notebook de Colab sí tenemos que descargarlos cada vez que cerremos la sesión.
+
+```{r, eval=FALSE}
+download.file("https://cdn.buenosaires.gob.ar/datosabiertos/datasets/ministerio-de-educacion/barrios/barrios.csv", "barrios.csv")
+
+
+download.file("https://cdn.buenosaires.gob.ar/datosabiertos/datasets/comunas/comunas.csv", "comunas.csv")
+```
+
+#### Cargamos  *readr* para usar las funciones *read_**
+
+```{r, eval=FALSE}
+library(readr)
+
+barrios <- read_csv("barrios.csv")
+
+comunas <- read_csv("comunas.csv")
+```
+
+#### Cargamos *dplyr* par apoder usar *%>>%*, *select()*, *filter()* y *arrange()*
+
+```{r, eval=FALSE}
+library(dplyr)
+barrios %>%
+  select(id, nombre, comuna, area_metro) %>%
+  filter(comuna == 1) %>%
+  arrange(area_metro)
+```
+
+***

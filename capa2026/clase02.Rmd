@@ -120,6 +120,11 @@ a:hover {
 
 ![](./figuras/capa_idecba.png){width='100%'}
 
+***
+
+[Repaso calse 1](clase01_repaso.html)
+
+***
 
 ```{r klippy, echo=FALSE, include=TRUE}
 #klippy::klippy('')

@@ -120,6 +120,11 @@
 #' 
 #' ![](./figuras/capa_idecba.png){width='100%'}
 #' 
+#' ***
+#' 
+#' [Repaso calse 1](clase01_repaso.html)
+#' 
+#' ***
 #' 
 ## ----klippy, echo=FALSE, include=TRUE-----------------------------------------
 #klippy::klippy('')
@@ -134,7 +139,7 @@
 #' 
 #' ***
 #' 
-## ---- echo=TRUE,  class.source='klippy'---------------------------------------
+## ----echo=TRUE,  class.source='klippy'----------------------------------------
 #install.packages("dplyr")
 library(dplyr)
 #install.packages("readr")
@@ -149,7 +154,7 @@ library(ggplot2)
 #' 
 #' ### Datasets
 #' #### Los individuales:
-## ---- echo=TRUE,  class.source='klippy'---------------------------------------
+## ----echo=TRUE,  class.source='klippy'----------------------------------------
 eah2025_ind <- read_csv2("./datos/eah2025_bu_ampliada/eah2025_bu_ampliada_ind.txt")
 
 eah2025_hog <- read_csv2("./datos/eah2025_bu_ampliada/eah2025_bu_ampliada_hog.txt")
@@ -157,7 +162,7 @@ eah2025_hog <- read_csv2("./datos/eah2025_bu_ampliada/eah2025_bu_ampliada_hog.tx
 #' 
 #' #### Una primera mirada, según lo que esperemos, por lo general alguno de estos:
 #' #### [readr::spec](https://readr.tidyverse.org/reference/spec.html)
-## ---- echo=TRUE,  class.source='klippy', class.output='scroll-200'------------
+## ----echo=TRUE,  class.source='klippy', class.output='scroll-200'-------------
 spec(eah2025_ind)
 
 head(eah2025_ind)
@@ -171,7 +176,7 @@ summary(eah2025_ind)
 #' #### con [*\[*](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/Extract)
 #' #### o con [*dplyr::filter*](https://dplyr.tidyverse.org/reference/filter.html)
 #'  - ##### Subconjunto de datos donde todas las condiciones son VERDADERAS.
-## ---- echo=TRUE,  class.source='klippy'---------------------------------------
+## ----echo=TRUE,  class.source='klippy'----------------------------------------
 x <- tribble(
   ~A, ~B, ~C,
   #--|--|---
@@ -206,7 +211,7 @@ x[x$B == "t",]
 #' 
 #' </div>
 #' 
-## ---- echo=TRUE,  class.source='klippy'---------------------------------------
+## ----echo=TRUE,  class.source='klippy'----------------------------------------
 eah2025_hog[eah2025_hog$v12 == 4,]
 
 eah2025_hog %>% filter(v12 == 4)
@@ -224,7 +229,7 @@ eah2025_ind %>% filter(between(edad, 30, 35))
 #' 
 #' #### Frecuencias
 #' ##### Con [*base::table*](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/table)
-## ---- echo=TRUE,  class.source='klippy'---------------------------------------
+## ----echo=TRUE,  class.source='klippy'----------------------------------------
 table(eah2025_ind$sexo)
 
 table(eah2025_ind$comuna)
@@ -250,7 +255,7 @@ table(eah2025_ind$comuna)
 #' 
 #'    - Lógico: any(), all()
 #' 
-## ---- echo=TRUE,  class.source='klippy'---------------------------------------
+## ----echo=TRUE,  class.source='klippy'----------------------------------------
 eah2025_ind %>% count(sexo)
 
 eah2025_ind %>% group_by(sexo) %>% summarise(n = n())
@@ -262,7 +267,7 @@ eah2025_ind %>% group_by(sexo) %>% summarise(n = n())
 #' - [group_by](https://dplyr.tidyverse.org/reference/group_by.html)
 #' 
 #'   group_by() toma un tbl existente y lo convierte en un tbl agrupado donde las operaciones se realizan "por grupo". ungroup() elimina la agrupación.
-## ---- echo=TRUE,  class.source='klippy'---------------------------------------
+## ----echo=TRUE,  class.source='klippy'----------------------------------------
 #vacunas %>% group_by(GENERO) %>% summarise(mean(DOSIS_1))
 
 #' 
@@ -273,13 +278,13 @@ eah2025_ind %>% group_by(sexo) %>% summarise(n = n())
 #' 
 #'   Pasamos un **wt** para ponderar, cambiando el resumen de n = n() a n = sum(wt). 
 #' 
-## ---- echo=TRUE,  class.source='klippy'---------------------------------------
+## ----echo=TRUE,  class.source='klippy'----------------------------------------
 eah2025_ind %>% count(sexo, wt = fexp)
 
 #' 
 #'   **count()** es una forma corta de hacer esto:
 #' 
-## ---- echo=TRUE,  class.source='klippy'---------------------------------------
+## ----echo=TRUE,  class.source='klippy'----------------------------------------
 eah2025_ind %>% group_by(sexo) %>% summarise(n = sum(fexp))
 
 #' 
@@ -299,7 +304,7 @@ eah2025_ind %>% group_by(sexo) %>% summarise(n = sum(fexp))
 #' 
 #' </div>
 #' 
-## ---- echo=TRUE,  class.source='klippy'---------------------------------------
+## ----echo=TRUE,  class.source='klippy'----------------------------------------
 eah2025_ind %>% select(sexo, edad, estado)
 
 eah2025_ind %>% select(starts_with("i"))
@@ -318,7 +323,7 @@ eah2025_ind %>%
 #'   ##### A diferencia de otros verbos dplyr, arrange() ignora en gran medida la agrupación; debe mencionar explícitamente las variables de agrupación (o usar .by_group = TRUE) para agruparlas. Las funciones se evaluan una vez para todos los datos, no por grupo.
 #'   ##### Devuelve  un data frame del mismo tipo que los datos de entrada.
 #' 
-## ---- echo=TRUE,  class.source='klippy'---------------------------------------
+## ----echo=TRUE,  class.source='klippy'----------------------------------------
 x <- tribble(
   ~A, ~B, ~C,
   #--|--|---
@@ -368,14 +373,14 @@ x[order(x$B),]
 #' ##### _*scipen*_: Los valores positivos sesgan hacia la notación fija y los negativos hacia la notación científica: se preferirá la notación fija a menos que sea más que dígitos scipen más anchos.
 #' ##### Por defecto es cero.
 #' </div>
-## ---- echo=TRUE,  class.source='klippy'---------------------------------------
+## ----echo=TRUE,  class.source='klippy'----------------------------------------
 # guardo el valor actual
 actual <- options("scipen")
 # indico que use notación fija a menos que sean mas de 10 digitos:
 options(scipen=10)
 
 #' #### Sín notación cientifica y "factor comun" en aes(...)
-## ---- echo=TRUE,  class.source='klippy'---------------------------------------
+## ----echo=TRUE,  class.source='klippy'----------------------------------------
 
 # vuelvo a poner el valor anterior.
 options(scipen=actual[[1]])
@@ -390,44 +395,44 @@ options(scipen=actual[[1]])
 #' 
 #' #### Un poco más de *ggplot*
 #' ##### *ggplot*, *aes*, *stat*, *position*, *facet*
-## ---- echo=TRUE,  class.source='klippy'---------------------------------------
+## ----echo=TRUE,  class.source='klippy'----------------------------------------
 dfa <- data.frame(v1 = c("a","b","c","a"), v2 = c(2,5,2,1))
 dfa
 
 #' #### *geom_bar* por defecto solo requiere *aes(x)* y hace un counteo. *stat ="count"*
-## ---- echo=TRUE,  class.source='klippy'---------------------------------------
+## ----echo=TRUE,  class.source='klippy'----------------------------------------
 ggplot(dfa, aes(v1)) + 
   geom_bar() 
 
 #' 
 #' ##### El mismo gráfico con los valores por defecto explicitados:
-## ---- echo=TRUE,  class.source='klippy'---------------------------------------
+## ----echo=TRUE,  class.source='klippy'----------------------------------------
 ggplot(dfa, aes(v1)) + 
   geom_bar(stat="count") 
 
 #' 
 #' #### *geom_bar* con *stat = identity* agrupa por *x* ademas suma todos los casos
 #' #### requiere *aes(x, y)*
-## ---- echo=TRUE,  class.source='klippy'---------------------------------------
+## ----echo=TRUE,  class.source='klippy'----------------------------------------
 ggplot(dfa, aes(v1, v2)) + 
   geom_bar(stat="identity") 
 
 #' 
 #' #### por defecto *position* es *"stack"*
-## ---- echo=TRUE,  class.source='klippy'---------------------------------------
+## ----echo=TRUE,  class.source='klippy'----------------------------------------
 
 #' 
 #' #### Con *position* = *"dodge"*
-## ---- echo=TRUE,  class.source='klippy'---------------------------------------
+## ----echo=TRUE,  class.source='klippy'----------------------------------------
 # el el grafico de arriba, algunos tienen tres columnas otros dos (donde no hay casos GENERO = N)
 
 #' 
 #' #### preserve (anchos de columna)
-## ---- echo=TRUE,  class.source='klippy'---------------------------------------
+## ----echo=TRUE,  class.source='klippy'----------------------------------------
 
 #' 
 #' #### Con *position* = *"fill"*
-## ---- echo=TRUE,  class.source='klippy'---------------------------------------
+## ----echo=TRUE,  class.source='klippy'----------------------------------------
 
 #' 
 #' ***
