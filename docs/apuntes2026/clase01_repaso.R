@@ -66,7 +66,7 @@
 #' ***
 #' ***
 #' 
-#' ### Datasets Barrios, Comunas
+#' ### 3. Datasets Barrios, Comunas
 #' 
 #' #### **download.file()** pertenece al paquete utils, que forma parte de la librería estándar (Base R).
 #' #### No es necesarios *instalar* ni *cargar*.
@@ -80,7 +80,7 @@
 ## download.file("https://cdn.buenosaires.gob.ar/datosabiertos/datasets/comunas/comunas.csv", "comunas.csv")
 
 #' 
-#' #### Cargamos  *readr* para usar las funciones *read_**
+#' #### Cargamos  *readr* para usar las funciones *read\_\**
 #' 
 ## ----eval=FALSE---------------------------------------------------------------
 ## library(readr)
@@ -99,5 +99,68 @@
 ##   filter(comuna == 1) %>%
 ##   arrange(area_metro)
 
+#' 
+#' ***
+#' 
+#' ### 4. Sobre los paquetes y librerias.
+#' 
+#' #### Si cuando cargamos una libreria:
+## ----eval=FALSE---------------------------------------------------------------
+## library(dplyr)
+
+#' #### La consola nos muestra un error:
+#' ```
+#' Error en library(dplyr): no hay paquete llamado ‘dplyr’
+#' ```
+#' #### Es porque nos falta **instalar** el paquete:
+## ----eval=FALSE---------------------------------------------------------------
+## installed.packages("dplyr")
+
+#' 
+#' ***
+#' 
+#' #### Recomendación: 
+#' ##### Notemos que al cargar la libreria **tidyverse**, esta carga las 9 librerias principales de ese ecosistema.
+#' 
+## ----eval=FALSE---------------------------------------------------------------
+## > library(tidyverse)
+## ── Attaching core tidyverse packages ──────────────────────────── tidyverse 2.0.0 ──
+## ✔ dplyr     1.1.4     ✔ readr     2.1.5
+## ✔ forcats   1.0.0     ✔ stringr   1.5.1
+## ✔ ggplot2   3.4.4     ✔ tibble    3.2.1
+## ✔ lubridate 1.9.3     ✔ tidyr     1.3.1
+## ✔ purrr     1.0.2
+## ── Conflicts ────────────────────────────────────────────── tidyverse_conflicts() ──
+## ✖ dplyr::filter() masks stats::filter()
+## ✖ dplyr::lag()    masks stats::lag()
+## ℹ Use the conflicted package to force all conflicts to become errors
+
+#' 
+#' ##### Si instalamos **tidyverse**, se van a instalar los elementos principales: 
+#' ##### *dplyr, readr, forcats, stringr, ggplot2, tibble, lubridate, tidyr, purrr*
+#' ##### La instalación vá a tardar más, vá a ocupar más espacio, y si alguno falla, falla todo.
+#' ##### En general, siempre instalar solo lo que precisamos.
+#' ##### Mejor que 
+## ----eval=FALSE---------------------------------------------------------------
+## install.packages("tidyverse")
+
+#' ##### Instalar solo lo que vamos a usar:
+## ----eval=FALSE---------------------------------------------------------------
+## install.packages("dplyr") # si vamos a usar %>%, filter, arrange, etc
+## install.packages("dplyr") # si vamo sa usar read_csv, etc
+## # y así con cada una
+
+#' 
+#' ##### Cuando el error dice
+#' ```
+#' ... no hay un paquete llamado "plinplinplin"
+#' ```
+#' ##### Es que nos falta un *install.packages*
+#' 
+#' ##### Cuando el error dice
+#' ```
+#' ... no pude encontrar la función "planplanplan"
+#' ```
+#' ##### Es que nos falta un *library()* del paquet eque la contiene.
 #' 
 #' ***

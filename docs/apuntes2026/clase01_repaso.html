@@ -420,7 +420,7 @@ instalaxión y no requiere cargar ningún paquete para usarse.</h4>
 </div>
 </div>
 <div id="datasets-barrios-comunas" class="section level3">
-<h3>Datasets Barrios, Comunas</h3>
+<h3>3. Datasets Barrios, Comunas</h3>
 <div id="download.file-pertenece-al-paquete-utils-que-forma-parte-de-la-librería-estándar-base-r." class="section level4">
 <h4><strong>download.file()</strong> pertenece al paquete utils, que
 forma parte de la librería estándar (Base R).</h4>
@@ -443,7 +443,7 @@ cerremos la sesión.</h4>
 download.file(&quot;https://cdn.buenosaires.gob.ar/datosabiertos/datasets/comunas/comunas.csv&quot;, &quot;comunas.csv&quot;)</code></pre>
 </div>
 <div id="cargamos-readr-para-usar-las-funciones-read_" class="section level4">
-<h4>Cargamos <em>readr</em> para usar las funciones *read_**</h4>
+<h4>Cargamos <em>readr</em> para usar las funciones <em>read_*</em></h4>
 <pre class="r"><code>library(readr)
 
 barrios &lt;- read_csv(&quot;barrios.csv&quot;)
@@ -459,6 +459,81 @@ barrios %&gt;%
   filter(comuna == 1) %&gt;%
   arrange(area_metro)</code></pre>
 <hr />
+</div>
+</div>
+<div id="sobre-los-paquetes-y-librerias." class="section level3">
+<h3>4. Sobre los paquetes y librerias.</h3>
+<div id="si-cuando-cargamos-una-libreria" class="section level4">
+<h4>Si cuando cargamos una libreria:</h4>
+<pre class="r"><code>library(dplyr)</code></pre>
+</div>
+<div id="la-consola-nos-muestra-un-error" class="section level4">
+<h4>La consola nos muestra un error:</h4>
+<pre><code>Error en library(dplyr): no hay paquete llamado ‘dplyr’</code></pre>
+</div>
+<div id="es-porque-nos-falta-instalar-el-paquete" class="section level4">
+<h4>Es porque nos falta <strong>instalar</strong> el paquete:</h4>
+<pre class="r"><code>installed.packages(&quot;dplyr&quot;)</code></pre>
+<hr />
+</div>
+<div id="recomendación" class="section level4">
+<h4>Recomendación:</h4>
+<div id="notemos-que-al-cargar-la-libreria-tidyverse-esta-carga-las-9-librerias-principales-de-ese-ecosistema." class="section level5">
+<h5>Notemos que al cargar la libreria <strong>tidyverse</strong>, esta
+carga las 9 librerias principales de ese ecosistema.</h5>
+<pre class="r"><code>&gt; library(tidyverse)
+── Attaching core tidyverse packages ──────────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.1.4     ✔ readr     2.1.5
+✔ forcats   1.0.0     ✔ stringr   1.5.1
+✔ ggplot2   3.4.4     ✔ tibble    3.2.1
+✔ lubridate 1.9.3     ✔ tidyr     1.3.1
+✔ purrr     1.0.2     
+── Conflicts ────────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+ℹ Use the conflicted package to force all conflicts to become errors</code></pre>
+</div>
+<div id="si-instalamos-tidyverse-se-van-a-instalar-los-elementos-principales" class="section level5">
+<h5>Si instalamos <strong>tidyverse</strong>, se van a instalar los
+elementos principales:</h5>
+</div>
+<div id="dplyr-readr-forcats-stringr-ggplot2-tibble-lubridate-tidyr-purrr" class="section level5">
+<h5><em>dplyr, readr, forcats, stringr, ggplot2, tibble, lubridate,
+tidyr, purrr</em></h5>
+</div>
+<div id="la-instalación-vá-a-tardar-más-vá-a-ocupar-más-espacio-y-si-alguno-falla-falla-todo." class="section level5">
+<h5>La instalación vá a tardar más, vá a ocupar más espacio, y si alguno
+falla, falla todo.</h5>
+</div>
+<div id="en-general-siempre-instalar-solo-lo-que-precisamos." class="section level5">
+<h5>En general, siempre instalar solo lo que precisamos.</h5>
+</div>
+<div id="mejor-que" class="section level5">
+<h5>Mejor que</h5>
+<pre class="r"><code>install.packages(&quot;tidyverse&quot;)</code></pre>
+</div>
+<div id="instalar-solo-lo-que-vamos-a-usar" class="section level5">
+<h5>Instalar solo lo que vamos a usar:</h5>
+<pre class="r"><code>install.packages(&quot;dplyr&quot;) # si vamos a usar %&gt;%, filter, arrange, etc
+install.packages(&quot;dplyr&quot;) # si vamo sa usar read_csv, etc
+# y así con cada una</code></pre>
+</div>
+<div id="cuando-el-error-dice" class="section level5">
+<h5>Cuando el error dice</h5>
+<pre><code>... no hay un paquete llamado &quot;plinplinplin&quot;</code></pre>
+</div>
+<div id="es-que-nos-falta-un-install.packages" class="section level5">
+<h5>Es que nos falta un <em>install.packages</em></h5>
+</div>
+<div id="cuando-el-error-dice-1" class="section level5">
+<h5>Cuando el error dice</h5>
+<pre><code>... no pude encontrar la función &quot;planplanplan&quot;</code></pre>
+</div>
+<div id="es-que-nos-falta-un-library-del-paquet-eque-la-contiene." class="section level5">
+<h5>Es que nos falta un <em>library()</em> del paquet eque la
+contiene.</h5>
+<hr />
+</div>
 </div>
 </div>
 </div>
