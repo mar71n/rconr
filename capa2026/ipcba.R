@@ -1,13 +1,13 @@
 library(dplyr)
 library(readxl)
 
-download.file("https://www.estadisticaciudad.gob.ar/eyc/wp-content/uploads/2026/07/IPCBA_base_2021100-Evol_gral_estac_reg_resto.xlsx", 
+download.file("https://www.estadisticaciudad.gob.ar/eyc/wp-content/uploads/2026/08/IPCBA_base_2021100-Evol_gral_estac_reg_resto.xlsx", 
               destfile = "./datos/ipcba-base-2021100.xlsx")
 
 nombres <- c('Fecha', 'Nivel_General_I', 'Estacionales_I', 'Regulados_I',
              'Resto_IPCBA_I', 'Nivel_General_P', 'Estacionales_P', 'Regulados_P',
              'Resto_IPCBA_P')
-ipcbadata <- read_xlsx("./datos/ipcba-base-2021100.xlsx", range = "A6:I59", col_names = nombres)
+ipcbadata <- read_xlsx("./datos/ipcba-base-2021100.xlsx", range = "A6:I60", col_names = nombres)
 tail(ipcbadata, 12)
 
 # Para comentar / descomentar lineas
