@@ -20,7 +20,7 @@ Vectores, matrices, listas, factores.
 Importación de datos y data frames.
 EAH: estructura, cuadros básicos, read_excel
 
-[Clase 2:]() <!-- // (clase02.html) -->
+[Clase 2:](clase02.html)
 Manipulación de datos con dplyr (filter, select, mutate, group_by).
 Gráficos básicos con ggplot2 (geom_bar). aes, stat,  position
 EAH: estructura, cuadros básicos, read_excel
