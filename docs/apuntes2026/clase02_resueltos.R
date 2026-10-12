@@ -1,0 +1,84 @@
+#' ---
+#' title: "Clase 02 - Ejercicios - Resueltos"
+#' output: html_document
+#' #date: '2026-10-05'
+#' knit: (function(inputFile, encoding) {
+#'   out_dir <- '../docs/apuntes2026';
+#'   rmarkdown::render(inputFile,
+#'                     encoding="UTF-8",
+#'                     output_file=file.path(dirname(inputFile), out_dir, 'clase02_resueltos.html'));
+#'   knitr::purl("clase02_resueltos.Rmd", documentation = 2L, output = "../docs/apuntes2026/clase02_resueltos.R")  })
+#' ---
+#'   
+#'   ![](./figuras/eah2025_totales_de_control.png){width='75%'}
+## ----echo=TRUE,  class.source='klippy'----------------------------------------
+expandidas <- tibble::tribble(
+  ~comuna,~viviendas,~hogares,~poblacion,
+  1,112724,113650,259232,
+  2,84035,84803,149398,
+  3,84832,86906,193909,
+  4,87860,89744,241184,
+  5,91794,92186,188047,
+  6,93590,93590,186005,
+  7,96562,96562,242893,
+  8,70587,71098,230775,
+  9,73423,73503,171917,
+  10,73078,73259,170914,
+  11,83376,83574,190199,
+  12,97479,98026,215516,
+  13,122068,122716,236793,
+  14,114422,115097,227350,
+  15,86258,86258,182582
+)
+
+#' 
+#' ***
+#' 
+## ----echo=TRUE, eval=TRUE, message=FALSE, warning=FALSE, class.source='klippy'----
+library(readr)
+
+eah2025_hog <- read_csv2("./datos/eah2025_bu_ampliada/eah2025_bu_ampliada_hog.txt")
+
+eah2025_ind <- read_csv2("./datos/eah2025_bu_ampliada/eah2025_bu_ampliada_ind.txt")
+
+#' 
+#' #### 1) Población por comuna:
+#' ##### Individuales agrupados por comuna, considerando fexp
+#' 
+#' 
+## ----echo=TRUE, eval=TRUE, message=FALSE, warning=FALSE, class.source='klippy'----
+library(dplyr)
+
+#' 
+## ----echo=TRUE,  class.source='klippy'----------------------------------------
+pob_comuna <- eah2025_ind %>% group_by(comuna) %>% count(wt = fexp)
+pob_comuna
+
+pob_comuna$n == expandidas$poblacion
+
+totpob <- sum(expandidas$poblacion)
+totpob
+
+#' 
+#' ***
+#' 
+#' #### 2) Viviendas por comuna:
+#' ##### Hogares, filtrado por nhogar = 1, agrupados por comunas, también con fexp.
+#' 
+## ----echo=TRUE,  class.source='klippy'----------------------------------------
+viv_comuna <- eah2025_hog %>% filter(nhogar == 1) %>% group_by(comuna) %>% count(wt = fexp)
+viv_comuna
+
+#' 
+#' ***
+#' 
+#' #### 3) Hogares por comuna
+#' ##### Hogares, sin filtrar, agrupados por comunas, también con fexp.
+#' 
+## ----echo=TRUE,  class.source='klippy'----------------------------------------
+hog_comuna <- eah2025_hog %>%  group_by(comuna) %>% count(wt = fexp)
+hog_comuna
+
+#' 
+#' ***
+#' 

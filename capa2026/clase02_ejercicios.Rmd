@@ -1,0 +1,66 @@
+---
+title: "Clase 02 - Ejercicios"
+output: html_document
+#date: '2026-10-05'
+knit: (function(inputFile, encoding) {
+  out_dir <- '../docs/apuntes2026';
+  rmarkdown::render(inputFile,
+                    encoding="UTF-8",
+                    output_file=file.path(dirname(inputFile), out_dir, 'clase02_ejercicios.html'));
+  knitr::purl("clase01_ejercicios.Rmd", documentation = 2L, output = "../docs/apuntes2026/clase02_ejercicios.R")  })
+---
+
+![](./figuras/eah2025_totales_de_control.png){width='75%'}
+```{r, echo=TRUE,  class.source='klippy'}
+expandidas <- tibble::tribble(
+  ~comuna,~viviendas,~hogares,~poblacion,
+  1,112724,113650,259232,
+  2,84035,84803,149398,
+  3,84832,86906,193909,
+  4,87860,89744,241184,
+  5,91794,92186,188047,
+  6,93590,93590,186005,
+  7,96562,96562,242893,
+  8,70587,71098,230775,
+  9,73423,73503,171917,
+  10,73078,73259,170914,
+  11,83376,83574,190199,
+  12,97479,98026,215516,
+  13,122068,122716,236793,
+  14,114422,115097,227350,
+  15,86258,86258,182582
+)
+```
+
+***
+
+#### 1) Población por comuna:
+##### Individuales agrupados por comuna, considerando fexp
+
+***
+
+#### 2) Viviendas por comuna:
+##### Hogares, filtrado por nhogar = 1, agrupados por comunas, también con fexp.
+
+***
+
+#### 3) Hogares por comuna
+##### Hogares, sin filtrar, agrupados por comunas, también con fexp.
+
+***
+
+Cuadro 1: Distribución porcentual de la población por sexo según comuna.
+
+***
+
+poblacion por comuna:
+
+
+Cuadro 2: Distribución porcentual de la población por grupos de edad según comuna.
+
+***
+
+Cuadro 3: Distribución porcentual de la población por grupos de edad según sexo y zona.
+
+***
+
