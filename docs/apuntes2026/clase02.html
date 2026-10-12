@@ -448,31 +448,20 @@ summarise, group_by, ungroup,</code></pre>
 <p>Una versión actualizada de este material en : <a href="https://mar71n.github.io/rconr/apuntes2026/clase02.html">clase02</a></p>
 <hr />
 <pre class="r klippy"><code>#install.packages(&quot;dplyr&quot;)
-library(dplyr)</code></pre>
-<pre><code>## 
-## Adjuntando el paquete: &#39;dplyr&#39;</code></pre>
-<pre><code>## The following objects are masked from &#39;package:stats&#39;:
-## 
-##     filter, lag</code></pre>
-<pre><code>## The following objects are masked from &#39;package:base&#39;:
-## 
-##     intersect, setdiff, setequal, union</code></pre>
-<pre class="r klippy"><code>#install.packages(&quot;readr&quot;)
+library(dplyr)
+#install.packages(&quot;readr&quot;)
 library(readr)
 #install.packages(&quot;lubridate&quot;)
-library(lubridate)</code></pre>
-<pre><code>## 
-## Adjuntando el paquete: &#39;lubridate&#39;</code></pre>
-<pre><code>## The following objects are masked from &#39;package:base&#39;:
-## 
-##     date, intersect, setdiff, union</code></pre>
-<pre class="r klippy"><code>#install.packages(&quot;ggplot2&quot;)
+library(lubridate)
+#install.packages(&quot;ggplot2&quot;)
 library(ggplot2)</code></pre>
 <hr />
 <div id="datasets" class="section level3">
 <h3>Datasets</h3>
 <div id="los-individuales" class="section level4">
 <h4>Los individuales:</h4>
+<pre class="r klippy"><code>#install.packages(&quot;readr&quot;)
+library(readr)</code></pre>
 <pre class="r klippy"><code>eah2025_ind &lt;- read_csv2(&quot;./datos/eah2025_bu_ampliada/eah2025_bu_ampliada_ind.txt&quot;)</code></pre>
 <pre><code>## ℹ Using &quot;&#39;,&#39;&quot; as decimal and &quot;&#39;.&#39;&quot; as grouping mark. Use `read_delim()` for more control.</code></pre>
 <pre><code>## Rows: 12457 Columns: 237
@@ -1179,6 +1168,8 @@ estos:</h4>
 </div>
 <div id="o-con-dplyrfilter" class="section level4">
 <h4>o con <a href="https://dplyr.tidyverse.org/reference/filter.html"><em>dplyr::filter</em></a></h4>
+<pre class="r klippy"><code>#install.packages(&quot;dplyr&quot;)
+library(dplyr)</code></pre>
 <ul>
 <li><h5 id="subconjunto-de-datos-donde-todas-las-condiciones-son-verdaderas.">Subconjunto
 de datos donde todas las condiciones son VERDADERAS.</h5>
@@ -1238,24 +1229,62 @@ para construir las condiciones:</h4>
 </ul>
 </div>
 </div>
-<pre class="r klippy"><code>eah2025_hog[eah2025_hog$v12 == 4,]</code></pre>
-<pre><code>## # A tibble: 0 × 110
-## # ℹ 110 variables: id &lt;dbl&gt;, nhogar &lt;dbl&gt;, comuna &lt;dbl&gt;, dominio &lt;dbl&gt;,
-## #   v2_2 &lt;dbl&gt;, v4 &lt;dbl&gt;, v12 &lt;dbl&gt;, h1 &lt;dbl&gt;, h2 &lt;dbl&gt;, h3 &lt;dbl&gt;,
-## #   hacinam_2 &lt;dbl&gt;, tipoho_3 &lt;dbl&gt;, i_estratos &lt;dbl&gt;, i_canastas &lt;dbl&gt;,
+<pre class="r klippy"><code>eah2025_hog[eah2025_hog$v12 == 3,]</code></pre>
+<pre><code>## # A tibble: 17 × 110
+##       id nhogar comuna dominio  v2_2    v4   v12    h1    h2    h3 hacinam_2
+##    &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;
+##  1   527      1      4       4     9     1     3     2     2     1         2
+##  2   763      1      9       3     1     2     3     1     3     2         1
+##  3   771      1      8       3     1     1     3     1     3     1         3
+##  4   944      1      4       3     2     2     3     1     2     2         2
+##  5  1045      1      8       3     1     3     3     1     3     3         1
+##  6  1137      1      8       3     1     2     3     1     3     2         2
+##  7  1526      1      8       3     1     6     3     1     1     3         1
+##  8  2284      1      9       4     1     3     3     1     3     3         1
+##  9  2393      1      7       3     2     2     3     1     2     2         2
+## 10  2487      1      4       3     1     2     3     1     3     2         2
+## 11  2800      1      7       3     1     2     3     1     3     2         1
+## 12  2801      1      4       3     1     1     3     1     3     1         2
+## 13  3230      1      8       3     1     4     3     2     1     2         1
+## 14  3318      1      7       3     9     3     3     2     2     3         1
+## 15  3781      1      7       3     2     4     3     1     3     4         1
+## 16  4024      1      1       3     2     1     3     1     2     1         1
+## 17  4548      1      9       3     1     2     3     1     3     2         1
+## # ℹ 99 more variables: tipoho_3 &lt;dbl&gt;, i_estratos &lt;dbl&gt;, i_canastas &lt;dbl&gt;,
 ## #   ca_canastas &lt;dbl&gt;, ct_canastas &lt;dbl&gt;, i_pobreza &lt;dbl&gt;, ca_pobreza &lt;dbl&gt;,
 ## #   ct_pobreza &lt;dbl&gt;, ent_rea_pm &lt;dbl&gt;, hog_per_0a17 &lt;dbl&gt;, hog_per_6a17 &lt;dbl&gt;,
 ## #   hog_per_0a12 &lt;dbl&gt;, hog_per_3a5 &lt;dbl&gt;, hog_per_15a17 &lt;dbl&gt;,
-## #   hog_per_3a17 &lt;dbl&gt;, hpm2 &lt;dbl&gt;, hpm3 &lt;dbl&gt;, hpm1 &lt;dbl&gt;, hpm4 &lt;dbl&gt;, …</code></pre>
-<pre class="r klippy"><code>eah2025_hog %&gt;% filter(v12 == 4)</code></pre>
-<pre><code>## # A tibble: 0 × 110
-## # ℹ 110 variables: id &lt;dbl&gt;, nhogar &lt;dbl&gt;, comuna &lt;dbl&gt;, dominio &lt;dbl&gt;,
-## #   v2_2 &lt;dbl&gt;, v4 &lt;dbl&gt;, v12 &lt;dbl&gt;, h1 &lt;dbl&gt;, h2 &lt;dbl&gt;, h3 &lt;dbl&gt;,
-## #   hacinam_2 &lt;dbl&gt;, tipoho_3 &lt;dbl&gt;, i_estratos &lt;dbl&gt;, i_canastas &lt;dbl&gt;,
+## #   hog_per_3a17 &lt;dbl&gt;, hpm2 &lt;dbl&gt;, hpm3 &lt;dbl&gt;, hpm1 &lt;dbl&gt;, hpm4 &lt;dbl&gt;,
+## #   pm7 &lt;dbl&gt;, pm8 &lt;dbl&gt;, pm9 &lt;dbl&gt;, pm13 &lt;dbl&gt;, pm14 &lt;dbl&gt;, pm15 &lt;dbl&gt;,
+## #   pm19 &lt;dbl&gt;, pm20 &lt;dbl&gt;, pm21 &lt;dbl&gt;, pm22 &lt;dbl&gt;, pm23 &lt;dbl&gt;, pm24 &lt;dbl&gt;, …</code></pre>
+<pre class="r klippy"><code>eah2025_hog %&gt;% filter(v12 == 3)</code></pre>
+<pre><code>## # A tibble: 17 × 110
+##       id nhogar comuna dominio  v2_2    v4   v12    h1    h2    h3 hacinam_2
+##    &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;
+##  1   527      1      4       4     9     1     3     2     2     1         2
+##  2   763      1      9       3     1     2     3     1     3     2         1
+##  3   771      1      8       3     1     1     3     1     3     1         3
+##  4   944      1      4       3     2     2     3     1     2     2         2
+##  5  1045      1      8       3     1     3     3     1     3     3         1
+##  6  1137      1      8       3     1     2     3     1     3     2         2
+##  7  1526      1      8       3     1     6     3     1     1     3         1
+##  8  2284      1      9       4     1     3     3     1     3     3         1
+##  9  2393      1      7       3     2     2     3     1     2     2         2
+## 10  2487      1      4       3     1     2     3     1     3     2         2
+## 11  2800      1      7       3     1     2     3     1     3     2         1
+## 12  2801      1      4       3     1     1     3     1     3     1         2
+## 13  3230      1      8       3     1     4     3     2     1     2         1
+## 14  3318      1      7       3     9     3     3     2     2     3         1
+## 15  3781      1      7       3     2     4     3     1     3     4         1
+## 16  4024      1      1       3     2     1     3     1     2     1         1
+## 17  4548      1      9       3     1     2     3     1     3     2         1
+## # ℹ 99 more variables: tipoho_3 &lt;dbl&gt;, i_estratos &lt;dbl&gt;, i_canastas &lt;dbl&gt;,
 ## #   ca_canastas &lt;dbl&gt;, ct_canastas &lt;dbl&gt;, i_pobreza &lt;dbl&gt;, ca_pobreza &lt;dbl&gt;,
 ## #   ct_pobreza &lt;dbl&gt;, ent_rea_pm &lt;dbl&gt;, hog_per_0a17 &lt;dbl&gt;, hog_per_6a17 &lt;dbl&gt;,
 ## #   hog_per_0a12 &lt;dbl&gt;, hog_per_3a5 &lt;dbl&gt;, hog_per_15a17 &lt;dbl&gt;,
-## #   hog_per_3a17 &lt;dbl&gt;, hpm2 &lt;dbl&gt;, hpm3 &lt;dbl&gt;, hpm1 &lt;dbl&gt;, hpm4 &lt;dbl&gt;, …</code></pre>
+## #   hog_per_3a17 &lt;dbl&gt;, hpm2 &lt;dbl&gt;, hpm3 &lt;dbl&gt;, hpm1 &lt;dbl&gt;, hpm4 &lt;dbl&gt;,
+## #   pm7 &lt;dbl&gt;, pm8 &lt;dbl&gt;, pm9 &lt;dbl&gt;, pm13 &lt;dbl&gt;, pm14 &lt;dbl&gt;, pm15 &lt;dbl&gt;,
+## #   pm19 &lt;dbl&gt;, pm20 &lt;dbl&gt;, pm21 &lt;dbl&gt;, pm22 &lt;dbl&gt;, pm23 &lt;dbl&gt;, pm24 &lt;dbl&gt;, …</code></pre>
 <pre class="r klippy"><code>eah2025_ind %&gt;% filter(between(edad, 30, 35))</code></pre>
 <pre><code>## # A tibble: 1,026 × 237
 ##       id nhogar miembro comuna dominio  edad  sexo parentes_5  p5_2  p6_a  p6_b
@@ -1330,7 +1359,70 @@ summarize() son sinónimos.</p></li>
 <p>group_by() toma un tbl existente y lo convierte en un tbl agrupado
 donde las operaciones se realizan “por grupo”. ungroup() elimina la
 agrupación.</p>
-<pre class="r klippy"><code>#vacunas %&gt;% group_by(GENERO) %&gt;% summarise(mean(DOSIS_1))</code></pre></li>
+<pre class="r klippy"><code># Agrupando por comuna
+# Conteo ponderado por comuna (población expandida)
+eah2025_ind %&gt;%
+  group_by(comuna) %&gt;%
+  count(wt = fexp)</code></pre>
+<pre><code>## # A tibble: 15 × 2
+## # Groups:   comuna [15]
+##    comuna      n
+##     &lt;dbl&gt;  &lt;dbl&gt;
+##  1      1 259232
+##  2      2 149398
+##  3      3 193909
+##  4      4 241184
+##  5      5 188047
+##  6      6 186005
+##  7      7 242893
+##  8      8 230775
+##  9      9 171917
+## 10     10 170914
+## 11     11 190199
+## 12     12 215516
+## 13     13 236793
+## 14     14 227350
+## 15     15 182582</code></pre>
+<pre class="r klippy"><code># Agrupando por comuna y sexo
+# Personas por comuna y sexo (dos variables de grupo)
+eah2025_ind %&gt;%
+  group_by(comuna, sexo) %&gt;%
+  count(wt = fexp)</code></pre>
+<pre><code>## # A tibble: 30 × 3
+## # Groups:   comuna, sexo [30]
+##    comuna  sexo      n
+##     &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;
+##  1      1     1 130749
+##  2      1     2 128483
+##  3      2     1  66575
+##  4      2     2  82823
+##  5      3     1  91919
+##  6      3     2 101990
+##  7      4     1 116192
+##  8      4     2 124992
+##  9      5     1  86891
+## 10      5     2 101156
+## # ℹ 20 more rows</code></pre>
+<pre class="r klippy"><code># Transformo sexo en un factor
+eah2025_ind %&gt;%
+  mutate(sexo = factor(sexo, levels = c(1,2), labels =  c(&#39;Varon&#39;,&#39;Mujer&#39;))) %&gt;%
+  group_by(comuna, sexo) %&gt;%
+  count(wt = fexp)</code></pre>
+<pre><code>## # A tibble: 30 × 3
+## # Groups:   comuna, sexo [30]
+##    comuna sexo       n
+##     &lt;dbl&gt; &lt;fct&gt;  &lt;dbl&gt;
+##  1      1 Varon 130749
+##  2      1 Mujer 128483
+##  3      2 Varon  66575
+##  4      2 Mujer  82823
+##  5      3 Varon  91919
+##  6      3 Mujer 101990
+##  7      4 Varon 116192
+##  8      4 Mujer 124992
+##  9      5 Varon  86891
+## 10      5 Mujer 101156
+## # ℹ 20 more rows</code></pre></li>
 <li><p><a href="https://dplyr.tidyverse.org/reference/count.html">count</a></p>
 <p><em>count()</em> le permite contar rápidamente los valores únicos de
 una o más variables: <strong>df %&gt;% count(a, b)</strong> es
@@ -1566,6 +1658,8 @@ options(scipen=actual[[1]])</code></pre>
 <div id="ggplot-aes-stat-position-facet" class="section level5">
 <h5><em>ggplot</em>, <em>aes</em>, <em>stat</em>, <em>position</em>,
 <em>facet</em></h5>
+<pre class="r klippy"><code>#install.packages(&quot;ggplot2&quot;)
+library(ggplot2)</code></pre>
 <pre class="r klippy"><code>dfa &lt;- data.frame(v1 = c(&quot;a&quot;,&quot;b&quot;,&quot;c&quot;,&quot;a&quot;), v2 = c(2,5,2,1))
 dfa</code></pre>
 <pre><code>##   v1 v2

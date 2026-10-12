@@ -161,6 +161,6 @@ install.packages("dplyr") # si vamo sa usar read_csv, etc
 ```
 ... no pude encontrar la función "planplanplan"
 ```
-##### Es que nos falta un *library()* del paquet eque la contiene.
+##### Es que nos falta un *library()* del paquete que la contiene.
 
 ***

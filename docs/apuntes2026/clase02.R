@@ -139,21 +139,27 @@
 #' 
 #' ***
 #' 
-## ----echo=TRUE,  class.source='klippy'----------------------------------------
-#install.packages("dplyr")
-library(dplyr)
-#install.packages("readr")
-library(readr)
-#install.packages("lubridate")
-library(lubridate)
-#install.packages("ggplot2")
-library(ggplot2)
+## ----echo=TRUE, eval=FALSE, class.source='klippy'-----------------------------
+## #install.packages("dplyr")
+## library(dplyr)
+## #install.packages("readr")
+## library(readr)
+## #install.packages("lubridate")
+## library(lubridate)
+## #install.packages("ggplot2")
+## library(ggplot2)
 
 #' 
 #' ***
 #' 
 #' ### Datasets
 #' #### Los individuales:
+#' 
+## ----echo=TRUE, eval=TRUE, message=FALSE, warning=FALSE, class.source='klippy'----
+#install.packages("readr")
+library(readr)
+
+#' 
 ## ----echo=TRUE,  class.source='klippy'----------------------------------------
 eah2025_ind <- read_csv2("./datos/eah2025_bu_ampliada/eah2025_bu_ampliada_ind.txt")
 
@@ -175,6 +181,10 @@ summary(eah2025_ind)
 #' #### Filtros
 #' #### con [*\[*](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/Extract)
 #' #### o con [*dplyr::filter*](https://dplyr.tidyverse.org/reference/filter.html)
+## ----echo=TRUE, eval=TRUE, message=FALSE, warning=FALSE, class.source='klippy'----
+#install.packages("dplyr")
+library(dplyr)
+
 #'  - ##### Subconjunto de datos donde todas las condiciones son VERDADERAS.
 ## ----echo=TRUE,  class.source='klippy'----------------------------------------
 x <- tribble(
@@ -212,9 +222,9 @@ x[x$B == "t",]
 #' </div>
 #' 
 ## ----echo=TRUE,  class.source='klippy'----------------------------------------
-eah2025_hog[eah2025_hog$v12 == 4,]
+eah2025_hog[eah2025_hog$v12 == 3,]
 
-eah2025_hog %>% filter(v12 == 4)
+eah2025_hog %>% filter(v12 == 3)
 
 
 eah2025_ind %>% filter(between(edad, 30, 35))
@@ -268,7 +278,23 @@ eah2025_ind %>% group_by(sexo) %>% summarise(n = n())
 #' 
 #'   group_by() toma un tbl existente y lo convierte en un tbl agrupado donde las operaciones se realizan "por grupo". ungroup() elimina la agrupación.
 ## ----echo=TRUE,  class.source='klippy'----------------------------------------
-#vacunas %>% group_by(GENERO) %>% summarise(mean(DOSIS_1))
+# Agrupando por comuna
+# Conteo ponderado por comuna (población expandida)
+eah2025_ind %>%
+  group_by(comuna) %>%
+  count(wt = fexp)
+
+# Agrupando por comuna y sexo
+# Personas por comuna y sexo (dos variables de grupo)
+eah2025_ind %>%
+  group_by(comuna, sexo) %>%
+  count(wt = fexp)
+
+# Transformo sexo en un factor
+eah2025_ind %>%
+  mutate(sexo = factor(sexo, levels = c(1,2), labels =  c('Varon','Mujer'))) %>%
+  group_by(comuna, sexo) %>%
+  count(wt = fexp)
 
 #' 
 #' - [count](https://dplyr.tidyverse.org/reference/count.html)
@@ -395,6 +421,12 @@ options(scipen=actual[[1]])
 #' 
 #' #### Un poco más de *ggplot*
 #' ##### *ggplot*, *aes*, *stat*, *position*, *facet*
+#' 
+## ----echo=TRUE, eval=TRUE, message=FALSE, warning=FALSE, class.source='klippy'----
+#install.packages("ggplot2")
+library(ggplot2)
+
+#' 
 ## ----echo=TRUE,  class.source='klippy'----------------------------------------
 dfa <- data.frame(v1 = c("a","b","c","a"), v2 = c(2,5,2,1))
 dfa
