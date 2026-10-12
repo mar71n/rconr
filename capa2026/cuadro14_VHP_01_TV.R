@@ -1,5 +1,6 @@
 library(dplyr)
 library(readr)
+library(labelled)
 
 # Distribución porcentual de la población, los hogares y las viviendas 
 # por tipo de vivienda. Ciudad de Buenos Aires. Año 2025
@@ -8,8 +9,20 @@ library(readr)
 
 eah2025_ind <- read_csv2("./datos/eah2025_bu_ampliada/eah2025_bu_ampliada_ind.txt")
 
-
 eah2025_hog <- read_csv2("./datos/eah2025_bu_ampliada/eah2025_bu_ampliada_hog.txt")
+
+eah2025_hog <- eah2025_hog %>% set_variable_labels(
+  id= "Número de vivienda",
+  nhogar="Número de hogar",
+  comuna="Comuna",
+  dominio="Dominio",
+  v2_2="Tipo de vivienda (original)",
+  v4="Cantidad de habitaciones de la vivienda (original)",
+  v12="Dispone de inodoro (original)"
+)
+
+var_label(eah2025_hog[1:7])
+
 
 # v2_2 tipo de vivienda
 eah2025_hog %>% count(v2_2)

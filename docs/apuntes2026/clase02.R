@@ -286,9 +286,11 @@ eah2025_ind %>%
 
 # Agrupando por comuna y sexo
 # Personas por comuna y sexo (dos variables de grupo)
-eah2025_ind %>%
+pob_comuna_sexo <- eah2025_ind %>%
   group_by(comuna, sexo) %>%
   count(wt = fexp)
+
+pob_comuna_sexo
 
 # Transformo sexo en un factor
 eah2025_ind %>%
@@ -405,9 +407,7 @@ actual <- options("scipen")
 # indico que use notación fija a menos que sean mas de 10 digitos:
 options(scipen=10)
 
-#' #### Sín notación cientifica y "factor comun" en aes(...)
 ## ----echo=TRUE,  class.source='klippy'----------------------------------------
-
 # vuelvo a poner el valor anterior.
 options(scipen=actual[[1]])
 
@@ -439,32 +439,44 @@ ggplot(dfa, aes(v1)) +
 #' 
 #' ##### El mismo gráfico con los valores por defecto explicitados:
 ## ----echo=TRUE,  class.source='klippy'----------------------------------------
-ggplot(dfa, aes(v1)) + 
-  geom_bar(stat="count") 
+ggplot(dfa, aes(v1)) +
+  geom_bar(stat="count")
 
 #' 
 #' #### *geom_bar* con *stat = identity* agrupa por *x* ademas suma todos los casos
 #' #### requiere *aes(x, y)*
 ## ----echo=TRUE,  class.source='klippy'----------------------------------------
-ggplot(dfa, aes(v1, v2)) + 
-  geom_bar(stat="identity") 
+ggplot(dfa, aes(v1, v2)) +
+  geom_bar(stat="identity")
 
 #' 
 #' #### por defecto *position* es *"stack"*
 ## ----echo=TRUE,  class.source='klippy'----------------------------------------
+library(ggplot2)
+
+pob_comuna_sexo <- pob_comuna_sexo %>%
+  mutate(sexo = factor(sexo, levels = c(1,2), labels =  c('Varon','Mujer'))) %>%
+  mutate(comuna = factor(comuna))
+
+pob_comuna_sexo %>%
+  ggplot(aes(comuna, n, fill=sexo)) +
+  geom_bar(stat="identity", position = "stack")
+
 
 #' 
 #' #### Con *position* = *"dodge"*
 ## ----echo=TRUE,  class.source='klippy'----------------------------------------
-# el el grafico de arriba, algunos tienen tres columnas otros dos (donde no hay casos GENERO = N)
+pob_comuna_sexo %>%
+  ggplot(aes(comuna, n, fill=sexo)) +
+  geom_bar(stat="identity", position = "dodge")
 
-#' 
-#' #### preserve (anchos de columna)
-## ----echo=TRUE,  class.source='klippy'----------------------------------------
 
 #' 
 #' #### Con *position* = *"fill"*
 ## ----echo=TRUE,  class.source='klippy'----------------------------------------
+pob_comuna_sexo %>%
+  ggplot(aes(comuna, n, fill=sexo)) +
+  geom_bar(stat="identity", position = "fill")
 
 #' 
 #' ***
