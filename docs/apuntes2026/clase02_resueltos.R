@@ -9,6 +9,8 @@
 #'                     output_file=file.path(dirname(inputFile), out_dir, 'clase02_resueltos.html'));
 #'   knitr::purl("clase02_resueltos.Rmd", documentation = 2L, output = "../docs/apuntes2026/clase02_resueltos.R")  })
 #' ---
+#' 
+#' #### Totales de control:
 #'   
 #'   ![](./figuras/eah2025_totales_de_control.png){width='75%'}
 ## ----echo=TRUE,  class.source='klippy'----------------------------------------
@@ -78,6 +80,111 @@ viv_comuna
 ## ----echo=TRUE,  class.source='klippy'----------------------------------------
 hog_comuna <- eah2025_hog %>%  group_by(comuna) %>% count(wt = fexp)
 hog_comuna
+
+#' 
+#' ***
+#' 
+#' #### 4) Cuadro 1: Distribución porcentual de la población por sexo según comuna.
+#' ##### Pasar sexo y comuna a factors.
+#' 
+## ----echo=TRUE, eval=TRUE, message=FALSE, warning=FALSE, class.source='klippy'----
+library(tidyr)
+
+#' 
+## ----echo=TRUE,  class.source='klippy'----------------------------------------
+eah2025_ind$sexo <- factor(eah2025_ind$sexo, c(1,2), c('Varón','Mujer'))
+
+
+#' 
+## ----echo=TRUE,  class.source='klippy'----------------------------------------
+tabla_totales_ciudad <- eah2025_ind %>% count( sexo, wt=fexp) %>%
+  mutate(porc = 100 * n / sum(n)) %>%
+  pivot_wider(names_from = sexo, values_from = c(n, porc)) %>%
+  rename(
+    Varón = porc_Varón,
+    Mujer = porc_Mujer
+  ) %>%
+  mutate(
+    Total = Varón + Mujer,
+    Comuna = "Todas"
+  ) %>% select(Comuna, Total, Varón, Mujer)
+
+tabla_totales_ciudad
+
+#' 
+## ----echo=TRUE,  class.source='klippy'----------------------------------------
+tabla_sexo_por_comuna <- eah2025_ind %>% group_by(comuna) %>%  
+  count( sexo, wt=fexp) %>% 
+  mutate(porc = 100 * n / sum(n)) %>%
+  pivot_wider(names_from = sexo, values_from = c(n, porc)) %>%
+  rename(
+    Comuna = comuna,
+    Varón = porc_Varón,
+    Mujer = porc_Mujer
+  ) %>%
+  mutate(
+    Total = Varón + Mujer,
+    Comuna = as.character(Comuna)
+  ) %>%
+  select(Comuna, Total, Varón, Mujer) %>% ungroup()
+
+tabla_sexo_por_comuna
+
+tabla_comuna_total <- rbind(tabla_sexo_por_comuna, tabla_totales_ciudad)
+
+tabla_comuna_total
+
+#' 
+#' ***
+#' 
+#' #### 5) Cuadro 2: Distribución porcentual de la población por grupos de edad según comuna.
+#' ##### Pasar comuna a factor y crear grupo de edad con mutate.
+#' 
+#' ![](./figuras/eah2025_cuadro2.png){width='75%'}
+#' 
+## ----echo=TRUE,  class.source='klippy'----------------------------------------
+# Hasta 9	10 - 19		20 - 29	30 - 39	40 - 49	50 - 59	60 - 69		70 y más
+niveles <- c('Hasta 9','10 - 19','20 - 29','30 - 39','40 - 49','50 - 59','60 - 69','70 y mas')
+
+porgrupoedad_por_comuna <- eah2025_ind %>% mutate(rango = case_when( edad <= 9 ~ 'Hasta 9',
+                                                           edad <= 19 ~ '10 - 19',
+                                                           edad <= 29 ~ '20 - 29',
+                                                           edad <= 39 ~ '30 - 39',
+                                                           edad <= 49 ~ '40 - 49',
+                                                           edad <= 59 ~ '50 - 59',
+                                                           edad <= 69 ~ '60 - 69',
+                                                           edad >= 70 ~ '70 y mas',)) %>%
+  group_by(comuna) %>%
+  count(rango, wt = fexp) %>% 
+  mutate(rango = factor(rango, levels = niveles)) %>%
+  mutate(tot = sum(n), 
+         porc = n / sum(n)) %>% 
+  mutate(porc = round(100 * porc, 1)) %>% 
+  arrange(comuna, rango)
+
+porgrupoedad_por_comuna
+
+#' 
+## ----echo=TRUE, eval=TRUE, message=FALSE, warning=FALSE, class.source='klippy'----
+library(tidyr)
+
+#' 
+## ----echo=TRUE,  class.source='klippy'----------------------------------------
+porgrupoedad_por_comuna %>%
+  select(comuna, rango, porc) %>% 
+  pivot_wider(
+    names_from  = rango,
+    values_from = porc
+  )
+
+
+#' 
+#' ***
+#' 
+#' #### 6) Cuadro 3: Distribución porcentual de la población por grupos de edad según sexo y zona.
+#' ##### Pasar sexo y zona a factor y crear grupo de edad con mutate.
+#' 
+## ----echo=TRUE,  class.source='klippy'----------------------------------------
 
 #' 
 #' ***

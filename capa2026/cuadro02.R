@@ -31,7 +31,7 @@ eah2025_ind %>% mutate(rango = case_when( edad <= 9 ~ 'Hasta 9',
                                           edad <= 49 ~ '40 - 49',
                                           edad <= 59 ~ '50 - 59',
                                           edad <= 69 ~ '60 - 69',
-                                          edad >= 70 ~ '70 y mas',)) %>%
+                                          edad >= 70 ~ '70 y mas',)) %>% #select(edad, rango)
   count(rango, wt = fexp) %>% 
   mutate(rango = factor(rango, levels = niveles)) %>% 
   mutate(tot = sum(n), porc = n / sum(n)) %>% arrange(rango)
@@ -48,8 +48,11 @@ porgruposedad <- eah2025_ind %>% mutate(rango = case_when( edad <= 9 ~ 'Hasta 9'
                                                            edad >= 70 ~ '70 y mas',)) %>%
   group_by(comuna) %>%
   count(rango, wt = fexp) %>% 
+  mutate(rango = factor(rango, levels = niveles)) %>%
   mutate(tot = sum(n), porc = n / sum(n)) %>% arrange(comuna, rango)
   
+
+
 
 eah2025_ind %>% filter(comuna == 6) %>% mutate(rango = cut(edad, breaks = c(-Inf, 9,19,29,39,49,59,69, Inf), labels = niveles)) %>%
   count(rango, wt = fexp) %>% 

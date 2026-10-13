@@ -2,6 +2,7 @@ library(dplyr)
 library(readr)
 #install.packages("gt")
 library(gt)
+library(tidyr)
 
 # para este cuadro
 # Distribución porcentual de la población por sexo según comuna.
@@ -40,7 +41,7 @@ tabla_sexo_por_comuna <- eah2025_ind %>% group_by(comuna) %>%
     Total = Varón + Mujer,
     Comuna = as.character(Comuna)
   ) %>%
-  select(Comuna, Total, Varón, Mujer) %>% tibble()
+  select(Comuna, Total, Varón, Mujer) %>% ungroup()
 
 tabla_comuna_total <- rbind(tabla_sexo_por_comuna, tabla_totales_ciudad)
 

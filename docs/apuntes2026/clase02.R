@@ -266,10 +266,16 @@ table(eah2025_ind$comuna)
 #'    - Lógico: any(), all()
 #' 
 ## ----echo=TRUE,  class.source='klippy'----------------------------------------
-eah2025_ind %>% count(sexo)
+
+eah2025_ind %>% summarise(mean(edad))    
+
+eah2025_ind %>% group_by(sexo) %>% summarise(mean(edad))
 
 eah2025_ind %>% group_by(sexo) %>% summarise(n = n())
 
+eah2025_ind %>% group_by(sexo) %>% reframe(n = n())
+
+eah2025_ind %>% group_by(sexo) %>% reframe(qedad = quantile(edad))
 
 
 #' 

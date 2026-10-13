@@ -10,6 +10,8 @@ knit: (function(inputFile, encoding) {
   knitr::purl("clase01_ejercicios.Rmd", documentation = 2L, output = "../docs/apuntes2026/clase02_ejercicios.R")  })
 ---
 
+#### Totales de control:
+
 ![](./figuras/eah2025_totales_de_control.png){width='75%'}
 ```{r, echo=TRUE,  class.source='klippy'}
 expandidas <- tibble::tribble(
@@ -49,18 +51,26 @@ expandidas <- tibble::tribble(
 
 ***
 
-Cuadro 1: Distribución porcentual de la población por sexo según comuna.
+#### 4) Cuadro 1: Distribución porcentual de la población por sexo según comuna.
+##### Pasar sexo y comuna a factors.
 
 ***
 
-poblacion por comuna:
+#### 5) Cuadro 2: Distribución porcentual de la población por grupos de edad según comuna.
+##### Pasar comuna a factor y crear grupo de edad con mutate.
 
+![](./figuras/eah2025_cuadro2.png){width='75%'}
 
-Cuadro 2: Distribución porcentual de la población por grupos de edad según comuna.
+```{r, echo=TRUE,  class.source='klippy'}
+# Hasta 9	10 - 19		20 - 29	30 - 39	40 - 49	50 - 59	60 - 69		70 y más
+niveles <- c('Hasta 9','10 - 19','20 - 29','30 - 39','40 - 49','50 - 59','60 - 69','70 y mas')
+```
+
 
 ***
 
-Cuadro 3: Distribución porcentual de la población por grupos de edad según sexo y zona.
+#### 6) Cuadro 3: Distribución porcentual de la población por grupos de edad según sexo y zona.
+##### Pasar sexo y zona a factor y crear grupo de edad con mutate.
 
 ***
 
