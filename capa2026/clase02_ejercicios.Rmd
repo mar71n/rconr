@@ -54,6 +54,8 @@ expandidas <- tibble::tribble(
 #### 4) Cuadro 1: Distribución porcentual de la población por sexo según comuna.
 ##### Pasar sexo y comuna a factors.
 
+![](./figuras/cuadro01.png){width='50%'}
+
 ***
 
 #### 5) Cuadro 2: Distribución porcentual de la población por grupos de edad según comuna.
@@ -70,7 +72,13 @@ niveles <- c('Hasta 9','10 - 19','20 - 29','30 - 39','40 - 49','50 - 59','60 - 6
 ***
 
 #### 6) Cuadro 3: Distribución porcentual de la población por grupos de edad según sexo y zona.
-##### Pasar sexo y zona a factor y crear grupo de edad con mutate.
+##### Pasar sexo a factor y crear grupo de edad y zona con mutate, también como factores.
+##### Agrupamiento de comunas contiguas y de características similares.
+##### La zona Norte está conformada por las comunas 2, 13 y 14; 
+##### la zona Centro, por las comunas 1, 3, 5, 6, 7, 11, 12 y 15; 
+##### la zona Sur, por las comunas 4, 8, 9 y 10
+
+![](./figuras/eah2025_cuadro3.png){width='75%'}
 
 ***
 

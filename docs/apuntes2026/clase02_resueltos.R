@@ -87,6 +87,8 @@ hog_comuna
 #' #### 4) Cuadro 1: Distribución porcentual de la población por sexo según comuna.
 #' ##### Pasar sexo y comuna a factors.
 #' 
+#' ![](./figuras/cuadro01.png){width='50%'}
+#' 
 ## ----echo=TRUE, eval=TRUE, message=FALSE, warning=FALSE, class.source='klippy'----
 library(tidyr)
 
@@ -184,8 +186,83 @@ porgrupoedad_por_comuna %>%
 #' #### 6) Cuadro 3: Distribución porcentual de la población por grupos de edad según sexo y zona.
 #' ##### Pasar sexo y zona a factor y crear grupo de edad con mutate.
 #' 
-## ----echo=TRUE,  class.source='klippy'----------------------------------------
+#' ![](./figuras/eah2025_cuadro3.png){width='50%'}
+#' 
+#' 
+## ----echo=TRUE, eval=TRUE, message=FALSE, warning=FALSE, class.source='klippy'----
+library(dplyr)
+library(readr)
+library(tidyr)
 
+#' 
+## ----echo=TRUE,  class.source='klippy'----------------------------------------
+eah2025_ind <- read_csv2( "./datos/eah2025_bu_ampliada/eah2025_bu_ampliada_ind.txt")
+
+eah2025_ind <- eah2025_ind %>% 
+  mutate(sexo = factor(sexo, levels = c(1,2), labels =  c('Varon','Mujer'))) %>%
+  mutate(comuna = factor(comuna))
+
+eah2025_ind[1:7]
+
+# Hasta 9	10 - 19		20 - 29	30 - 39	40 - 49	50 - 59	60 - 69		70 y más
+niveles <- c('Hasta 9','10 - 19','20 - 29','30 - 39','40 - 49','50 - 59','60 - 69','70 y mas')
+
+eah2025_ind <- eah2025_ind %>% 
+  mutate(rango = cut(edad, breaks = c(-Inf, 9,19,29,39,49,59,69, Inf), labels = niveles))
+
+eah2025_ind %>% select(1:7, rango)
+
+eah2025_ind <- eah2025_ind %>% 
+  mutate(zona = case_when(
+    as.numeric(as.character(comuna)) %in% c(2, 13, 14)                 ~ "Norte",
+    as.numeric(as.character(comuna)) %in% c(1, 3, 5, 6, 7, 11, 12, 15) ~ "Centro",
+    as.numeric(as.character(comuna)) %in% c(4, 8, 9, 10)               ~ "Sur"
+  )) %>% 
+  mutate(zona = factor(zona, levels = c("Norte", "Centro", "Sur")))
+
+eah2025_ind %>% select(1:7, rango, zona)
+
+porc_rango_zona <- eah2025_ind %>% 
+  count(zona, rango, wt = fexp) %>% # conteos ponderados por factor de expansión
+  group_by(zona) %>%                # agrupamos por zona
+  mutate(
+    tot  = sum(n),                  # total de la zona
+    porc = n / tot                  # porcentaje dentro de la zona
+  ) %>% 
+  ungroup() %>% 
+  arrange(zona, rango)
+
+porc_rango_zona
+
+porc_rango_zona %>% 
+  mutate(porc = round(100 * porc, 1)) %>%
+  select(zona, rango, porc) %>% 
+  pivot_wider(
+    names_from  = rango,
+    values_from = porc
+  )
+
+#' 
+## ----echo=TRUE, eval=TRUE, message=FALSE, warning=FALSE, class.source='klippy'----
+library(ggplot2)
+library(scales)
+
+#' 
+#' 
+## ----echo=TRUE,  class.source='klippy'----------------------------------------
+porc_rango_zona %>% 
+  ggplot(aes(x = rango, y = porc, fill = zona)) +
+  geom_col(position = "dodge", width = 0.75) +
+  scale_y_continuous(labels = percent_format(accuracy = 1)) +
+  labs(
+    x = "Grupo de edad", y = "Porcentaje",
+    fill = "Zona",
+    title = "Distribución por grupo de edad y zona"
+  ) +
+  theme_minimal(base_size = 13) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+#' 
 #' 
 #' ***
 #' 
