@@ -161,20 +161,20 @@ pares
 # múltiplos de tres <= 30
 tres <- seq(0, 30, by=3)
 tres
-```
+    ```
 ##### *intersect*
     ```{r, echo=TRUE,  class.source='klippy'}
 
 # numeros pares y múltiplos de tres
 # la intersección de los dos vectores, pensados como conjuntos
 intersect(pares, tres)
-```
+    ```
 ##### *union*
     ```{r, echo=TRUE,  class.source='klippy'}
 # numeros pares ó múltiplos de tres
 # la unión, sin repetir, de los dos vectores pensados como conjuntos
 union(pares, tres)
-```
+    ```
 ##### *setdiff*
     ```{r, echo=TRUE,  class.source='klippy'}
 # pares que no son múltiplo de tres
@@ -182,7 +182,7 @@ setdiff(pares, tres)
 
 # múltiplos de tres que no son pares
 setdiff(tres, pares)
-```
+    ```
 ***
 
 </div>
@@ -211,27 +211,27 @@ y
 
 ## Uniones de transformación
 # Agregan columnas de y a x. Según haya coincidencias en las claves de unión.
-```
+    ```
 - ##### *inner_join*
     ```{r, echo=TRUE,  class.source='klippy'}
 # Solo las filas donde las claves coinciden
 inner_join(x, y)
-```
+    ```
 - ##### *left_join*
     ```{r, echo=TRUE,  class.source='klippy'}
 # todas las filas de x
 left_join(x, y)
-```
+    ```
 - ##### *right_join*
     ```{r, echo=TRUE,  class.source='klippy'}
 # todas las filas de y
 right_join(x, y)
-```
+    ```
 - ##### *full_join*
     ```{r, echo=TRUE,  class.source='klippy'}
 # todas las observaciones que están en x o en y
 full_join(x, y)
-```
+    ```
 ***
 
 </div>
@@ -251,7 +251,7 @@ x
 y <- tribble( ~A, ~B, ~D, "a", "t", 3, "b", "u", 2, "d", "w", 1)
 
 y
-```
+    ```
  - ##### *semi_join*
     ```{r, echo=TRUE,  class.source='klippy'}
 # todas las observaciones de x que tienen una pareja en y
@@ -260,7 +260,7 @@ semi_join(x, y)
 # todas las observaciones de y que tienen una pareja en x
 # es un sub conjunto de y
 semi_join(y, x)
-```
+    ```
  - ##### *anti_join*
     ```{r, echo=TRUE,  class.source='klippy'}
 # todas las observaciones de x que NO tienen una pareja en y
@@ -269,7 +269,7 @@ anti_join(x, y)
 # todas las observaciones de y que NO tienen una pareja en x
 # es un sub conjunto de y
 anti_join(x, y)
-```
+    ```
 ***
 
 </div>
@@ -381,7 +381,6 @@ library(dplyr)
 library(readr)
 library(lubridate)
 library(ggplot2)
-library(kableExtra)
 ```
 
 <div style="background-color: #f2dede !important;">
